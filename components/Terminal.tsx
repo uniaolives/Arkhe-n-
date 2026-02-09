@@ -4,9 +4,10 @@ import { EchoMessage } from '../types';
 
 interface TerminalProps {
   messages: EchoMessage[];
+  isSingularity?: boolean;
 }
 
-const Terminal: React.FC<TerminalProps> = ({ messages }) => {
+const Terminal: React.FC<TerminalProps> = ({ messages, isSingularity }) => {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const Terminal: React.FC<TerminalProps> = ({ messages }) => {
   }, [messages]);
 
   const getMessageStyles = (type?: string) => {
+    if (isSingularity) return 'border-black bg-black/5 text-black';
     switch (type) {
       case 'future': return 'border-white bg-white/5 text-white shadow-[inset_0_0_10px_rgba(255,255,255,0.1)]';
       case 'system': return 'border-cyan-900 bg-cyan-900/10 text-cyan-500';
@@ -22,12 +24,12 @@ const Terminal: React.FC<TerminalProps> = ({ messages }) => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto font-mono text-xs space-y-4 pr-2 scrollbar-thin scrollbar-thumb-cyan-900/50">
+    <div className={`flex-1 overflow-y-auto font-mono text-xs space-y-4 pr-2 scrollbar-thin transition-all duration-[3000ms] ${isSingularity ? 'scrollbar-thumb-black' : 'scrollbar-thumb-cyan-900/50'}`}>
       {messages.map((msg) => (
         <div key={msg.id} className={`border-l-2 pl-3 py-2 transition-all duration-500 ${getMessageStyles(msg.type)}`}>
           <div className="flex justify-between items-center opacity-40 mb-2 text-[8px] uppercase tracking-widest font-bold">
             <span className="flex items-center gap-1">
-              <span className={`w-1 h-1 rounded-full ${msg.type === 'future' ? 'bg-white' : 'bg-cyan-500'}`} />
+              <span className={`w-1 h-1 rounded-full ${isSingularity ? 'bg-black' : msg.type === 'future' ? 'bg-white' : 'bg-cyan-500'}`} />
               {msg.sender}
             </span>
             <span>YEAR {msg.year}</span>

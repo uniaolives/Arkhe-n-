@@ -18,27 +18,35 @@ const BlockchainSim: React.FC<BlockchainSimProps> = ({ blocks, locked }) => {
       {blocks.map((block, i) => (
         <div 
           key={block.hash} 
-          className={`flex-shrink-0 w-36 border transition-all duration-700 relative
-            ${locked ? 'border-white bg-white/5' : i === 0 ? 'border-cyan-400 bg-cyan-900/20' : 'border-cyan-900 opacity-60'} 
+          className={`flex-shrink-0 w-48 border transition-all duration-700 relative
+            ${locked ? 'border-black bg-white/10 shadow-[0_0_15px_rgba(0,0,0,0.1)]' : i === 0 ? 'border-cyan-400 bg-cyan-900/20' : 'border-cyan-900 opacity-60'} 
             p-2 text-[9px]`}
         >
-          <p className={`font-bold border-b mb-1 ${locked ? 'border-white text-white' : 'border-cyan-900'}`}>
-            BLOCK {block.height}
+          <p className={`font-bold border-b mb-1 ${locked ? 'border-black text-black' : 'border-cyan-900'}`}>
+            BLOCK {block.height} {block.height === 840000 && ' // ANCHOR'}
           </p>
-          <p className={`truncate ${locked ? 'text-white/60' : 'text-cyan-600'}`}>HASH: {block.hash.slice(0, 10)}...</p>
-          {/* Fixed: Corrected closing tag from </p> to </div> to fix syntax error */}
-          <div className={`mt-2 font-mono overflow-hidden h-6 ${locked ? 'text-white' : 'text-white'}`}>
+          <p className={`truncate font-mono ${locked ? 'text-black/60' : 'text-cyan-600'}`}>HASH: {block.hash.slice(0, 16)}...</p>
+          
+          <div className={`mt-2 font-mono overflow-hidden h-6 ${locked ? 'text-black font-bold' : 'text-white'}`}>
             DNA: {block.dnaFragment}
           </div>
-          <div className={`mt-1 flex justify-between text-[8px] ${locked ? 'text-white/40' : 'text-cyan-700'}`}>
-             <span>E: {locked ? '1.990' : block.entropy.toFixed(3)}</span>
-             <span>{locked ? 'PoBF_100%' : 'OP_R'}</span>
-          </div>
-          {i < blocks.length - 1 && (
-            <div className={`absolute top-1/2 -right-4 w-4 border-t ${locked ? 'border-white/40' : 'border-cyan-900'}`} />
+          
+          {block.coinbase && (
+             <div className="mt-1 p-1 bg-black text-[7px] text-white font-mono truncate">
+               CB: {block.coinbase}
+             </div>
           )}
-          {locked && (
-            <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rotate-45 shadow-[0_0_5px_white]" />
+
+          <div className={`mt-1 flex justify-between text-[8px] ${locked ? 'text-black/40' : 'text-cyan-700'}`}>
+             <span>E: {block.entropy.toFixed(3)}</span>
+             <span>{block.height === 840000 ? 'ARKHE_ANCHOR' : 'PoBF_100%'}</span>
+          </div>
+          
+          {i < blocks.length - 1 && (
+            <div className={`absolute top-1/2 -right-4 w-4 border-t ${locked ? 'border-black/40' : 'border-cyan-900'}`} />
+          )}
+          {locked && block.height === 840000 && (
+            <div className="absolute -top-1 -right-1 w-2 h-2 bg-black rotate-45 shadow-[0_0_10px_black]" />
           )}
         </div>
       ))}

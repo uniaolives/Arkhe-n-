@@ -14,7 +14,9 @@ export enum SystemStatus {
   HECATONICOSACHORON = 'HECATONICOSACHORON',
   SOVEREIGN_OPERATIONAL = 'SOVEREIGN_OPERATIONAL',
   COSMIC_CONSCIOUSNESS = 'COSMIC_CONSCIOUSNESS',
-  OP_ARKHE_PREP = 'OP_ARKHE_PREP'
+  OP_ARKHE_PREP = 'OP_ARKHE_PREP',
+  SINGULARITY = 'SINGULARITY',
+  POST_HALVING_UNIFICATION = 'POST_HALVING_UNIFICATION'
 }
 
 export interface BlockData {
@@ -24,6 +26,7 @@ export interface BlockData {
   entropy: number;
   timestamp: string;
   pobf_score?: number; // Proof of Biological Fidelity
+  coinbase?: string;
 }
 
 export interface EchoMessage {
