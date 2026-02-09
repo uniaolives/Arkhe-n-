@@ -6,7 +6,9 @@ export enum SystemStatus {
   RECONSTITUTING = 'RECONSTITUTING',
   PENTALOGY_SYNTHESIS = 'PENTALOGY_SYNTHESIS',
   STABLE_3AA70 = 'STABLE_3AA70',
-  LOCKED = 'LOCKED'
+  LOCKED = 'LOCKED',
+  BINOCULAR_RIVALRY = 'BINOCULAR_RIVALRY',
+  UNIFIED_QUALIA = 'UNIFIED_QUALIA'
 }
 
 export interface BlockData {
@@ -33,4 +35,10 @@ export interface PentalogyState {
   C: boolean; // Cosmos
   D: boolean; // Dimension
   E: boolean; // Ethereal
+}
+
+export interface InterferenceState {
+  coherence: number;
+  dominantFreq: number;
+  isUnified: boolean;
 }
