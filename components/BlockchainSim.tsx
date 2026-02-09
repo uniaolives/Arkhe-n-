@@ -26,9 +26,10 @@ const BlockchainSim: React.FC<BlockchainSimProps> = ({ blocks, locked }) => {
             BLOCK {block.height}
           </p>
           <p className={`truncate ${locked ? 'text-white/60' : 'text-cyan-600'}`}>HASH: {block.hash.slice(0, 10)}...</p>
+          {/* Fixed: Corrected closing tag from </p> to </div> to fix syntax error */}
           <div className={`mt-2 font-mono overflow-hidden h-6 ${locked ? 'text-white' : 'text-white'}`}>
             DNA: {block.dnaFragment}
-          </p>
+          </div>
           <div className={`mt-1 flex justify-between text-[8px] ${locked ? 'text-white/40' : 'text-cyan-700'}`}>
              <span>E: {locked ? '1.990' : block.entropy.toFixed(3)}</span>
              <span>{locked ? 'PoBF_100%' : 'OP_R'}</span>
