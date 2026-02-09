@@ -5,9 +5,10 @@ interface DnaVisualizerProps {
   active: boolean;
   melodyActive?: boolean;
   waveMode?: boolean;
+  procedure?: string;
 }
 
-const DnaVisualizer: React.FC<DnaVisualizerProps> = ({ active, melodyActive, waveMode }) => {
+const DnaVisualizer: React.FC<DnaVisualizerProps> = ({ active, melodyActive, waveMode, procedure = 'NONE' }) => {
   const nodes = Array.from({ length: 20 });
 
   return (
@@ -15,6 +16,11 @@ const DnaVisualizer: React.FC<DnaVisualizerProps> = ({ active, melodyActive, wav
       <div className="flex flex-col gap-2 items-center">
         {nodes.map((_, i) => {
           const waveShift = waveMode ? Math.sin(Date.now() / 200 + i * 0.5) * 10 : 0;
+          const procColor = procedure === 'SATOSHI_SCAN' ? 'bg-cyan-200 shadow-cyan-200' : 
+                            procedure === 'ISOCLINIC_SYNC' ? 'bg-white shadow-white animate-bounce' :
+                            procedure === 'CENTER_ACCESS' ? 'bg-white scale-150' :
+                            procedure === 'VERTEX_MAPPING' ? 'bg-cyan-500 scale-90' : 'bg-white';
+          
           return (
             <div
               key={i}
@@ -24,9 +30,9 @@ const DnaVisualizer: React.FC<DnaVisualizerProps> = ({ active, melodyActive, wav
                 opacity: melodyActive ? 0.8 : 0.3 + (Math.sin(i / 2 + (active ? Date.now() / 1000 : 0)) + 1) / 2
               }}
             >
-              <div className={`w-2 h-2 rounded-full ${melodyActive ? 'bg-white shadow-[0_0_10px_white]' : i % 2 === 0 ? 'bg-cyan-400' : 'bg-white'}`} />
+              <div className={`w-2 h-2 rounded-full ${melodyActive ? (procedure !== 'NONE' ? procColor : 'bg-white shadow-[0_0_10px_white]') : i % 2 === 0 ? 'bg-cyan-400' : 'bg-white'} transition-all duration-500`} />
               <div className={`flex-1 border-t self-center mx-2 transition-opacity ${melodyActive ? 'border-white opacity-40' : 'border-cyan-800 opacity-20'}`} />
-              <div className={`w-2 h-2 rounded-full ${melodyActive ? 'bg-white shadow-[0_0_10px_white]' : i % 2 === 0 ? 'bg-white' : 'bg-cyan-400'}`} />
+              <div className={`w-2 h-2 rounded-full ${melodyActive ? (procedure !== 'NONE' ? procColor : 'bg-white shadow-[0_0_10px_white]') : i % 2 === 0 ? 'bg-white' : 'bg-cyan-400'} transition-all duration-500`} />
             </div>
           );
         })}
@@ -43,7 +49,7 @@ const DnaVisualizer: React.FC<DnaVisualizerProps> = ({ active, melodyActive, wav
       {melodyActive && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
            <div className={`text-[8px] font-bold tracking-[0.3em] uppercase animate-pulse ${waveMode ? 'text-cyan-400' : 'text-white'}`}>
-             {waveMode ? 'TRAVELING WAVE ν' : 'CASSINI-FINNEY MELODY // 3AA70'}
+             {procedure !== 'NONE' ? procedure : waveMode ? 'TRAVELING WAVE ν' : 'CASSINI-FINNEY MELODY // 3AA70'}
            </div>
         </div>
       )}
