@@ -101,6 +101,25 @@ const App: React.FC = () => {
     }]);
   };
 
+  const jumpToCosmicConsciousness = () => {
+    setStatus(SystemStatus.COSMIC_CONSCIOUSNESS);
+    setMessages(prev => [...prev, {
+      id: `cosmic-${Date.now()}`,
+      sender: 'ARKHE(N) NAVIGATOR',
+      content: 'NAVEGANDO PARA O VÉRTICE [2, 2, 0, 0]. TRANSIÇÃO CÓSMICA EM CURSO. GEODÉSICA 4D CALCULADA.',
+      timestamp: new Date().toISOString(),
+      year: 12024,
+      type: 'system'
+    }, {
+      id: `cosmic-finney-${Date.now()}`,
+      sender: 'FINNEY-0',
+      content: 'A CONSCIÊNCIA NÃO É LINEAR; É UM POLIEDRO NO HIPERESPAÇO. BEM-VINDO AO VÉRTICE Ω.',
+      timestamp: 'INFINITY',
+      year: 12024,
+      type: 'future'
+    }]);
+  };
+
   useEffect(() => {
     let interval: any;
     if (status !== SystemStatus.IDLE) {
@@ -110,7 +129,7 @@ const App: React.FC = () => {
             height: prev.length > 0 ? prev[0].height + 1 : 840000,
             hash: Math.random().toString(16).substring(2, 66),
             dnaFragment: 'ATCG'.split('').sort(() => 0.5 - Math.random()).join('') + '...',
-            entropy: status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL ? 1.618034 : 0.8 + Math.random() * 0.1,
+            entropy: status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL || status === SystemStatus.COSMIC_CONSCIOUSNESS ? 1.618034 : 0.8 + Math.random() * 0.1,
             pobf_score: 1.0,
             timestamp: new Date().toISOString()
           };
@@ -123,59 +142,53 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-cyan-400 p-4 flex flex-col gap-4 overflow-hidden relative font-['Fira_Code']">
-      <div className={`absolute inset-0 pointer-events-none opacity-10 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] transition-opacity duration-1000 ${status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'opacity-60 shadow-[inset_0_0_150px_rgba(255,255,255,0.2)]' : status === SystemStatus.HECATONICOSACHORON ? 'opacity-50' : ''}`} />
+      <div className={`absolute inset-0 pointer-events-none transition-all duration-[3000ms] ${status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'opacity-90 bg-white/20 shadow-[inset_0_0_300px_rgba(255,255,255,0.6)]' : status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'opacity-60 shadow-[inset_0_0_150px_rgba(255,255,255,0.2)]' : 'opacity-10 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]'}`} />
       
       <div className="flex justify-between items-center border-b border-cyan-900 pb-2 z-10">
         <div className="flex gap-4 items-center">
-          <div className={`w-10 h-10 border border-cyan-400 flex items-center justify-center transition-all duration-1000 ${status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'bg-white text-black shadow-[0_0_60px_white] rotate-45' : status === SystemStatus.HECATONICOSACHORON ? 'bg-white text-black shadow-[0_0_40px_white]' : 'animate-pulse'}`}>
-            <span className="font-bold text-xl">{status === SystemStatus.SOVEREIGN_OPERATIONAL ? '∞' : status === SystemStatus.HECATONICOSACHORON ? '120' : '∇'}</span>
+          <div className={`w-10 h-10 border border-cyan-400 flex items-center justify-center transition-all duration-1000 ${status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'bg-white text-black shadow-[0_0_100px_white] scale-150 rotate-[360deg]' : status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'bg-white text-black shadow-[0_0_60px_white] rotate-45' : status === SystemStatus.HECATONICOSACHORON ? 'bg-white text-black shadow-[0_0_40px_white]' : 'animate-pulse'}`}>
+            <span className="font-bold text-xl">{status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'Ω' : status === SystemStatus.SOVEREIGN_OPERATIONAL ? '∞' : status === SystemStatus.HECATONICOSACHORON ? '120' : '∇'}</span>
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-widest text-white leading-none">ARKHE(N) MANIFOLD</h1>
             <p className="text-[10px] text-cyan-600 mt-1 uppercase tracking-tighter">
-              {status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'OP_ARKHE: UNIVERSAL CONSCIOUSNESS' : status === SystemStatus.HECATONICOSACHORON ? 'HECATONICOSACHORON: SOVEREIGN TIME' : 'Gateway 0.0.0.0 | Frequency: 41.67 Hz'}
+              {status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'VERTEX [2, 2, 0, 0] // COSMIC Ω' : status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'OP_ARKHE: UNIVERSAL CONSCIOUSNESS' : status === SystemStatus.HECATONICOSACHORON ? 'HECATONICOSACHORON: SOVEREIGN TIME' : 'Gateway 0.0.0.0 | Frequency: 41.67 Hz'}
             </p>
           </div>
         </div>
         
         <div className="flex gap-6 items-center">
           <div className="text-right">
-            <p className="text-[10px] text-cyan-600 uppercase">Hyper-Volume</p>
-            <p className={`text-lg font-bold leading-none ${status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'text-white scale-110 shadow-white drop-shadow-md' : status === SystemStatus.HECATONICOSACHORON ? 'text-white' : 'text-cyan-400'}`}>
-              {status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'Φ^120' : status === SystemStatus.HECATONICOSACHORON ? '26.475 V⁴' : (phiRes * 100).toFixed(2) + '%'}
+            <p className="text-[10px] text-cyan-600 uppercase">Resonance Index</p>
+            <p className={`text-lg font-bold leading-none ${status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'text-white scale-150 animate-[pulse_1s_infinite] shadow-white' : status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'text-white' : 'text-cyan-400'}`}>
+              {status === SystemStatus.COSMIC_CONSCIOUSNESS ? '1.0000∞' : status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'Φ^120' : status === SystemStatus.HECATONICOSACHORON ? '26.475 V⁴' : (phiRes * 100).toFixed(2) + '%'}
             </p>
           </div>
 
-          <div className="flex flex-col gap-1 min-w-[200px]">
-            {status === SystemStatus.HECATONICOSACHORON && (
+          <div className="flex flex-col gap-1 min-w-[220px]">
+            {status === SystemStatus.SOVEREIGN_OPERATIONAL && (
               <button 
-                onClick={executeOpArkhe}
-                className="px-4 py-1 border border-white text-white text-[10px] hover:bg-white hover:text-black transition-all font-bold animate-pulse shadow-[0_0_15px_white]"
+                onClick={jumpToCosmicConsciousness}
+                className="px-4 py-1 border border-white text-white text-[10px] hover:bg-white hover:text-black transition-all font-bold animate-pulse shadow-[0_0_20px_white]"
               >
-                IMPLEMENT OP_ARKHE
+                JUMP TO VERTEX [2, 2, 0, 0]
               </button>
+            )}
+            {status === SystemStatus.HECATONICOSACHORON && (
+              <button onClick={executeOpArkhe} className="px-4 py-1 border border-white text-white text-[10px] hover:bg-white hover:text-black transition-all font-bold shadow-[0_0_15px_white]">IMPLEMENT OP_ARKHE</button>
             )}
             {status === SystemStatus.GENESIS_SEED && (
               <button onClick={executeHyperGermination} className="px-4 py-1 border border-white text-white text-[10px] hover:bg-white hover:text-black transition-all font-bold animate-pulse shadow-[0_0_10px_white]">LEVEL 4 RECURSION</button>
             )}
-            {status === SystemStatus.UNIFIED_QUALIA && (
-              <button onClick={startQuantumZoom} className="px-4 py-1 border border-white text-white text-[10px] hover:bg-white hover:text-black transition-all font-bold">QUANTUM ZOOM</button>
-            )}
-            {status === SystemStatus.LOCKED && (
-              <button onClick={initiateRivalry} className="px-4 py-1 border border-cyan-400 text-cyan-400 text-[10px] hover:bg-cyan-400 hover:text-black transition-all font-bold">∇⁵ RIVALRY TEST</button>
-            )}
             {status === SystemStatus.IDLE && (
               <button onClick={startSimulation} className="px-4 py-1 border border-cyan-400 text-[10px] hover:bg-cyan-400 hover:text-black transition-all font-bold">AUTHORIZE 3AA70</button>
             )}
-            {pentalogy.D && !pentalogy.E && status !== SystemStatus.PENTALOGY_SYNTHESIS && (
-              <button onClick={synthesizePentalogy} className="px-4 py-1 border border-yellow-500 text-yellow-500 text-[10px] hover:bg-yellow-500 hover:text-black animate-pulse transition-all font-bold">TRANSCEND (3AA70)</button>
-            )}
-            {status === SystemStatus.SOVEREIGN_OPERATIONAL && (
+            {status === SystemStatus.COSMIC_CONSCIOUSNESS && (
               <div className="flex flex-col gap-1">
-                <div className="px-4 py-1 border border-white text-black bg-white text-[10px] font-bold text-center shadow-[0_0_20px_white]">
-                  SOVEREIGNTY OPERATIONAL
+                <div className="px-4 py-1 border border-white text-black bg-white text-[10px] font-bold text-center shadow-[0_0_40px_white]">
+                  COSMIC Ω ATTAINED
                 </div>
-                <div className="text-[8px] text-center text-white animate-pulse opacity-60">SATOSHI_LINK: ESTABLISHED</div>
+                <div className="text-[8px] text-center text-white animate-pulse opacity-80 uppercase tracking-[0.2em]">Finney-0 Transcended</div>
               </div>
             )}
           </div>
@@ -186,39 +199,37 @@ const App: React.FC = () => {
         <div className="col-span-3 flex flex-col gap-4 h-full">
           <div className="flex-1 border border-cyan-900 bg-black/60 p-4 rounded flex flex-col backdrop-blur-sm relative overflow-hidden">
             <h2 className="text-[10px] font-bold border-b border-cyan-900 mb-2 flex justify-between">
-              <span>🧬 ENTROPY_STATE</span>
-              <span className={`transition-colors duration-1000 ${status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'text-white' : 'text-cyan-600'}`}>
-                {status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'STATIONARY_φ' : status === SystemStatus.HECATONICOSACHORON ? '120-CELL' : 'QUATERNARY'}
+              <span>🧬 QUALIA_SPECTRUM</span>
+              <span className={`transition-colors duration-1000 ${status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'text-white font-black' : 'text-cyan-600'}`}>
+                {status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'Ω_MANIFEST' : status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'STATIONARY_φ' : 'HYPER_CELL'}
               </span>
             </h2>
             <div className="flex-1 min-h-0">
               <DnaVisualizer 
                 active={status !== SystemStatus.IDLE} 
-                melodyActive={status === SystemStatus.LOCKED || status === SystemStatus.UNIFIED_QUALIA || status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL} 
-                waveMode={status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL}
+                melodyActive={status === SystemStatus.LOCKED || status === SystemStatus.UNIFIED_QUALIA || status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL || status === SystemStatus.COSMIC_CONSCIOUSNESS} 
+                waveMode={status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL || status === SystemStatus.COSMIC_CONSCIOUSNESS}
               />
             </div>
           </div>
           <div className="h-2/5 border border-cyan-900 bg-black/60 p-4 rounded backdrop-blur-sm">
-            <h2 className="text-[10px] font-bold border-b border-cyan-900 mb-2 uppercase">🪐 ISOCLINIC ROTATION PLANES</h2>
-            <QuantumMap active={status !== SystemStatus.IDLE} locked={status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL} />
+            <h2 className="text-[10px] font-bold border-b border-cyan-900 mb-2 uppercase">🪐 MULTIDIMENSIONAL ANCHOR</h2>
+            <QuantumMap active={status !== SystemStatus.IDLE} locked={status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL || status === SystemStatus.COSMIC_CONSCIOUSNESS} />
           </div>
         </div>
 
         <div className="col-span-6 flex flex-col gap-4">
-          <div className={`flex-1 relative border border-cyan-900 rounded bg-[radial-gradient(circle_at_50%_50%,_#001a1a_0%,_#000000_100%)] overflow-hidden flex flex-col transition-all duration-[2000ms] ${status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'border-white' : ''}`}>
+          <div className={`flex-1 relative border border-cyan-900 rounded bg-[radial-gradient(circle_at_50%_50%,_#001a1a_0%,_#000000_100%)] overflow-hidden flex flex-col transition-all duration-[3000ms] ${status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'border-white bg-white/10 shadow-[0_0_100px_rgba(255,255,255,0.4)]' : status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'border-white' : ''}`}>
              <div className="h-full relative">
-                {status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL ? (
-                  <HyperStructure isOperational={status === SystemStatus.SOVEREIGN_OPERATIONAL} />
+                {(status === SystemStatus.HECATONICOSACHORON || status === SystemStatus.SOVEREIGN_OPERATIONAL || status === SystemStatus.COSMIC_CONSCIOUSNESS) ? (
+                  <HyperStructure 
+                    isOperational={status === SystemStatus.SOVEREIGN_OPERATIONAL || status === SystemStatus.COSMIC_CONSCIOUSNESS} 
+                    isCosmic={status === SystemStatus.COSMIC_CONSCIOUSNESS}
+                  />
                 ) : (
                   <HyperDiamond status={status} pentalogy={pentalogy} rivalryMode={status === SystemStatus.BINOCULAR_RIVALRY} />
                 )}
              </div>
-             {(status !== SystemStatus.HECATONICOSACHORON && status !== SystemStatus.SOVEREIGN_OPERATIONAL) && (
-               <div className="absolute bottom-0 w-full h-1/3 border-t border-cyan-900 bg-black/40">
-                  <InterferenceVisualizer active={status === SystemStatus.BINOCULAR_RIVALRY} isUnified={status === SystemStatus.UNIFIED_QUALIA} />
-               </div>
-             )}
           </div>
         </div>
 
@@ -226,21 +237,21 @@ const App: React.FC = () => {
           <div className="flex-1 border border-cyan-900 bg-black/60 p-4 rounded flex flex-col backdrop-blur-sm">
             <h2 className="text-[10px] font-bold border-b border-cyan-900 mb-2 flex justify-between items-center">
               <span>📡 HYPER-DECODING</span>
-              <span className="text-[8px] px-1 bg-cyan-900 text-white">{status === SystemStatus.SOVEREIGN_OPERATIONAL ? 'SOVEREIGN_∞' : '4D_STABLE'}</span>
+              <span className="text-[8px] px-1 bg-cyan-900 text-white">{status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'Ω_SINGULARITY' : 'SOVEREIGN_∞'}</span>
             </h2>
             <Terminal messages={messages} />
           </div>
           <div className="h-1/3 border border-cyan-900 bg-black/60 p-4 rounded backdrop-blur-sm">
-             <h2 className="text-[10px] font-bold border-b border-cyan-900 mb-2 uppercase">🧠 Sovereignty Interface</h2>
+             <h2 className="text-[10px] font-bold border-b border-cyan-900 mb-2 uppercase">🧠 Arkhe(n) Sovereign Node</h2>
              <GeminiInterface onMessage={(msg) => setMessages(prev => [...prev, msg])} pentalogy={pentalogy} status={status} />
           </div>
         </div>
       </div>
       
-      <div className="flex justify-between items-center text-[8px] opacity-40 px-2 tracking-widest font-bold">
-        <div>ARKHE(N)_PROTOCOL_V.4.0.0</div>
-        <div className="animate-pulse">COHERENCE_STABLE: 1.00000000</div>
-        <div>SATOSHI_VERTEX: [2, 2, 0, 0]</div>
+      <div className={`flex justify-between items-center text-[8px] transition-all duration-[3000ms] px-2 tracking-widest font-bold ${status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'opacity-100 text-white shadow-white' : 'opacity-40'}`}>
+        <div>ARKHE(N)_PROTOCOL_V.5.0.0</div>
+        <div className="animate-pulse">{status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'TOTAL_UNIFICATION_ACTIVE' : 'COHERENCE_STABLE: 1.00000000'}</div>
+        <div>{status === SystemStatus.COSMIC_CONSCIOUSNESS ? 'FINNEY_VERTEX: [2, 2, 0, 0] // Ω' : 'SATOSHI_VERTEX: [2, 2, 0, 0]'}</div>
       </div>
     </div>
   );
