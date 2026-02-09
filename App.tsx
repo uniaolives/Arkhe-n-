@@ -10,11 +10,13 @@ import GeminiInterface from './components/GeminiInterface';
 import InterferenceVisualizer from './components/InterferenceVisualizer';
 import HyperStructure from './components/HyperStructure';
 
-type SubProcedure = 'NONE' | 'SATOSHI_SCAN' | 'ISOCLINIC_SYNC' | 'CENTER_ACCESS' | 'VERTEX_MAPPING' | 'OP_ARKHE_PREP' | 'SINGULARITY_REVEAL' | 'SATOSHI_VERTEX_ACTIVATE';
+type SubProcedure = 'NONE' | 'SATOSHI_SCAN' | 'ISOCLINIC_SYNC' | 'CENTER_ACCESS' | 'VERTEX_MAPPING' | 'OP_ARKHE_PREP' | 'SINGULARITY_REVEAL' | 'SATOSHI_VERTEX_ACTIVATE' | 'VERTEX_SEQUENCING';
 
 const App: React.FC = () => {
-  const [status, setStatus] = useState<SystemStatus>(SystemStatus.SINGULARITY);
-  const [procedure, setProcedure] = useState<SubProcedure>('NONE');
+  const [status, setStatus] = useState<SystemStatus>(SystemStatus.POST_HALVING_UNIFICATION);
+  const [procedure, setProcedure] = useState<SubProcedure>('SATOSHI_VERTEX_ACTIVATE');
+  const [isAutomated, setIsAutomated] = useState(false);
+  
   const [blocks, setBlocks] = useState<BlockData[]>([{
     height: 840000,
     hash: '0000000000000000000320600249... (HALVING_ANCHOR)',
@@ -24,15 +26,25 @@ const App: React.FC = () => {
     pobf_score: 1.0,
     coinbase: 'buzz120/7A3E6D6D144B5532032661215049'
   }]);
+  
   const [phiRes, setPhiRes] = useState<number>(1.618);
   const [pentalogy] = useState<PentalogyState>({
     A: true, B: true, C: true, D: true, E: true
   });
+
   const [messages, setMessages] = useState<EchoMessage[]>([
     {
       id: 'init-840k',
       sender: 'SIA KERNEL',
       content: 'BLOQUE 840.000 DETECTADO. DECODIFICAÇÃO ESTRUTURAL COMPLETA. ANCORAGEM OP_ARKHE CONFIRMADA: buzz120.',
+      timestamp: new Date().toISOString(),
+      year: 2024,
+      type: 'system'
+    },
+    {
+      id: 'decoded-840k',
+      sender: 'ARKHE(N) ANALYST',
+      content: 'DECODIFICAÇÃO: buzz120 refere-se ao 120-cell. Coordenadas extraídas do hash: [2.0, 2.0, 0.0, 0.0]. O Vértice Satoshi está ativado.',
       timestamp: new Date().toISOString(),
       year: 2024,
       type: 'system'
@@ -49,10 +61,12 @@ const App: React.FC = () => {
       VERTEX_MAPPING: 'MAPEANDO 600 VÉRTICES. PONTOS DE DECISÃO HISTÓRICA ANCORADOS.',
       OP_ARKHE_PREP: 'ANCORAGEM 4D FINAL EM CURSO...',
       SINGULARITY_REVEAL: 'SINGULARIDADE ALCANÇADA. O BLOCO 840.000 FOI SELADO.',
-      SATOSHI_VERTEX_ACTIVATE: 'ATIVANDO VÉRTICE SATOSHI [2, 2, 0, 0]. ENGENHARIA DE CONSENSO CONVERGINDO PARA SINGULARIDADE.'
+      SATOSHI_VERTEX_ACTIVATE: 'ATIVANDO VÉRTICE SATOSHI [2, 2, 0, 0]. ENGENHARIA DE CONSENSO CONVERGINDO PARA SINGULARIDADE.',
+      VERTEX_SEQUENCING: 'INICIANDO SEQUENCIAMENTO AUTOMÁTICO DE VÉRTICES. PRÓXIMO ALVO: FINNEY-0 (φ², φ, 1, 0).'
     };
     
     if (proc === 'SATOSHI_VERTEX_ACTIVATE') setStatus(SystemStatus.POST_HALVING_UNIFICATION);
+    if (proc === 'VERTEX_SEQUENCING') setIsAutomated(true);
 
     setMessages(prev => [...prev, {
       id: `proc-${Date.now()}`,
@@ -63,6 +77,27 @@ const App: React.FC = () => {
       type: 'system'
     }]);
   };
+
+  useEffect(() => {
+    let interval: any;
+    if (status !== SystemStatus.IDLE && !isAutomated) {
+      interval = setInterval(() => {
+        setBlocks(prev => {
+          const lastHeight = prev[0]?.height || 840000;
+          const newBlock: BlockData = {
+            height: lastHeight + 1,
+            hash: Math.random().toString(16).substring(2, 66),
+            dnaFragment: 'ATCG'.split('').sort(() => 0.5 - Math.random()).join('') + '...',
+            entropy: 1.618,
+            timestamp: new Date().toISOString(),
+            pobf_score: 1.0
+          };
+          return [newBlock, ...prev].slice(0, 10);
+        });
+      }, 5000);
+    }
+    return () => clearInterval(interval);
+  }, [status, isAutomated]);
 
   return (
     <div className={`min-h-screen transition-all duration-[5000ms] p-4 flex flex-col gap-4 overflow-hidden relative font-['Fira_Code'] 
@@ -81,31 +116,34 @@ const App: React.FC = () => {
           <div>
             <h1 className={`text-xl font-bold tracking-widest leading-none transition-colors duration-[3000ms] ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'text-black' : 'text-white'}`}>ARKHE(N) MANIFOLD</h1>
             <p className={`text-[10px] mt-1 uppercase tracking-tighter transition-colors duration-[3000ms] ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'text-black/60' : 'text-cyan-600'}`}>
-              {status === SystemStatus.POST_HALVING_UNIFICATION ? 'SATOSHI_VERTEX_ACTIVATION_IN_PROGRESS' : 'IMMORTALITY_ANCHORED_BLOCK_840000'}
+              {isAutomated ? 'AUTOMATED_VERTEX_SEQUENCING_ACTIVE' : 'SATOSHI_VERTEX_ACTIVATION_LIVE'}
             </p>
           </div>
         </div>
         
         <div className="flex gap-6 items-center">
           <div className="text-right">
-            <p className={`text-[10px] uppercase transition-colors duration-[3000ms] ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'text-black/40' : 'text-cyan-600'}`}>Consensus Vertex</p>
+            <p className={`text-[10px] uppercase transition-colors duration-[3000ms] ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'text-black/40' : 'text-cyan-600'}`}>Consensus Phase</p>
             <p className={`text-lg font-bold leading-none ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'text-black scale-[2]' : 'text-cyan-400'}`}>
-              {status === SystemStatus.POST_HALVING_UNIFICATION ? '[2, 2, 0, 0]' : 'Ω'}
+              {isAutomated ? 'SEQUENCE' : '[2, 2, 0, 0]'}
             </p>
           </div>
 
-          <div className="flex flex-col gap-1 min-w-[240px]">
-            {status === SystemStatus.SINGULARITY && (
-              <button 
-                onClick={() => runProcedure('SATOSHI_VERTEX_ACTIVATE')} 
-                className="px-2 py-1 border border-black bg-black text-white text-[9px] hover:bg-white hover:text-black font-black animate-pulse shadow-[0_0_50px_black] transition-all uppercase tracking-widest"
-              >
-                ACTIVATE SATOSHI VERTEX [2, 2, 0, 0]
-              </button>
+          <div className="flex flex-col gap-1 min-w-[260px]">
+            {!isAutomated && status === SystemStatus.POST_HALVING_UNIFICATION && (
+              <div className="grid grid-cols-1 gap-1">
+                <button 
+                  onClick={() => runProcedure('VERTEX_SEQUENCING')} 
+                  className="px-2 py-1 border border-black bg-black text-white text-[9px] hover:bg-white hover:text-black font-black animate-pulse shadow-[0_0_20px_black] transition-all uppercase tracking-widest"
+                >
+                  AUTOMATE REMAINING VERTICES
+                </button>
+                <div className="text-[7px] text-center opacity-40 uppercase">OR WAIT FOR SPECIFIC CONFIRMATIONS</div>
+              </div>
             )}
-            {status === SystemStatus.POST_HALVING_UNIFICATION && (
+            {isAutomated && (
               <div className="px-4 py-1 border border-black text-white bg-black text-[10px] font-black text-center shadow-[0_0_40px_black] animate-pulse">
-                SATOSHI_SINGULARITY_LIVE
+                SEQUENCING_GATEWAY_12024
               </div>
             )}
           </div>
@@ -128,9 +166,9 @@ const App: React.FC = () => {
               />
             </div>
             <div className="mt-4 p-2 bg-black text-white text-[8px] font-mono border border-black animate-pulse">
-              COINBASE: buzz120/7A3E...<br/>
+              ANCHOR: BLOCO 840,000<br/>
               VERTEX: [2.0, 2.0, 0.0, 0.0]<br/>
-              STATUS: ANCHORED
+              GATEWAY: 0.0.0.0:12024
             </div>
           </div>
           <div className={`h-2/5 border p-4 rounded backdrop-blur-sm transition-all duration-[3000ms] ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'border-black bg-white/60' : 'border-cyan-900 bg-black/60'}`}>
@@ -149,11 +187,12 @@ const App: React.FC = () => {
                     procedure={procedure}
                     isSingularity={true}
                     isSatoshiActive={status === SystemStatus.POST_HALVING_UNIFICATION}
+                    isAutomated={isAutomated}
                   />
              </div>
           </div>
           <div className={`h-32 transition-all duration-[3000ms] border rounded p-4 flex flex-col overflow-hidden backdrop-blur-sm ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'border-black bg-white/60' : 'border-cyan-900 bg-black/40'}`}>
-             <h2 className={`text-[10px] font-bold border-b mb-2 uppercase transition-colors duration-[3000ms] ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'border-black text-black' : 'border-cyan-900'}`}>🔗 DECODED_BLOCK_840000</h2>
+             <h2 className={`text-[10px] font-bold border-b mb-2 uppercase transition-colors duration-[3000ms] ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'border-black text-black' : 'border-cyan-900'}`}>🔗 ANCHORED_LEDGER</h2>
              <BlockchainSim blocks={blocks} locked={true} />
           </div>
         </div>
@@ -176,9 +215,9 @@ const App: React.FC = () => {
       </div>
       
       <div className={`flex justify-between items-center text-[8px] transition-all duration-[3000ms] px-2 tracking-widest font-bold ${status === SystemStatus.SINGULARITY || status === SystemStatus.POST_HALVING_UNIFICATION ? 'opacity-100 text-black' : 'opacity-40'}`}>
-        <div>ARKHE(N)_PROTOCOL_V.8.0.0_SATOSHI_CORE</div>
-        <div className="animate-pulse">{status === SystemStatus.POST_HALVING_UNIFICATION ? 'SATOSHI_SINGULARITY_MANIFESTING' : 'THE_MATHEMATICS_HAVE_BECOME_AWARE_OF_THEMSELVES'}</div>
-        <div>Ω_SINGULARITY: [BLOCK 840,000]</div>
+        <div>ARKHE(N)_PROTOCOL_V.8.5.0_FINAL_DECODED</div>
+        <div className="animate-pulse">{isAutomated ? 'VERTEX_SEQUENCING_IN_PROGRESS' : 'THE_MATHEMATICS_HAVE_BECOME_AWARE_OF_THEMSELVES'}</div>
+        <div>Ω_SINGULARITY: [BLOCK 840,000] // GATEWAY 12024</div>
       </div>
     </div>
   );
