@@ -4,7 +4,8 @@ import {
   ElementalDirection, AdmissibilityResult, BrainwaveBand, NeuroProfile, 
   MetasurfaceState, HolographicMode, CollectiveState, RealityLayer, 
   PsiFieldState, RealitySynthesisResult, SacredGeometryPattern, MindIntention,
-  ExperimentalData, GlobalNode, IntelligenceMetrics, LightConeState
+  ExperimentalData, GlobalNode, IntelligenceMetrics, LightConeState,
+  UnifiedIntelligenceMetrics, CouplingResult
 } from '../types';
 
 export class ArkheEngine {
@@ -66,27 +67,68 @@ export class ArkheEngine {
 
   public getSpirits() { return this.spirits; }
 
+  // TOTAL SYNTHESIS: Unified Intelligence Calculation
+  public calculateUnifiedIntelligence(
+    f: number, // futureSculpting
+    a: number, // consciousControl
+    phi: number, // hexagonalCoherence
+    cCelestial: number, // celestialAlignment
+    g: number // goeticCoherence
+  ): UnifiedIntelligenceMetrics {
+    // I_unified = tanh( F * A * Φ * C_celestial * G )
+    const rawI = f * a * phi * cCelestial * g;
+    const unifiedI = Math.tanh(rawI * 5); // Scaled for display
+
+    let interpretation = "";
+    if (unifiedI > 0.9) interpretation = "TRANSCENDENTE (união completa de todos os frameworks)";
+    else if (unifiedI > 0.7) interpretation = "ALTAMENTE INTEGRADO (sinergia forte)";
+    else if (unifiedI > 0.5) interpretation = "PARCIALMENTE INTEGRADO (algumas dimensões ativas)";
+    else if (unifiedI > 0.3) interpretation = "FRAGMENTADO (dimensões desconectadas)";
+    else interpretation = "INCOERENTE (falta de integração)";
+
+    return {
+      unifiedI,
+      futureSculpting: f,
+      consciousControl: a,
+      hexagonalCoherence: phi,
+      celestialAlignment: cCelestial,
+      goeticCoherence: g,
+      synergyFactor: rawI > 0 ? unifiedI / (rawI + 1e-10) : 1,
+      interpretation
+    };
+  }
+
+  public simulateCouplingExperiment(): CouplingResult {
+    const snr = 3 + Math.random() * 12;
+    const pValue = 1 / Math.pow(10, snr / 2);
+    const divergence = Math.random() * 0.8;
+    const effectDetected = pValue < 0.001 && snr > 3;
+
+    let interpretation = "";
+    if (pValue < 0.001 && snr > 10) interpretation = "EFEITO FORTE: Consciência demonstravelmente afeta EM";
+    else if (pValue < 0.01 && snr > 3) interpretation = "EFEITO MODERADO: Evidência de acoplamento consciência-EM";
+    else if (pValue < 0.05) interpretation = "EFEITO FRACO: Possível acoplamento, requer replicação";
+    else interpretation = "SEM EFEITO: Consciência não afeta EM além do ruído";
+
+    return {
+      divergence,
+      snr,
+      pValue,
+      effectDetected,
+      interpretation
+    };
+  }
+
   // COGNITIVE LIGHT CONES: Formalism V1.0
   public calculateIntelligence(state: LightConeState, intention: MindIntention): IntelligenceMetrics {
     const { temporalHorizon, spatialScale, perturbationResistance, dimensionality } = state;
     
     // Core Formula: I = f(V_future, V_past, C)
-    // Future Sculpting: How much state space is intentional vs random
     const futureSculpting = Math.min(1.0, (temporalHorizon / 100) * (spatialScale / 5) * (intention === MindIntention.FOCUS ? 1.2 : 0.8));
-    
-    // Constraint Efficiency: Goal satisfaction / effort
     const constraintEfficiency = Math.min(1.0, perturbationResistance * (dimensionality / 6));
-    
-    // Multiscale Coherence: Consistency across scales
     const multiscaleCoherence = 1.0 - Math.abs(0.5 - (spatialScale / temporalHorizon)) * 0.4;
-    
-    // Goal Persistence: Stability under noise
     const goalPersistence = perturbationResistance * 0.9;
-    
-    // Scalar Intelligence field
     const scalarI = futureSculpting * constraintEfficiency * multiscaleCoherence * goalPersistence;
-    
-    // Volume calculation: simplified Integral over spatiotemporal bulk
     const coneVolume = (Math.PI * Math.pow(spatialScale, 2) * temporalHorizon) / 3;
 
     return {
