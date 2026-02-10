@@ -33,7 +33,32 @@ export enum SystemStatus {
   BILOCATION_SYNC_ACTIVE = 'BILOCATION_SYNC_ACTIVE',
   GOETIA_GEOMETRY_SYNC = 'GOETIA_GEOMETRY_SYNC',
   H6_ADMISSIBILITY_TEST = 'H6_ADMISSIBILITY_TEST',
-  CLINICAL_2E_PROTOCOL_ACTIVE = 'CLINICAL_2E_PROTOCOL_ACTIVE'
+  CLINICAL_2E_PROTOCOL_ACTIVE = 'CLINICAL_2E_PROTOCOL_ACTIVE',
+  NEURO_METASURFACE_CONTROL = 'NEURO_METASURFACE_CONTROL'
+}
+
+export enum BrainwaveBand {
+  DELTA = 'DELTA',
+  THETA = 'THETA',
+  ALPHA = 'ALPHA',
+  BETA = 'BETA',
+  GAMMA = 'GAMMA'
+}
+
+export interface NeuroProfile {
+  attention: number; // 0-100
+  meditation: number; // 0-100
+  stability: number;
+  bandPowers: Record<BrainwaveBand, number>;
+  trend: 'increasing' | 'decreasing' | 'stable';
+}
+
+export interface MetasurfaceState {
+  gridSize: number;
+  beamAngle: { azimuth: number; elevation: number };
+  focus: number;
+  phaseProfile: number[][]; // grid of radians
+  radiationPattern: number[]; // far-field intensity
 }
 
 export enum TherapyPhase {
@@ -225,7 +250,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia' | 'clinical';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia' | 'clinical' | 'neuro';
   hash?: string;
 }
 

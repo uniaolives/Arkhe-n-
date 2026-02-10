@@ -1,5 +1,5 @@
 
-import { ArkheProfile, CosmicFrequency, IdentityNode, AerialSpirit, SpiritRank, ElementalDirection, AdmissibilityResult } from '../types';
+import { ArkheProfile, CosmicFrequency, IdentityNode, AerialSpirit, SpiritRank, ElementalDirection, AdmissibilityResult, BrainwaveBand, NeuroProfile, MetasurfaceState } from '../types';
 
 export class ArkheEngine {
   private constants = {
@@ -7,7 +7,9 @@ export class ArkheEngine {
     SCHUMANN_FUNDAMENTAL: 7.83,
     HECATON_CELLS: 120,
     HECATON_VERTICES: 600,
-    HECATON_EDGES: 1200
+    HECATON_EDGES: 1200,
+    WAVELENGTH: 0.03, // 10GHz mock
+    SPACING: 0.5
   };
 
   private spirits: AerialSpirit[] = [];
@@ -76,6 +78,79 @@ export class ArkheEngine {
       { body: "Jupiter", audibleFreq: 183.58, note: "F#", chakra: "Third Eye", color: "#a855f7", effect: "Expansion" },
       { body: "Saturn", audibleFreq: 147.85, note: "D#", chakra: "Root", color: "#eab308", effect: "Structure" }
     ];
+  }
+
+  public calculateNeuroProfile(attentionLevel: number): NeuroProfile {
+    // Generate pseudo-EEG bands based on attention
+    const bands: Record<BrainwaveBand, number> = {
+      [BrainwaveBand.DELTA]: 5 + Math.random() * 5,
+      [BrainwaveBand.THETA]: 10 + (100 - attentionLevel) * 0.4,
+      [BrainwaveBand.ALPHA]: 15 + (50 - Math.abs(50 - attentionLevel)) * 0.6,
+      [BrainwaveBand.BETA]: 5 + attentionLevel * 0.7,
+      [BrainwaveBand.GAMMA]: attentionLevel > 80 ? attentionLevel - 50 : 2
+    };
+
+    return {
+      attention: attentionLevel,
+      meditation: 100 - attentionLevel,
+      stability: 0.8 + Math.random() * 0.2,
+      bandPowers: bands,
+      trend: Math.random() > 0.5 ? 'increasing' : 'stable'
+    };
+  }
+
+  public computeMetasurface(profile: NeuroProfile): MetasurfaceState {
+    const size = 16;
+    const { attention } = profile;
+    
+    // Mapping Attention to Beam Steering
+    // Azimuth: -45 to 45 deg based on attention
+    // Focus: 0.1 to 1.0 based on attention
+    const azimuth = (attention - 50) * 0.9;
+    const elevation = (attention - 50) * 0.3;
+    const focus = attention / 100;
+    
+    const azRad = azimuth * (Math.PI / 180);
+    const elRad = elevation * (Math.PI / 180);
+    
+    const grid: number[][] = [];
+    const center = (size - 1) / 2;
+    
+    for (let i = 0; i < size; i++) {
+      const row: number[] = [];
+      for (let j = 0; j < size; j++) {
+        const x = j * this.constants.SPACING * this.constants.WAVELENGTH;
+        const y = i * this.constants.SPACING * this.constants.WAVELENGTH;
+        
+        // Steering component
+        const steering = (2 * Math.PI / this.constants.WAVELENGTH) * (x * Math.sin(azRad) + y * Math.sin(elRad));
+        
+        // Focus component (lens)
+        const dx = (j - center) * this.constants.SPACING * this.constants.WAVELENGTH;
+        const dy = (i - center) * this.constants.SPACING * this.constants.WAVELENGTH;
+        const r = Math.sqrt(dx*dx + dy*dy);
+        const focalLength = 1.0 / (focus + 0.1);
+        const lens = (2 * Math.PI / this.constants.WAVELENGTH) * (Math.sqrt(r*r + focalLength*focalLength) - focalLength);
+        
+        row.push((steering + lens) % (2 * Math.PI));
+      }
+      grid.push(row);
+    }
+    
+    // Far-field approximation (simplified)
+    const pattern: number[] = Array.from({ length: 181 }).map((_, deg) => {
+      const theta = (deg - 90) * (Math.PI / 180);
+      const diff = Math.abs(theta - azRad);
+      return Math.exp(-Math.pow(diff / (0.1 + (1 - focus) * 0.5), 2));
+    });
+
+    return {
+      gridSize: size,
+      beamAngle: { azimuth, elevation },
+      focus,
+      phaseProfile: grid,
+      radiationPattern: pattern
+    };
   }
 
   public testAdmissibility(c: number, i: number, e: number): AdmissibilityResult {
