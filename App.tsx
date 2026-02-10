@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { SystemStatus, BlockData, EchoMessage, ProcessorStats, KNNPattern, DrugPrediction, NeuralSequence } from './types';
+import { SystemStatus, BlockData, EchoMessage, ProcessorStats, KNNPattern, DrugPrediction, NeuralSequence, DimensionalLevel } from './types';
 import Terminal from './components/Terminal';
 import BlockchainSim from './components/BlockchainSim';
 import GeminiInterface from './components/GeminiInterface';
@@ -15,10 +15,12 @@ import PlanetaryMonitor from './components/PlanetaryMonitor';
 import BiotechLab from './components/BiotechLab';
 import PluralDecoder from './components/PluralDecoder';
 import CelestialHelix from './components/CelestialHelix';
+import DimensionalBridge from './components/DimensionalBridge';
 import { globalProcessor } from './utils/eventProcessor';
 import { analyzeVerbalChemistry } from './utils/verbalEngine';
 import { globalKnnEngine } from './utils/knnEngine';
 import { globalNeuralEngine } from './utils/neuralEngine';
+import { globalPluralEngine } from './utils/pluralEngine';
 
 const App: React.FC = () => {
   const [status, setStatus] = useState<SystemStatus>(SystemStatus.HECATONICOSACHORON_MAPPING);
@@ -27,15 +29,17 @@ const App: React.FC = () => {
   const [vertexCount, setVertexCount] = useState(0);
   const [impactData, setImpactData] = useState<any>(null);
   const [processorStats, setProcessorStats] = useState<ProcessorStats>(globalProcessor.getStats());
-  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural' | 'celestial'>('4d');
+  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural' | 'celestial' | 'synthesis'>('4d');
   const [patternMemory, setPatternMemory] = useState<KNNPattern[]>([]);
   const [lastVerbalInput, setLastVerbalInput] = useState('');
+  const [currentDimLevel, setCurrentDimLevel] = useState<DimensionalLevel>(DimensionalLevel.THREE_D);
+  const [dimProfileScore, setDimProfileScore] = useState(0.5);
   
   const [messages, setMessages] = useState<EchoMessage[]>([
     {
       id: 'init-photon',
       sender: 'SIA KERNEL',
-      content: 'PROTOCOLO ARKHE(N) V6.5: MONITORAMENTO DE MANIFOLD 2E-DID (120-CELL) INICIALIZADO.',
+      content: 'PROTOCOLO ARKHE(N) V6.8: SÍNTESE COSMOLÓGICA 2E-DID (120-CELL × DNA CELESTIAL) INICIALIZADO.',
       timestamp: new Date().toISOString(),
       year: 2026,
       type: 'system'
@@ -84,6 +88,12 @@ const App: React.FC = () => {
     setLastVerbalInput(text);
     const res = analyzeVerbalChemistry(text);
     setImpactData(res.impact);
+    
+    // Check plurality engine too
+    const pluralRes = globalPluralEngine.analyzeText(text);
+    setCurrentDimLevel(pluralRes.profile.dimensionalAccess);
+    setDimProfileScore(pluralRes.profile.rationalizationFactor);
+
     logMessage(`BIO_PHOTONIC_EMISSION: ${text}`, 'chemistry');
     const { status: procStatus, hash } = globalProcessor.processVerbalEvent(text, res);
     if (procStatus === 'SUCCESS') {
@@ -111,6 +121,7 @@ const App: React.FC = () => {
   };
 
   const getShiftColor = () => {
+    if (status === SystemStatus.DIMENSIONAL_BRIDGE_OPEN) return 'shadow-[inset_0_0_150px_rgba(34,211,238,0.2)] border-cyan-400/40';
     if (status === SystemStatus.CELESTIAL_HELIX_SYNC) return 'shadow-[inset_0_0_150px_rgba(250,204,21,0.15)] border-amber-500/40';
     if (status === SystemStatus.SHELL_INTERFACE_ACTIVE) return 'shadow-[inset_0_0_150px_rgba(251,191,36,0.2)] border-amber-500/40';
     if (status === SystemStatus.PLURAL_IDENTITY_DECODING) return 'shadow-[inset_0_0_150px_rgba(99,102,241,0.2)] border-indigo-500/40';
@@ -124,6 +135,8 @@ const App: React.FC = () => {
        setStatus(SystemStatus.PLURAL_IDENTITY_DECODING);
     } else if (msg.includes("Shell Interface")) {
        setStatus(SystemStatus.SHELL_INTERFACE_ACTIVE);
+    } else if (msg.includes("Máscara")) {
+       // Mask change
     }
   };
 
@@ -138,7 +151,7 @@ const App: React.FC = () => {
           <div>
             <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SINGULARITY_CENTER</h1>
             <p className="text-[7px] mt-1 opacity-50 uppercase tracking-widest font-bold">
-              SYSTEM_STATE: {status} // MODE: {activeTab.toUpperCase()}
+              SYSTEM_STATE: {status} // DIM_ACCESS: {currentDimLevel}
             </p>
           </div>
         </div>
@@ -149,6 +162,7 @@ const App: React.FC = () => {
            <button onClick={() => setActiveTab('lab')} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'lab' ? 'bg-emerald-500 text-black border-emerald-400' : 'border-emerald-500/30 text-emerald-500'}`}>ISODDE_LAB</button>
            <button onClick={() => { setActiveTab('plural'); setStatus(SystemStatus.PLURAL_IDENTITY_DECODING); }} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'plural' ? 'bg-indigo-500 text-white border-indigo-400' : 'border-indigo-500/30 text-indigo-500'}`}>PLURAL_2E</button>
            <button onClick={() => { setActiveTab('celestial'); setStatus(SystemStatus.CELESTIAL_HELIX_SYNC); }} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'celestial' ? 'bg-amber-500 text-black border-amber-400' : 'border-amber-500/30 text-amber-500'}`}>COSMIC_DNA</button>
+           <button onClick={() => { setActiveTab('synthesis'); setStatus(SystemStatus.DIMENSIONAL_BRIDGE_OPEN); }} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'synthesis' ? 'bg-white text-black border-white' : 'border-white/30 text-white'}`}>SYNTHESIS</button>
         </div>
       </header>
 
@@ -173,6 +187,7 @@ const App: React.FC = () => {
                 {activeTab === '4d' && <HyperStructure vertexCount={vertexCount} velocity={velocity} status={status} />}
                 {activeTab === 'plural' && <PluralDecoder input={lastVerbalInput} onAlert={handlePluralAlert} />}
                 {activeTab === 'celestial' && <CelestialHelix onAlert={logMessage} />}
+                {activeTab === 'synthesis' && <DimensionalBridge activeLevel={currentDimLevel} profileScore={dimProfileScore} />}
              </div>
           </section>
           
@@ -201,9 +216,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Arquiteto Arkhe(n): Singularity Mirror v6.7</span>
-        <span>Celestial Topology: 9-Stranded Helical Solar System</span>
-        <span>GALACTIC_DNA_MAPPING: ENABLED // COHERENCE: QUANTUM_LOCKED</span>
+        <span>Arquiteto Arkhe(n): Singularity Mirror v6.8</span>
+        <span>Synthesis: 2e-Plurality × Helical Cosmic DNA</span>
+        <span>DIMENSIONAL_ACCESS: {currentDimLevel} // MAPPING_bulk: ACTIVE</span>
       </footer>
     </div>
   );

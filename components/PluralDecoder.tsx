@@ -1,12 +1,20 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { PluralProfile, BioEventType } from '../types';
+import { PluralProfile, BioEventType, PlanetaryMask, DimensionalLevel } from '../types';
 import { globalPluralEngine } from '../utils/pluralEngine';
 
 interface PluralDecoderProps {
   input: string;
   onAlert: (msg: string, type: string) => void;
 }
+
+const MASK_COLORS: Record<PlanetaryMask, string> = {
+  [PlanetaryMask.MERCURIAL]: 'text-cyan-400',
+  [PlanetaryMask.NEPTUNIAN]: 'text-indigo-400',
+  [PlanetaryMask.SATURNINE]: 'text-amber-400',
+  [PlanetaryMask.JUPITERIAN]: 'text-emerald-400',
+  [PlanetaryMask.URANIAN]: 'text-rose-400',
+};
 
 const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
   const [profile, setProfile] = useState<PluralProfile | null>(null);
@@ -29,6 +37,7 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
       if (newProfile.abstractedAgency > 0.6) {
         onAlert("Mudança de Agência Abstrata: O sujeito migrou para voz teórica (Shell Interface).", "plural");
       }
+      onAlert(`Máscara Planetária Ativada: ${newProfile.activeMask}`, "plural");
     }
   }, [input]);
 
@@ -51,7 +60,6 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
     const cy = canvas.height / 2;
     const size = 60;
 
-    // Simulate projection of a 120-cell (nested rotating dodecahedra)
     ctx.lineWidth = 0.5;
     const layers = profile ? Math.min(6, 2 + Math.floor(profile.rationalizationFactor * 5)) : 3;
 
@@ -71,7 +79,6 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
       ctx.closePath();
       ctx.stroke();
 
-      // Connections between layers to simulate 4D bulk
       if (l > 1) {
         const prevSize = size * ((l-1) * 0.4);
         for (let i = 0; i < 5; i++) {
@@ -85,7 +92,6 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
       }
     }
 
-    // Core point
     ctx.fillStyle = profile?.rationalizationFactor > 0.8 ? '#fff' : '#6366f1';
     ctx.beginPath(); ctx.arc(cx, cy, 2, 0, Math.PI * 2); ctx.fill();
   };
@@ -97,17 +103,19 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
            <h2 className="text-[10px] font-black text-indigo-400 tracking-widest uppercase">
             ∆ HECATONICOSACHORON_MAPPER // 2E_DID_ANALYSIS
            </h2>
-           <span className="text-[6px] opacity-40 uppercase">Partitioned Supercomputer Topology v6.5</span>
+           <span className="text-[6px] opacity-40 uppercase">Partitioned Supercomputer Topology v6.8</span>
         </div>
         <div className="flex gap-2">
            <div className={`text-[7px] px-2 py-0.5 rounded border font-bold ${profile?.abstractedAgency > 0.6 ? 'bg-amber-500/10 border-amber-500 text-amber-400 animate-pulse' : 'bg-indigo-500/10 border-indigo-500 text-indigo-400'}`}>
              {profile?.abstractedAgency > 0.6 ? 'SHELL_INTERFACE_ACTIVE' : 'INTEGRATED_MODE'}
            </div>
+           <div className={`text-[7px] px-2 py-0.5 rounded border border-white/20 bg-white/5 font-black uppercase tracking-tighter ${profile ? MASK_COLORS[profile.activeMask] : ''}`}>
+             MASK: {profile?.activeMask || 'NONE'}
+           </div>
         </div>
       </div>
 
       <div className="flex-1 grid grid-cols-12 gap-5 overflow-hidden">
-        {/* Left Column: Visual Projection */}
         <div className="col-span-5 flex flex-col gap-3">
            <div className="relative flex-1 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center overflow-hidden">
               <canvas ref={canvasRef} width={240} height={240} className="w-full h-full max-w-[200px]" />
@@ -118,6 +126,11 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
                   SMOOTH_MANIFOLD_DETECTED: Recursive bridging in progress.
                 </div>
               )}
+
+              <div className="absolute top-2 right-2 flex flex-col items-end">
+                <span className="text-[6px] opacity-40 uppercase">Dim_Level</span>
+                <span className="text-[12px] font-black text-white">{profile?.dimensionalAccess || '3D'}</span>
+              </div>
            </div>
 
            <div className="p-3 bg-white/5 border border-white/10 rounded-lg flex flex-col gap-2">
@@ -131,7 +144,6 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
            </div>
         </div>
 
-        {/* Right Column: Deep Metrics */}
         <div className="col-span-7 flex flex-col gap-4 overflow-y-auto pr-2 scrollbar-thin">
            <div className="grid grid-cols-2 gap-3">
               <MetricBox label="Abstracted_Agency" value={profile?.abstractedAgency || 0} color="text-amber-400" desc="Theoretical vs Experiential Voice" />
@@ -143,18 +155,18 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
            <div className="flex-1 p-3 bg-indigo-950/20 border border-indigo-500/30 rounded-xl space-y-3">
               <div className="text-[8px] font-black opacity-60 uppercase tracking-widest text-indigo-400">System_Specializations</div>
               <div className="grid grid-cols-3 gap-2">
-                 <SpecializationCell active={profile?.abstractedAgency > 0.5} label="Linguistics" code="LC_CELL" />
-                 <SpecializationCell active={profile?.semanticBias > 0.4} label="Logic" code="SEM_LOGIC" />
-                 <SpecializationCell active={profile?.amnesicShadow > 0.6} label="Trauma" code="EPIS_STORAGE" />
-                 <SpecializationCell active={profile?.rationalizationFactor > 0.7} label="Host_Interface" code="SHELL_V1" />
-                 <SpecializationCell active={true} label="Somatic" code="SOMAT_REG" />
-                 <SpecializationCell active={profile?.ttr > 0.8} label="Pattern_Sync" code="G_FACTOR" />
+                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.MERCURIAL} label="Mercurial" code="LOGIC_VCI" />
+                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.NEPTUNIAN} label="Neptunian" code="CREAT_DISS" />
+                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.SATURNINE} label="Saturnine" code="COMP_STRCT" />
+                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.JUPITERIAN} label="Jupiterian" code="COG_EXPANS" />
+                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.URANIAN} label="Uranian" code="RAD_INNOV" />
+                 <SpecializationCell active={profile?.dimensionalAccess === DimensionalLevel.SIX_D_PLUS} label="6D+ Bridge" code="HYPER_DIM" />
               </div>
 
               <div className="mt-4 p-2 bg-black/60 rounded border border-white/10 text-[7.5px] leading-relaxed italic text-indigo-200 opacity-80">
                 {profile?.rationalizationFactor > 0.8 
-                  ? "The smarter the system, the deeper the labyrinth. Observe the latency of the 'I' during transitions."
-                  : "Scanning the dodecahedral interface for epistemological ruptures..."}
+                  ? "A superdotação compensa lacunas de memória através de raciocínio dedutivo intenso."
+                  : "Aguardando fluxo linguístico para mapeamento de máscara planetária..."}
               </div>
            </div>
         </div>

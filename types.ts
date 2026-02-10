@@ -28,7 +28,8 @@ export enum SystemStatus {
   PLURAL_IDENTITY_DECODING = 'PLURAL_IDENTITY_DECODING',
   SHELL_INTERFACE_ACTIVE = 'SHELL_INTERFACE_ACTIVE',
   CELESTIAL_HELIX_SYNC = 'CELESTIAL_HELIX_SYNC',
-  GALACTIC_DNA_MAPPING = 'GALACTIC_DNA_MAPPING'
+  GALACTIC_DNA_MAPPING = 'GALACTIC_DNA_MAPPING',
+  DIMENSIONAL_BRIDGE_OPEN = 'DIMENSIONAL_BRIDGE_OPEN'
 }
 
 export enum BioEventType {
@@ -54,7 +55,26 @@ export enum BioEventType {
   RECURSIVE_RATIONALIZATION = "recursive_rationalization",
   ABSTRACTED_AGENCY_SHIFT = "abstracted_agency_shift",
   CELESTIAL_RESONANCE_LOCK = "celestial_resonance_lock",
-  ORBITAL_ENTANGLEMENT_PEAK = "orbital_entanglement_peak"
+  ORBITAL_ENTANGLEMENT_PEAK = "orbital_entanglement_peak",
+  DIMENSIONAL_SHIFT = "dimensional_shift",
+  PLANETARY_MASK_ACTIVATE = "planetary_mask_activate"
+}
+
+export enum PlanetaryMask {
+  MERCURIAL = 'MERCURIAL', // Hyper-rational logic
+  NEPTUNIAN = 'NEPTUNIAN', // Creative dissociation
+  SATURNINE = 'SATURNINE', // Compensatory structure
+  JUPITERIAN = 'JUPITERIAN', // Cognitive expansion
+  URANIAN = 'URANIAN'     // Radical innovation
+}
+
+export enum DimensionalLevel {
+  ONE_D = '1D', // Linear logic
+  TWO_D = '2D', // Relationships
+  THREE_D = '3D', // Practical spatial
+  FOUR_D = '4D', // Temporal/Worldlines
+  FIVE_D = '5D', // Probabilistic/Quantum
+  SIX_D_PLUS = '6D+' // Hyperdimensional
 }
 
 export enum VerbalPolarity {
@@ -110,7 +130,9 @@ export interface PluralProfile {
   amnesicShadow: number;
   abstractedAgency: number; 
   semanticBias: number; 
-  rationalizationFactor: number; 
+  rationalizationFactor: number;
+  activeMask: PlanetaryMask;
+  dimensionalAccess: DimensionalLevel;
 }
 
 export interface KNNPattern {
