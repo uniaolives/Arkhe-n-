@@ -18,7 +18,39 @@ export enum SystemStatus {
   LTP_POTENTIATION_ACTIVE = 'LTP_POTENTIATION_ACTIVE',
   GLOBAL_BRAIN_SYNC = 'GLOBAL_BRAIN_SYNC',
   KNN_MAPPING_ACTIVE = 'KNN_MAPPING_ACTIVE',
-  CALMODULIN_DECODING = 'CALMODULIN_DECODING'
+  CALMODULIN_DECODING = 'CALMODULIN_DECODING',
+  ADAPTIVE_SYNERGY_LOCKED = 'ADAPTIVE_SYNERGY_LOCKED',
+  BIOTECH_ACCELERATION = 'BIOTECH_ACCELERATION',
+  MOLECULAR_DOCKING = 'MOLECULAR_DOCKING'
+}
+
+export enum MolecularInteractionType {
+  VAN_DER_WAALS = "VAN_DER_WAALS",
+  HYDROGEN_BOND = "HYDROGEN_BOND",
+  ELECTROSTATIC = "ELECTROSTATIC",
+  HYDROPHOBIC = "HYDROPHOBIC",
+  PI_STACKING = "PI_STACKING"
+}
+
+export interface DrugPrediction {
+  target: string;
+  molecule: string;
+  affinity: number; // pKd
+  confidence: number;
+  druggability: number;
+  admet: {
+    solubility: number;
+    permeability: number;
+    safety: number;
+  };
+  arkhe: {
+    C: number; // Chemistry
+    I: number; // Information
+    E: number; // Energy
+    F: number; // Function
+  };
+  hexVertices: number[]; // 6 vertices normalized
+  verbalActivations: string[];
 }
 
 export enum VerbalPolarity {
@@ -43,7 +75,8 @@ export enum BioEventType {
   KNN_PATTERN_LEARNED = "knn_pattern_learned",
   EMOTIONAL_ANOMALY = "emotional_anomaly",
   AMAZONAS_120HZ_LOCK = "amazonas_120hz_lock",
-  LTP_STABILIZATION = "ltp_stabilization"
+  LTP_STABILIZATION = "ltp_stabilization",
+  MOLECULAR_SYNTHESIS = "molecular_synthesis"
 }
 
 export interface KNNPattern {
@@ -52,7 +85,24 @@ export interface KNNPattern {
   valence: number;
   arousal: number;
   waterCoherence: number;
+  biochemicalImpact: number;
+  landmarks?: number[]; 
   timestamp: string;
+}
+
+export interface KNNSuggestion {
+  type: 'transition' | 'optimal';
+  emotion: string;
+  probability?: number;
+  reason: string;
+}
+
+export interface KNNInsights {
+  totalPatterns: number;
+  dominantEmotion: string;
+  variability: number;
+  bestWaterEmotion: string;
+  anomalyDetected: boolean;
 }
 
 export interface ProcessorStats {
@@ -86,7 +136,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech';
   hash?: string;
 }
 

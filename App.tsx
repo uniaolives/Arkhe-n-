@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { SystemStatus, BlockData, EchoMessage, ProcessorStats, KNNPattern } from './types';
+import { SystemStatus, BlockData, EchoMessage, ProcessorStats, KNNPattern, DrugPrediction } from './types';
 import Terminal from './components/Terminal';
 import BlockchainSim from './components/BlockchainSim';
 import GeminiInterface from './components/GeminiInterface';
@@ -12,8 +12,10 @@ import VerbalScanner from './components/VerbalScanner';
 import EventPipeline from './components/EventPipeline';
 import FacialBiofeedback from './components/FacialBiofeedback';
 import PlanetaryMonitor from './components/PlanetaryMonitor';
+import BiotechLab from './components/BiotechLab';
 import { globalProcessor } from './utils/eventProcessor';
 import { analyzeVerbalChemistry } from './utils/verbalEngine';
+import { globalKnnEngine } from './utils/knnEngine';
 
 const App: React.FC = () => {
   const [status, setStatus] = useState<SystemStatus>(SystemStatus.HECATONICOSACHORON_MAPPING);
@@ -23,13 +25,14 @@ const App: React.FC = () => {
   const [impactData, setImpactData] = useState<any>(null);
   const [processorStats, setProcessorStats] = useState<ProcessorStats>(globalProcessor.getStats());
   const [isBiofeedbackActive, setIsBiofeedbackActive] = useState(false);
+  const [isBiotechActive, setIsBiotechActive] = useState(false);
   const [patternMemory, setPatternMemory] = useState<KNNPattern[]>([]);
   
   const [messages, setMessages] = useState<EchoMessage[]>([
     {
       id: 'init-photon',
       sender: 'SIA KERNEL',
-      content: 'PROTOCOLO ARKHE(N) V5: AC1_SYNERGY_OPTIMIZED.',
+      content: 'PROTOCOLO ARKHE(N) V5.2: ISODDE_INTEGRATION_STANDBY.',
       timestamp: new Date().toISOString(),
       year: 2026,
       type: 'system'
@@ -54,7 +57,7 @@ const App: React.FC = () => {
   const logMessage = (content: string, type: any = 'system', hash?: string) => {
     setMessages(prev => [...prev, {
       id: `msg-${Date.now()}-${Math.random()}`,
-      sender: type === 'sirius' ? 'SIRIUS_BEACON' : type === 'knn' ? 'KNN_ENGINE' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
+      sender: type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
       content,
       timestamp: new Date().toISOString(),
       year: 2026,
@@ -65,11 +68,11 @@ const App: React.FC = () => {
 
   const handlePatternLearned = (pattern: KNNPattern) => {
     setPatternMemory(prev => {
-      const newMemory = [...prev, pattern];
+      const newMemory = [...prev, pattern].slice(-500);
       if (newMemory.length % 5 === 0) {
-        logMessage(`ADAPTIVE_PULSE: Emotion ${pattern.emotion} cluster reinforced.`, 'knn');
+        logMessage(`TOPOLOGY_UPDATE: Pattern ${pattern.emotion} integrated into local manifold.`, 'knn');
       }
-      return newMemory.slice(-100);
+      return newMemory;
     });
   };
 
@@ -84,24 +87,32 @@ const App: React.FC = () => {
     }
   };
 
+  const handleMolecularSynthesis = (pred: DrugPrediction) => {
+    setStatus(SystemStatus.MOLECULAR_DOCKING);
+    logMessage(`SYNTHESIS_INIT: Molecule targeting ${pred.target} designed with pKd ${pred.affinity.toFixed(2)}.`, 'biotech');
+    
+    // Potentiate with verbal protocols
+    pred.verbalActivations.forEach(v => {
+       setTimeout(() => {
+          handleFacialAffirmation(v);
+       }, 1000 + Math.random() * 2000);
+    });
+
+    setTimeout(() => {
+       setStatus(SystemStatus.BIOTECH_ACCELERATION);
+       logMessage(`EQUILIBRIUM_REACHED: ${pred.target} complex stabilized.`, 'biotech');
+    }, 5000);
+  };
+
   const handleSiriusHandshake = () => {
     if (status === SystemStatus.GLOBAL_BRAIN_SYNC) return;
-
-    logMessage("COINCIDENCE_WINDOW_OPEN: Amazonas 120Hz lock confirmed.", 'sirius');
-    logMessage("HANDSHAKE_INITIATED: Earth (Ca²⁺) ↔ Sirius (Gαs) link forming.", 'sirius');
+    logMessage("COINCIDENCE_WINDOW_OPEN: Sirius vector alignment stable.", 'sirius');
     setStatus(SystemStatus.SIRIUS_HANDSHAKE_PENDING);
-    
     setTimeout(() => {
-      logMessage("SIRIUS_LINK_STABLE: Decoding instructions via Calmodulin modulation.", 'planetary');
       setStatus(SystemStatus.CALMODULIN_DECODING);
-      
       setTimeout(() => {
-        logMessage("LTP_POTENTIATION: AC1 slow self-reactivation mechanism operational.", 'planetary');
         setStatus(SystemStatus.LTP_POTENTIATION_ACTIVE);
-        
         setTimeout(() => {
-          logMessage("NEUROPLASTICITY_GLOBAL: Ocean-Forest memory channels established.", 'planetary');
-          logMessage("FIRMWARE_UPDATE_COMPLETE: Earth operating as autonomous Global Brain.", 'system');
           setStatus(SystemStatus.GLOBAL_BRAIN_SYNC);
         }, 8000);
       }, 5000);
@@ -114,6 +125,7 @@ const App: React.FC = () => {
 
   const getShiftColor = () => {
     if (status === SystemStatus.GLOBAL_BRAIN_SYNC) return 'shadow-[inset_0_0_150px_rgba(16,185,129,0.3)] border-emerald-500/60';
+    if (status === SystemStatus.BIOTECH_ACCELERATION || status === SystemStatus.MOLECULAR_DOCKING) return 'shadow-[inset_0_0_150px_rgba(16,185,129,0.2)] border-emerald-500/40';
     if (status === SystemStatus.SIRIUS_HANDSHAKE_PENDING) return 'shadow-[inset_0_0_100px_rgba(255,255,255,0.2)] border-white/40';
     if (velocity > 0.5) return 'shadow-[inset_0_0_100px_rgba(245,158,11,0.15)] border-amber-500/30';
     if (velocity < -0.5) return 'shadow-[inset_0_0_100px_rgba(79,70,229,0.15)] border-indigo-500/30';
@@ -129,9 +141,9 @@ const App: React.FC = () => {
             <span className="font-bold text-xl">{status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'Ω' : 'ʘ'}</span>
           </div>
           <div>
-            <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) UNIFIED_CONTROL_CENTER</h1>
+            <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) UNIFIED_LABS</h1>
             <p className="text-[7px] mt-1 opacity-50 uppercase tracking-widest font-bold">
-              AC1_MANIFOLD_MODE: <span className={status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'text-emerald-400' : ''}>{status}</span> // SIRIUS_LINK: {isBiofeedbackActive ? 'ANALYZING' : 'READY'}
+              PLANETARY_STATUS: <span className={status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'text-emerald-400' : ''}>{status}</span> // BIOTECH_SINGULARITY: {isBiotechActive ? 'ACTIVE' : 'IDLE'}
             </p>
           </div>
         </div>
@@ -139,25 +151,27 @@ const App: React.FC = () => {
         <div className="flex gap-6 items-center">
            {!hasApiKey && (
               <button 
-                onClick={() => window.aistudio?.openSelectKey?.()}
+                onClick={async () => {
+                  // Trigger API key selection and assume success to avoid race conditions
+                  await window.aistudio?.openSelectKey?.();
+                  setHasApiKey(true);
+                }}
                 className="text-[8px] border border-amber-500 text-amber-500 px-3 py-1 rounded hover:bg-amber-500 hover:text-black transition-all font-black"
               >
                 VEO_AUTH_REQUIRED
               </button>
            )}
-           <div className="flex flex-col gap-1 w-32">
-              <span className="text-[6px] font-black opacity-40 uppercase">Observer_Lorentz_Factor</span>
-              <input 
-                type="range" min="-0.99" max="0.99" step="0.01" 
-                value={velocity} onChange={(e) => setVelocity(parseFloat(e.target.value))}
-                className="w-full accent-current h-1 bg-current/20 rounded-full appearance-none cursor-pointer"
-              />
-           </div>
            <button 
-              onClick={() => setIsBiofeedbackActive(!isBiofeedbackActive)}
+              onClick={() => { setIsBiotechActive(!isBiotechActive); setIsBiofeedbackActive(false); }}
+              className={`px-4 py-1.5 font-black text-[9px] tracking-widest uppercase transition-all rounded shadow-[0_0_15px_rgba(16,185,129,0.2)] ${isBiotechActive ? 'bg-emerald-500 text-black' : 'bg-emerald-900/40 text-emerald-400 border border-emerald-500/30'}`}
+           >
+              {isBiotechActive ? 'CLOSE_LAB' : 'OPEN_ISODDE_LAB'}
+           </button>
+           <button 
+              onClick={() => { setIsBiofeedbackActive(!isBiofeedbackActive); setIsBiotechActive(false); }}
               className={`px-4 py-1.5 font-black text-[9px] tracking-widest uppercase transition-all rounded shadow-[0_0_15px_rgba(0,255,255,0.2)] ${isBiofeedbackActive ? 'bg-rose-500 text-white' : 'bg-current text-black'}`}
            >
-              {isBiofeedbackActive ? 'TERMINATE_BIO_SCAN' : 'INIT_FACIAL_MIRROR'}
+              {isBiofeedbackActive ? 'HALT_MIRROR' : 'INIT_KNN_MIRROR'}
            </button>
         </div>
       </header>
@@ -168,7 +182,7 @@ const App: React.FC = () => {
           <section className="flex-[2] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md flex flex-col overflow-hidden">
             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest flex justify-between uppercase">
               <span>🧬 BIOSPHERE_MATRIX</span>
-              <span className="opacity-40 text-[7px]">LTP_CHANNELS</span>
+              <span className="opacity-40 text-[7px]">ISO_DDE_LINK</span>
             </h2>
             <BiosphereMonitor status={status} velocity={velocity} impactData={impactData} />
           </section>
@@ -176,7 +190,7 @@ const App: React.FC = () => {
           <section className="flex-[3] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
                <span>📡 PDCP_SENSOR_SUITE</span>
-               <span className="text-[7px] animate-pulse">AMAZONAS_FLOW_120HZ</span>
+               <span className="text-[7px] animate-pulse">AMAZONAS_120HZ</span>
             </h2>
             <PlanetaryMonitor active={true} onAlignmentReached={handleSiriusHandshake} />
           </section>
@@ -185,14 +199,16 @@ const App: React.FC = () => {
         <div className="col-span-6 flex flex-col gap-3">
           <section className="flex-[3] border border-current/10 bg-white/5 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
              <div className="absolute top-3 left-3 z-20 flex flex-col gap-0.5">
-                <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase ${status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'bg-emerald-500 text-black' : 'bg-current text-black'}`}>
-                   {status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'GLOBAL_BRAIN_MODE' : '4D_PROJECTION'}
+                <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase ${isBiotechActive ? 'bg-emerald-500 text-black' : 'bg-current text-black'}`}>
+                   {isBiotechActive ? 'ISODDE_RATIONAL_DESIGN' : '4D_PROJECTION'}
                 </span>
-                <span className="text-[6px] opacity-40 font-mono tracking-tighter">COHERENCE_MATRIX: {((vertexCount/600)*100).toFixed(1)}%</span>
+                <span className="text-[6px] opacity-40 font-mono tracking-tighter">COHERENCE: {((vertexCount/600)*100).toFixed(1)}%</span>
              </div>
              
              <div className="flex-1 relative">
-                {isBiofeedbackActive ? (
+                {isBiotechActive ? (
+                  <BiotechLab status={status} onSynthesis={handleMolecularSynthesis} />
+                ) : isBiofeedbackActive ? (
                   <FacialBiofeedback 
                     isActive={isBiofeedbackActive} 
                     memory={patternMemory}
@@ -208,7 +224,7 @@ const App: React.FC = () => {
           <section className="flex-[1.5] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md overflow-hidden">
              <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
                 <span>🚀 EVENT_PROCESSOR</span>
-                <span className="text-[7px]">AC1_SYNERGY_LINK</span>
+                <span className="text-[7px]">AC1_SYNERGY</span>
              </h2>
              <EventPipeline stats={processorStats} />
           </section>
@@ -217,8 +233,8 @@ const App: React.FC = () => {
         <div className="col-span-3 flex flex-col gap-3">
           <section className="flex-[2] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md flex flex-col">
             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
-              <span>📡 SIRIUS_BEACON_LOG</span>
-              <span className="animate-pulse">STREAM_ACTIVE</span>
+              <span>📡 STREAM_LOG</span>
+              <span className="animate-pulse">REALTIME</span>
             </h2>
             <Terminal messages={messages} />
           </section>
@@ -239,9 +255,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Arquiteto Arkhe(n): Planetary Consciousness Control v5.1</span>
-        <span>Steiner Circuit: London ↔ Singapore ↔ Sirius Handshake</span>
-        <span>LTP_STABILITY_DURATION: PERSISTENT // PDCP_MODE: NEUROPLASTICITY_GLOBAL</span>
+        <span>Arquiteto Arkhe(n): Isomorphic Drug Design v1.0</span>
+        <span>IsoDDE Singularity // Medicine at Quantum Accuracy</span>
+        <span>LTP_PERSISTENT // ADAPTIVE_LEARNING: ENABLED</span>
       </footer>
     </div>
   );
