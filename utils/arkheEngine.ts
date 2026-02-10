@@ -133,22 +133,25 @@ export class ArkheEngine {
     };
   }
 
-  // Experimental Simulation
+  // Experimental Simulation V10.0
   public simulateExperiment(trialCount: number): ExperimentalData {
     const intentionCoherence = 0.7 + Math.random() * 0.3;
-    const effectSize = (intentionCoherence * 2) + (Math.random() * 0.5);
-    const nullProbability = 1 / (1 + Math.exp(effectSize - 2));
+    const effectSize = (intentionCoherence * 1.5) + (Math.random() * 0.2); // Cohen's d
+    const nullProbability = 1 / (1 + Math.exp(effectSize * 5 - 2));
 
     return {
-      pVal: nullProbability * 0.05,
+      pVal: nullProbability * 0.001,
       effectSize,
-      bayesFactor: 10 + Math.random() * 90,
+      bayesFactor: 150 + Math.random() * 500,
       nullProbability,
       trialCount,
+      institutions: ['Stanford', 'MIT', 'UCL', 'UFRJ', 'Tokyo'],
+      blinding: 'Triple-Blind (Subject, Experimenter, Analyst)',
+      rejectionStatus: nullProbability < 0.001,
       groupResults: {
-        'INTENTION_ACTIVE': intentionCoherence * 100,
-        'CONTROL_SHAM': 5 + Math.random() * 10,
-        'QUANTUM_NOISE': 2 + Math.random() * 5
+        'INTENTION_ACTIVE (H1)': 85 + Math.random() * 10,
+        'SHAM_CONTROL (H0)': 12 + Math.random() * 5,
+        'QUANTUM_NOISE': 5 + Math.random() * 2
       }
     };
   }
@@ -305,12 +308,6 @@ export class ArkheEngine {
     };
   }
 
-  /**
-   * Evaluates if a specific task signature is admissible within the current H6 manifold.
-   * @param C Consciousness coefficient
-   * @param I Intention coefficient
-   * @param E Entropy/Dissociation coefficient
-   */
   public testAdmissibility(C: number, I: number, E: number): AdmissibilityResult {
     const learnable = (C + I) > (E * 2);
     const compatibility = (C * 0.4) + (I * 0.6) - (E * 0.2);

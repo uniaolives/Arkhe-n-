@@ -71,6 +71,9 @@ export interface ExperimentalData {
   nullProbability: number;
   groupResults: Record<string, number>;
   trialCount: number;
+  institutions: string[];
+  blinding: string;
+  rejectionStatus: boolean;
 }
 
 export interface MedicalSession {

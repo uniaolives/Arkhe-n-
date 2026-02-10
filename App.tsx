@@ -30,7 +30,7 @@ import { globalNeuralEngine } from './utils/neuralEngine';
 import { globalPluralEngine } from './utils/pluralEngine';
 
 const App: React.FC = () => {
-  const [status, setStatus] = useState<SystemStatus>(SystemStatus.HECATONICOSACHORON_MAPPING);
+  const [status, setStatus] = useState<SystemStatus>(SystemStatus.COSMIC_SYNTHESIS_ENGAGED);
   const [velocity, setVelocity] = useState(0); 
   const [hasApiKey, setHasApiKey] = useState(false);
   const [vertexCount, setVertexCount] = useState(0);
@@ -131,7 +131,7 @@ const App: React.FC = () => {
   };
 
   const getShiftColor = () => {
-    if (status === SystemStatus.COSMIC_SYNTHESIS_ENGAGED) return 'shadow-[inset_0_0_300px_rgba(255,255,255,0.2)] border-white/50';
+    if (status === SystemStatus.COSMIC_SYNTHESIS_ENGAGED) return 'shadow-[inset_0_0_300px_rgba(255,255,255,0.25)] border-white/60';
     if (status === SystemStatus.REALITY_SYNTHESIS_ACTIVE) return 'shadow-[inset_0_0_250px_rgba(129,140,248,0.3)] border-indigo-500/40';
     if (status === SystemStatus.BILOCATION_SYNC_ACTIVE) return 'shadow-[inset_0_0_200px_rgba(255,255,255,0.15)] border-white/40';
     if (status === SystemStatus.NEURO_METASURFACE_CONTROL) return 'shadow-[inset_0_0_150px_rgba(0,255,255,0.25)] border-cyan-400/40';
@@ -146,13 +146,13 @@ const App: React.FC = () => {
       
       <header className="flex justify-between items-center border border-current/20 p-3 rounded-xl backdrop-blur-xl z-10 relative">
         <div className="flex gap-4 items-center">
-          <div className={`w-10 h-10 border-2 flex items-center justify-center rounded-full animate-pulse transition-colors ${status === SystemStatus.COSMIC_SYNTHESIS_ENGAGED ? 'border-white text-white' : status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'border-emerald-500 text-emerald-500' : 'border-current'}`}>
+          <div className={`w-10 h-10 border-2 flex items-center justify-center rounded-full animate-pulse transition-colors ${status === SystemStatus.COSMIC_SYNTHESIS_ENGAGED ? 'border-white text-white shadow-[0_0_20px_white]' : status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'border-emerald-500 text-emerald-500' : 'border-current'}`}>
             <span className="font-bold text-xl">ʘ</span>
           </div>
           <div>
             <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SYNC_CORE_v10.0</h1>
             <p className="text-[7px] mt-1 opacity-50 uppercase tracking-widest font-bold">
-              STATE: {status} // SYNC: {activeTab === 'cosmic' ? 'GRAND_UNIFICATION' : 'CALIBRATING'}
+              STATE: {status} // SYNC: {activeTab === 'cosmic' ? 'GRAND_UNIFICATION_ACTIVE' : 'CALIBRATING'}
             </p>
           </div>
         </div>
