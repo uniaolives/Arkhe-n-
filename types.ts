@@ -17,7 +17,8 @@ export enum SystemStatus {
   SIRIUS_HANDSHAKE_PENDING = 'SIRIUS_HANDSHAKE_PENDING',
   LTP_POTENTIATION_ACTIVE = 'LTP_POTENTIATION_ACTIVE',
   GLOBAL_BRAIN_SYNC = 'GLOBAL_BRAIN_SYNC',
-  KNN_MAPPING_ACTIVE = 'KNN_MAPPING_ACTIVE'
+  KNN_MAPPING_ACTIVE = 'KNN_MAPPING_ACTIVE',
+  CALMODULIN_DECODING = 'CALMODULIN_DECODING'
 }
 
 export enum VerbalPolarity {
@@ -40,7 +41,9 @@ export enum BioEventType {
   CALMODULIN_MODULATION = "calmodulin_modulation",
   SIRIUS_BEACON_SYNC = "sirius_beacon_sync",
   KNN_PATTERN_LEARNED = "knn_pattern_learned",
-  EMOTIONAL_ANOMALY = "emotional_anomaly"
+  EMOTIONAL_ANOMALY = "emotional_anomaly",
+  AMAZONAS_120HZ_LOCK = "amazonas_120hz_lock",
+  LTP_STABILIZATION = "ltp_stabilization"
 }
 
 export interface KNNPattern {

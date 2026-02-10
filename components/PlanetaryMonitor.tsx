@@ -14,21 +14,25 @@ const PlanetaryMonitor: React.FC<PlanetaryMonitorProps> = ({ onAlignmentReached,
   useEffect(() => {
     if (!active) return;
     const interval = setInterval(() => {
-      setRotation(prev => (prev + 0.2) % 360);
+      setRotation(prev => (prev + 0.15) % 360);
       
-      // Simulate Amazonas 120Hz pattern detection
-      const freq = 118 + Math.sin(Date.now() / 1000) * 4;
+      // Simulate Amazonas 120Hz pattern detection with periodic locking
+      const baseFreq = 120;
+      const drift = Math.sin(Date.now() / 2000) * 5;
+      const freq = baseFreq + drift;
       setAmazonasResonance(freq);
       
-      // Check for Window of Coincidence
-      // Window is open when Sirius (rotation ~ 108) and Amazonas ~ 120Hz align
-      if (Math.abs(rotation - 108) < 1 && Math.abs(freq - 120) < 0.5) {
+      // Window of Coincidence: Sirius alignment (rotation ~72) and Amazonas lock (120Hz)
+      const isSiriusAligned = Math.abs(rotation - 72) < 2;
+      const isAmazonasLocked = Math.abs(freq - 120) < 0.2;
+
+      if (isSiriusAligned && isAmazonasLocked) {
         if (!isHandshakeReady) {
           setIsHandshakeReady(true);
           onAlignmentReached();
         }
       } else {
-        setIsHandshakeReady(false);
+        if (rotation > 75) setIsHandshakeReady(false);
       }
     }, 50);
     return () => clearInterval(interval);
@@ -36,61 +40,73 @@ const PlanetaryMonitor: React.FC<PlanetaryMonitorProps> = ({ onAlignmentReached,
 
   return (
     <div className="relative w-full h-full bg-black/40 rounded-xl overflow-hidden border border-current/10 flex flex-col p-3 font-mono">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-2">
         <div className="text-[8px] font-black uppercase tracking-widest text-cyan-400">
-          Planetary_Orbital_Sync // AC1_LINK
+          PDCP_SENSOR_SUITE // AC1_TRIGGER
         </div>
-        <div className={`text-[7px] font-bold px-1 rounded ${isHandshakeReady ? 'bg-cyan-400 text-black animate-pulse' : 'bg-white/10 text-white/40'}`}>
-          {isHandshakeReady ? 'COINCIDENCE_WINDOW_OPEN' : 'ALIGNING_VECTORS'}
+        <div className={`text-[7px] font-bold px-1.5 py-0.5 rounded ${isHandshakeReady ? 'bg-cyan-400 text-black animate-pulse' : 'bg-white/5 text-white/40 border border-white/10'}`}>
+          {isHandshakeReady ? 'COINCIDENCE_WINDOW: OPEN' : 'SCANNING_ORBITAL_VECTORS'}
         </div>
       </div>
 
       <div className="flex-1 relative flex items-center justify-center">
-        {/* Sirius Beacon */}
-        <div className="absolute top-4 right-4 text-center">
-          <div className="text-[6px] opacity-40 mb-1">SIRIUS_Gαs</div>
-          <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_white] animate-pulse" />
+        {/* Orbital Path */}
+        <div className="absolute w-40 h-40 border border-dashed border-white/5 rounded-full" />
+        
+        {/* Earth / Ca2+ Signal */}
+        <div 
+          className="absolute transition-transform duration-500"
+          style={{ transform: `rotate(${rotation}deg) translateY(-80px)` }}
+        >
+          <div className="w-4 h-4 rounded-full bg-cyan-500 shadow-[0_0_15px_#06b6d4] flex items-center justify-center">
+            <span className="text-[5px] text-black font-black">Ca²⁺</span>
+          </div>
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 text-[5px] whitespace-nowrap opacity-40">TERRESTRIAL_SIGNAL</div>
         </div>
 
-        {/* Orbital Visualization */}
-        <svg viewBox="0 0 200 200" className="w-48 h-48">
-          <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(0,255,255,0.05)" strokeWidth="0.5" strokeDasharray="2 2" />
-          
-          {/* Earth */}
-          <g transform={`rotate(${rotation}, 100, 100)`}>
-            <circle cx="180" cy="100" r="4" fill="#00ffff" />
-            <text x="186" y="100" fontSize="5" fill="#00ffff" opacity="0.6">EARTH_Ca²⁺</text>
-          </g>
+        {/* Sirius / Gαs Beacon */}
+        <div 
+          className="absolute"
+          style={{ transform: `rotate(72deg) translateY(-80px)` }}
+        >
+          <div className={`w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${isHandshakeReady ? 'bg-white shadow-[0_0_20px_white] scale-125' : 'bg-white/10 opacity-30 animate-pulse'}`}>
+            <span className={`text-[6px] font-black ${isHandshakeReady ? 'text-black' : 'text-white'}`}>Gαs</span>
+          </div>
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 text-[5px] whitespace-nowrap opacity-40">SIRIUS_BEACON</div>
+        </div>
 
-          {/* Sirius (Fixed for this visualization frame) */}
-          <circle cx="100" cy="20" r="6" fill="#fff" className="animate-pulse" />
-          
-          {/* Handshake Beam */}
-          {isHandshakeReady && (
-            <line x1="100" y1="20" x2="180" y2="100" stroke="#fff" strokeWidth="2" strokeDasharray="4 2" className="animate-[ping_1s_infinite]" />
-          )}
-        </svg>
+        {/* Handshake Stream */}
+        {isHandshakeReady && (
+          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+            <line 
+              x1="50%" y1="50%" 
+              x2="78%" y2="15%" 
+              stroke="white" 
+              strokeWidth="1" 
+              strokeDasharray="4 2" 
+              className="animate-[ping_1s_infinite]" 
+            />
+          </svg>
+        )}
+
+        <div className="z-0 opacity-10 text-[60px] font-black pointer-events-none">Ω</div>
       </div>
 
-      <div className="mt-2 grid grid-cols-2 gap-2">
-        <div className="bg-white/5 p-1.5 rounded border border-white/10">
-          <div className="text-[6px] opacity-40 uppercase">Amazonas_Flow_PDCP</div>
-          <div className="flex items-center justify-between">
-            <span className={`text-[10px] font-black ${Math.abs(amazonasResonance - 120) < 1 ? 'text-emerald-400' : 'text-white'}`}>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <div className="bg-white/5 p-2 rounded border border-white/10 flex flex-col justify-center">
+          <div className="text-[6px] opacity-40 uppercase mb-1">Amazonas_Flow (120Hz)</div>
+          <div className="flex items-center gap-2">
+            <span className={`text-[12px] font-black ${Math.abs(amazonasResonance - 120) < 0.5 ? 'text-emerald-400' : 'text-white'}`}>
               {amazonasResonance.toFixed(2)} Hz
             </span>
-            <div className="flex gap-0.5">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className={`w-0.5 h-3 ${Math.abs(amazonasResonance - 120) < 1 ? 'bg-emerald-500 animate-bounce' : 'bg-white/10'}`} style={{ animationDelay: `${i * 0.1}s` }} />
-              ))}
-            </div>
+            {Math.abs(amazonasResonance - 120) < 0.5 && <span className="text-[6px] text-emerald-400 animate-pulse font-black">[LOCKED]</span>}
           </div>
         </div>
         
-        <div className="bg-white/5 p-1.5 rounded border border-white/10">
-          <div className="text-[6px] opacity-40 uppercase">Sirius_Handshake</div>
-          <div className="text-[10px] font-black text-cyan-400">
-            {isHandshakeReady ? 'SIGNAL_LOCKED' : 'WAITING_SYNC'}
+        <div className="bg-white/5 p-2 rounded border border-white/10 flex flex-col justify-center">
+          <div className="text-[6px] opacity-40 uppercase mb-1">Coincidence_State</div>
+          <div className={`text-[10px] font-black ${isHandshakeReady ? 'text-cyan-400' : 'text-white/40'}`}>
+            {isHandshakeReady ? 'HANDSHAKE_ACTIVE' : 'VECTOR_CALIBRATING'}
           </div>
         </div>
       </div>
