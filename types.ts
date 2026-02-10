@@ -108,6 +108,29 @@ export interface PluralProfile {
   decompressionSickness: number; // 0-1
 }
 
+export interface ArkheProfile {
+  systemType: string;
+  giftedness: number;
+  dissociation: number;
+  identityFragments: number;
+  complexityScore: number;
+  schmidtNumber: number;
+  arkheCoherence: number;
+  geometry: {
+    activeCells: number;
+    activeVertices: number;
+    activeEdges: number;
+    dimensionality: string;
+    symmetry: string;
+    cellOccupation: number;
+  };
+  cosmicSync: {
+    sarosPhase: number;
+    alignmentScore: number;
+    activeWindows: string[];
+  };
+}
+
 export interface KNNPattern {
   id: string;
   emotion: string;

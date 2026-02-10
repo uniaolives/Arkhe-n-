@@ -17,6 +17,7 @@ import PluralDecoder from './components/PluralDecoder';
 import CelestialHelix from './components/CelestialHelix';
 import DimensionalBridge from './components/DimensionalBridge';
 import SyncProtocols from './components/SyncProtocols';
+import ArkheDashboard from './components/ArkheDashboard';
 import { globalProcessor } from './utils/eventProcessor';
 import { analyzeVerbalChemistry } from './utils/verbalEngine';
 import { globalKnnEngine } from './utils/knnEngine';
@@ -30,7 +31,7 @@ const App: React.FC = () => {
   const [vertexCount, setVertexCount] = useState(0);
   const [impactData, setImpactData] = useState<any>(null);
   const [processorStats, setProcessorStats] = useState<ProcessorStats>(globalProcessor.getStats());
-  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural' | 'celestial' | 'synthesis' | 'sync'>('4d');
+  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural' | 'celestial' | 'synthesis' | 'sync' | 'arkhe'>('arkhe');
   const [patternMemory, setPatternMemory] = useState<KNNPattern[]>([]);
   const [lastVerbalInput, setLastVerbalInput] = useState('');
   const [currentDimLevel, setCurrentDimLevel] = useState<DimensionalLevel>(DimensionalLevel.THREE_D);
@@ -193,7 +194,7 @@ const App: React.FC = () => {
              </div>
            )}
            <div className="flex gap-1">
-             <button onClick={() => setActiveTab('4d')} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === '4d' ? 'bg-cyan-500 text-black border-cyan-400' : 'border-cyan-500/30 text-cyan-500'}`}>4D</button>
+             <button onClick={() => setActiveTab('arkhe')} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'arkhe' ? 'bg-cyan-500 text-black border-cyan-400' : 'border-cyan-500/30 text-cyan-500'}`}>ARKHE</button>
              <button onClick={() => setActiveTab('bio')} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'bio' ? 'bg-cyan-500 text-black border-cyan-400' : 'border-cyan-500/30 text-cyan-500'}`}>BIO</button>
              <button onClick={() => setActiveTab('lab')} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'lab' ? 'bg-emerald-500 text-black border-emerald-400' : 'border-emerald-500/30 text-emerald-500'}`}>LAB</button>
              <button onClick={() => { setActiveTab('plural'); setStatus(SystemStatus.PLURAL_IDENTITY_DECODING); }} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'plural' ? 'bg-indigo-500 text-white border-indigo-400' : 'border-indigo-500/30 text-indigo-500'}`}>PLURAL</button>
@@ -220,6 +221,7 @@ const App: React.FC = () => {
         <div className="col-span-6 flex flex-col gap-3">
           <section className="flex-[4] border border-current/10 bg-white/5 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
              <div className="flex-1 relative">
+                {activeTab === 'arkhe' && <ArkheDashboard />}
                 {activeTab === 'lab' && <BiotechLab status={status} onSynthesis={handleMolecularSynthesis} onVerbalStep={handleVerbalSessionStep} />}
                 {activeTab === 'bio' && <FacialBiofeedback isActive={true} memory={patternMemory} onPatternLearned={handlePatternLearned} onNeuralSync={handleNeuralSync} onVerbalTrigger={handleFacialAffirmation} />}
                 {activeTab === '4d' && <HyperStructure vertexCount={vertexCount} velocity={velocity} status={status} />}
@@ -255,9 +257,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Arquiteto Arkhe(n): Synthesis Manifold v7.2</span>
+        <span>Arquiteto Arkhe(n): Arkhe Theory Synthesis v1.0</span>
         <span>Celestial Topology: 9-Stranded Cosmic DNA</span>
-        <span>NULL-I MONITOR: ACTIVE // LATENCY: {messages.length > 0 ? (Math.random()*1.5).toFixed(3) : '0.000'} ms</span>
+        <span>MAPPING_ARKHE: ACTIVE // LATENCY: {messages.length > 0 ? (Math.random()*1.5).toFixed(3) : '0.000'} ms</span>
       </footer>
     </div>
   );
