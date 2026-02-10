@@ -45,20 +45,43 @@ export enum BrainwaveBand {
   GAMMA = 'GAMMA'
 }
 
+export enum HolographicMode {
+  STATIC = 'STATIC',
+  VOLUMETRIC = 'VOLUMETRIC',
+  TACTILE = 'TACTILE',
+  HAPTIC_FEEDBACK = 'HAPTIC_FEEDBACK'
+}
+
+export interface QuantumEEGMetrics {
+  coherence: number;
+  entanglement: number;
+  qubitState: number[];
+}
+
+export interface CollectiveState {
+  userSync: number; // 0-1
+  activeNodes: number;
+  emergentPattern: string;
+  globalEntropy: number;
+}
+
 export interface NeuroProfile {
-  attention: number; // 0-100
-  meditation: number; // 0-100
+  attention: number; 
+  meditation: number; 
   stability: number;
   bandPowers: Record<BrainwaveBand, number>;
   trend: 'increasing' | 'decreasing' | 'stable';
+  quantum?: QuantumEEGMetrics;
 }
 
 export interface MetasurfaceState {
   gridSize: number;
   beamAngle: { azimuth: number; elevation: number };
   focus: number;
-  phaseProfile: number[][]; // grid of radians
-  radiationPattern: number[]; // far-field intensity
+  phaseProfile: number[][]; 
+  radiationPattern: number[]; 
+  hologramMode: HolographicMode;
+  collective?: CollectiveState;
 }
 
 export enum TherapyPhase {

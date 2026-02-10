@@ -1,5 +1,5 @@
 
-import { ArkheProfile, CosmicFrequency, IdentityNode, AerialSpirit, SpiritRank, ElementalDirection, AdmissibilityResult, BrainwaveBand, NeuroProfile, MetasurfaceState } from '../types';
+import { ArkheProfile, CosmicFrequency, IdentityNode, AerialSpirit, SpiritRank, ElementalDirection, AdmissibilityResult, BrainwaveBand, NeuroProfile, MetasurfaceState, HolographicMode, CollectiveState } from '../types';
 
 export class ArkheEngine {
   private constants = {
@@ -80,8 +80,7 @@ export class ArkheEngine {
     ];
   }
 
-  public calculateNeuroProfile(attentionLevel: number): NeuroProfile {
-    // Generate pseudo-EEG bands based on attention
+  public calculateNeuroProfile(attentionLevel: number, collectiveMode: boolean = false): NeuroProfile {
     const bands: Record<BrainwaveBand, number> = {
       [BrainwaveBand.DELTA]: 5 + Math.random() * 5,
       [BrainwaveBand.THETA]: 10 + (100 - attentionLevel) * 0.4,
@@ -90,22 +89,26 @@ export class ArkheEngine {
       [BrainwaveBand.GAMMA]: attentionLevel > 80 ? attentionLevel - 50 : 2
     };
 
+    const quantum = {
+      coherence: 0.8 + (attentionLevel / 100) * 0.2,
+      entanglement: 0.5 + Math.random() * 0.4,
+      qubitState: Array.from({ length: 8 }).map(() => Math.random())
+    };
+
     return {
       attention: attentionLevel,
       meditation: 100 - attentionLevel,
       stability: 0.8 + Math.random() * 0.2,
       bandPowers: bands,
-      trend: Math.random() > 0.5 ? 'increasing' : 'stable'
+      trend: Math.random() > 0.5 ? 'increasing' : 'stable',
+      quantum
     };
   }
 
-  public computeMetasurface(profile: NeuroProfile): MetasurfaceState {
+  public computeMetasurface(profile: NeuroProfile, mode: HolographicMode = HolographicMode.STATIC, collective?: boolean): MetasurfaceState {
     const size = 16;
     const { attention } = profile;
     
-    // Mapping Attention to Beam Steering
-    // Azimuth: -45 to 45 deg based on attention
-    // Focus: 0.1 to 1.0 based on attention
     const azimuth = (attention - 50) * 0.9;
     const elevation = (attention - 50) * 0.3;
     const focus = attention / 100;
@@ -122,34 +125,49 @@ export class ArkheEngine {
         const x = j * this.constants.SPACING * this.constants.WAVELENGTH;
         const y = i * this.constants.SPACING * this.constants.WAVELENGTH;
         
-        // Steering component
         const steering = (2 * Math.PI / this.constants.WAVELENGTH) * (x * Math.sin(azRad) + y * Math.sin(elRad));
         
-        // Focus component (lens)
         const dx = (j - center) * this.constants.SPACING * this.constants.WAVELENGTH;
         const dy = (i - center) * this.constants.SPACING * this.constants.WAVELENGTH;
         const r = Math.sqrt(dx*dx + dy*dy);
         const focalLength = 1.0 / (focus + 0.1);
         const lens = (2 * Math.PI / this.constants.WAVELENGTH) * (Math.sqrt(r*r + focalLength*focalLength) - focalLength);
         
-        row.push((steering + lens) % (2 * Math.PI));
+        // Add holographic complexity if requested
+        let complexity = 0;
+        if (mode === HolographicMode.VOLUMETRIC) {
+           complexity = Math.sin(x * 100) * Math.cos(y * 100);
+        }
+
+        row.push((steering + lens + complexity) % (2 * Math.PI));
       }
       grid.push(row);
     }
     
-    // Far-field approximation (simplified)
     const pattern: number[] = Array.from({ length: 181 }).map((_, deg) => {
       const theta = (deg - 90) * (Math.PI / 180);
       const diff = Math.abs(theta - azRad);
       return Math.exp(-Math.pow(diff / (0.1 + (1 - focus) * 0.5), 2));
     });
 
+    let collData: CollectiveState | undefined;
+    if (collective) {
+      collData = {
+        userSync: 0.4 + (attention / 100) * 0.5,
+        activeNodes: 3,
+        emergentPattern: attention > 70 ? 'FOCUSED_VORTEX' : 'DIFFUSE_INTERFERENCE',
+        globalEntropy: (1 - (attention / 100)) * 2.5
+      };
+    }
+
     return {
       gridSize: size,
       beamAngle: { azimuth, elevation },
       focus,
       phaseProfile: grid,
-      radiationPattern: pattern
+      radiationPattern: pattern,
+      hologramMode: mode,
+      collective: collData
     };
   }
 

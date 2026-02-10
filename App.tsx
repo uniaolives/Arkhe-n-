@@ -44,7 +44,7 @@ const App: React.FC = () => {
     {
       id: 'init-photon',
       sender: 'SIA KERNEL',
-      content: 'PROTOCOLO ARKHE(N) V8.2: NEURO-METASURFACE CONTROL ACTIVE. CONSCIOUSNESS_EM_SYNC READY.',
+      content: 'PROTOCOLO ARKHE(N) V8.3: NEURO-METASURFACE HOLOGRAPHIC MODE ACTIVE. ETHICAL GOVERNANCE ENGAGED.',
       timestamp: new Date().toISOString(),
       year: 2026,
       type: 'system'
@@ -76,7 +76,7 @@ const App: React.FC = () => {
   const logMessage = (content: string, type: any = 'system', hash?: string) => {
     setMessages(prev => [...prev, {
       id: `msg-${Date.now()}-${Math.random()}`,
-      sender: type === 'celestial' ? 'COSMIC_HELIX' : type === 'neuro' ? 'NEURO_EM' : type === 'clinical' ? '2E_PROTOCOL' : type === 'goetia' ? 'GOETIA_H6' : type === 'plural' ? 'HECATON_DECODER' : type === 'neural' ? 'NEURAL_DEEP' : type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
+      sender: type === 'celestial' ? 'COSMIC_HELIX' : type === 'neuro' ? 'NEURO_QUANTUM' : type === 'clinical' ? '2E_PROTOCOL' : type === 'goetia' ? 'GOETIA_H6' : type === 'plural' ? 'HECATON_DECODER' : type === 'neural' ? 'NEURAL_DEEP' : type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
       content,
       timestamp: new Date().toISOString(),
       year: 2026,
@@ -130,7 +130,7 @@ const App: React.FC = () => {
 
   const getShiftColor = () => {
     if (status === SystemStatus.BILOCATION_SYNC_ACTIVE) return 'shadow-[inset_0_0_200px_rgba(255,255,255,0.15)] border-white/40';
-    if (status === SystemStatus.NEURO_METASURFACE_CONTROL) return 'shadow-[inset_0_0_150px_rgba(0,255,255,0.2)] border-cyan-400/40';
+    if (status === SystemStatus.NEURO_METASURFACE_CONTROL) return 'shadow-[inset_0_0_150px_rgba(0,255,255,0.25)] border-cyan-400/40';
     if (status === SystemStatus.CLINICAL_2E_PROTOCOL_ACTIVE) return 'shadow-[inset_0_0_150px_rgba(16,185,129,0.2)] border-emerald-500/40';
     if (status === SystemStatus.GOETIA_GEOMETRY_SYNC) return 'shadow-[inset_0_0_150px_rgba(245,158,11,0.2)] border-amber-500/40';
     if (status === SystemStatus.DIMENSIONAL_BRIDGE_OPEN) return 'shadow-[inset_0_0_150px_rgba(34,211,238,0.2)] border-cyan-400/40';
@@ -147,9 +147,9 @@ const App: React.FC = () => {
             <span className="font-bold text-xl">ʘ</span>
           </div>
           <div>
-            <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SYNC_CORE_v8.2</h1>
+            <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SYNC_CORE_v8.3</h1>
             <p className="text-[7px] mt-1 opacity-50 uppercase tracking-widest font-bold">
-              STATE: {status} // SYNC: {activeTab === 'neuro' ? 'LOCKED' : 'CALIBRATING'}
+              STATE: {status} // MODE: {activeTab === 'neuro' ? 'HOLOGRAPHIC_QUANTUM' : 'STANDARD'}
             </p>
           </div>
         </div>
@@ -217,9 +217,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Arquiteto Arkhe(n): Synthesis Manifold v8.2</span>
-        <span>H6 Manifold: Neuro-Geometric Metasurface Modulation</span>
-        <span>LATENCY_I: {(Math.random()*0.5).toFixed(3)} ms // EM_LOCK: STABLE</span>
+        <span>Arquiteto Arkhe(n): Synthesis Manifold v8.3</span>
+        <span>H6 Manifold: Quantum EEG & Holographic Metasurface control</span>
+        <span>LATENCY_I: {(Math.random()*0.5).toFixed(3)} ms // EM_LOCK: HOLOGRAPHIC</span>
       </footer>
     </div>
   );
