@@ -24,6 +24,17 @@ export enum VerbalPolarity {
   TOXIC = 'TOXIC'
 }
 
+export enum BioEventType {
+  VERBAL_EMISSION = "verbal_emission",
+  PHOTONIC_CONVERSION = "photonic_conversion",
+  WATER_REORGANIZATION = "water_reorganization",
+  PROTEIN_FOLDING = "protein_folding",
+  GENE_EXPRESSION = "gene_expression",
+  HORMONAL_RESPONSE = "hormonal_response",
+  CELLULAR_ADAPTATION = "cellular_adaptation",
+  TELOMERE_MODIFICATION = "telomere_modification"
+}
+
 export interface ProcessorStats {
   received: number;
   processed: number;
@@ -32,13 +43,21 @@ export interface ProcessorStats {
   avgDuration: number;
 }
 
-// Added BlockData interface to resolve import errors in App.tsx and BlockchainSim.tsx
 export interface BlockData {
   height: number;
   hash: string;
   dnaFragment: string;
   entropy: number;
   coinbase?: string;
+}
+
+export interface BioChemicalEvent {
+  type: BioEventType;
+  timeNs: number;
+  description: string;
+  impact: number;
+  targets: string[];
+  amplification: number;
 }
 
 export interface EchoMessage {

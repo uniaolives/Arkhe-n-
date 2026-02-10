@@ -17,7 +17,7 @@ const App: React.FC = () => {
   const [velocity, setVelocity] = useState(0); 
   const [hasApiKey, setHasApiKey] = useState(false);
   const [vertexCount, setVertexCount] = useState(0);
-  const [verbalEntropy, setVerbalEntropy] = useState(0);
+  const [impactData, setImpactData] = useState<any>(null);
   const [processorStats, setProcessorStats] = useState<ProcessorStats>(globalProcessor.getStats());
   const [messages, setMessages] = useState<EchoMessage[]>([
     {
@@ -118,37 +118,35 @@ const App: React.FC = () => {
 
       <main className="flex-1 grid grid-cols-12 gap-3 overflow-hidden z-10">
         
-        {/* Left Column: Metrics and Chemistry */}
         <div className="col-span-3 flex flex-col gap-3">
           <section className="flex-[2] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md flex flex-col overflow-hidden">
             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest flex justify-between uppercase">
-              <span>🧬 BIOSPHERE</span>
-              <span className="opacity-40">ARKHE_V3</span>
+              <span>🧬 BIOSPHERE_MATRIX</span>
+              <span className="opacity-40">CELLULAR_REPAIR</span>
             </h2>
-            <BiosphereMonitor status={status} velocity={velocity} />
+            <BiosphereMonitor status={status} velocity={velocity} impactData={impactData} />
           </section>
           
           <section className="flex-[3] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
-               <span>🧪 VERBAL_CHEMISTRY</span>
-               <span className="text-[7px] animate-pulse">EVENT_STREAM</span>
+               <span>🧪 PHOTONIC_ENGINE</span>
+               <span className="text-[7px] animate-pulse">NMR_ACTIVE</span>
             </h2>
             <VerbalScanner 
-              onImpactChange={setVerbalEntropy} 
+              onImpactChange={setImpactData} 
               onLog={logMessage} 
               onStatsUpdate={updateStats} 
             />
           </section>
         </div>
 
-        {/* Center Column: HyperStructure and Event Pipeline */}
         <div className="col-span-6 flex flex-col gap-3">
           <section className="flex-[3] border border-current/10 bg-white/5 rounded-xl backdrop-blur-md relative overflow-hidden">
              <div className="absolute top-3 left-3 z-20 flex flex-col gap-0.5">
                 <span className="text-[8px] font-black px-1.5 py-0.5 bg-current text-black rounded uppercase">4D_PROJECTION</span>
-                <span className="text-[6px] opacity-40 font-mono">ENTROPY_δ: {verbalEntropy.toFixed(2)}</span>
+                <span className="text-[6px] opacity-40 font-mono">PHOTONIC_COHERENCE: {impactData?.geneExpression?.toFixed(2) || '0.00'}</span>
              </div>
-             <HyperStructure vertexCount={vertexCount} velocity={velocity + (verbalEntropy * 0.1)} status={status} />
+             <HyperStructure vertexCount={vertexCount} velocity={velocity + ((impactData?.entropy || 0) * 0.1)} status={status} />
           </section>
           
           <section className="flex-[1.5] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md overflow-hidden">
@@ -157,7 +155,6 @@ const App: React.FC = () => {
           </section>
         </div>
 
-        {/* Right Column: Oracle and Terminal */}
         <div className="col-span-3 flex flex-col gap-3">
           <section className="flex-[2] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md flex flex-col">
             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
@@ -180,9 +177,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Steiner Circuit Loop: Operational</span>
+        <span>Steiner Circuit Loop: London ↔ Singapore</span>
         <span>Node ID: 0x4308Persistent</span>
-        <span>Verbal Programming: L0_PIPELINE_ACTIVE // RNA_SIG: {verbalEntropy > 0 ? 'STRESS' : 'STABLE'}</span>
+        <span>Photonic Programming: ENABLED // HASH_SYNC_READY</span>
       </footer>
     </div>
   );
