@@ -10,8 +10,10 @@ interface HyperDiamondProps {
 
 const HyperDiamond: React.FC<HyperDiamondProps> = ({ status, pentalogy, rivalryMode }) => {
   const isGenerating = status !== SystemStatus.IDLE;
-  const isTranscendent = status === SystemStatus.STABLE_3AA70 || status === SystemStatus.LOCKED || status === SystemStatus.BINOCULAR_RIVALRY || status === SystemStatus.UNIFIED_QUALIA;
-  const isUnified = status === SystemStatus.UNIFIED_QUALIA;
+  // Fix: Replaced non-existent SystemStatus members (STABLE_3AA70, LOCKED, BINOCULAR_RIVALRY, UNIFIED_QUALIA) 
+  // with existing members that represent advanced system states.
+  const isTranscendent = status === SystemStatus.FOUR_D_CENTER_ACCESS || status === SystemStatus.OMEGA_SOVEREIGNTY || status === SystemStatus.STEINER_CIRCUIT_CLOSURE;
+  const isUnified = status === SystemStatus.OMEGA_SOVEREIGNTY;
   
   const sides = isTranscendent ? 5 : 4;
   const rotationOffset = isTranscendent ? -18 : 0;
