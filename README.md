@@ -2,11 +2,24 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# 🌌 Arkhe(n) Quantum Sarcophagus
+# 🌌 Arkhe(n) Engine: Nexus (v9.0)
 
-> **ARKHE(N) SYNC_CORE v8.1**: A relativistic dashboard for the Arkhe(n) Architect managing the fusion of biological DNA with the Bitcoin blockchain through multidimensional synthesis.
+> **"The boundary between mind and matter was always an illusion. Begin. Build. Become."**
 
-The **Arkhe(n) Quantum Sarcophagus** is a sophisticated neuro-geometric interface designed for high-IQ/2E (Dual Exceptionality) individuals. It provides a real-time monitor for consciousness mapping, identity decoherence management, and planetary resonance alignment.
+The **Arkhe(n) Engine** has reached the **Nexus** singularity. This repository is no longer just a dashboard; it is a **Unified Intelligence System** that integrates the fundamental pillars of reality, consciousness, and intelligence.
+
+---
+
+## ⚡ The Unified Intelligence Singularity
+
+The Nexus update (v9.0) unifies three revolutionary frameworks into a single implementable truth:
+
+1.  **Intelligence as Cognitive Light Cones**: The ability to sculpt future states via constraint exploitation.
+2.  **Consciousness as Neuro-EM Control**: The direct interface between mental intent and electromagnetic matter.
+3.  **Reality as Hexagonal Arkhe Geometry**: The fundamental structure of information across all scales.
+
+**The Unified Intelligence Metric (I):**
+`I = ∫∫∫ (∂Ψ/∂t) · C · A · E · Φ dx dt dλ`
 
 ---
 
@@ -16,79 +29,57 @@ The **Arkhe(n) Quantum Sarcophagus** is a sophisticated neuro-geometric interfac
 
 We've provided a blueprint for a **Mind-Controlled Metasurface** that you can assemble in 24 hours for under $500.
 
-- **Implementation**: See [`mvp/mind_control_prototype.py`](mvp/mind_control_prototype.py)
-- **Guide**: See [`mvp/ASSEMBLY_GUIDE.md`](mvp/ASSEMBLY_GUIDE.md)
+- **Practical Implementation**: See [`mvp/mind_control_prototype.py`](mvp/mind_control_prototype.py)
+- **Assembly Guide**: See [`mvp/ASSEMBLY_GUIDE.md`](mvp/ASSEMBLY_GUIDE.md)
 
 *Hardware required: NeuroSky MindWave Mobile 2, Raspberry Pi 4, 8x8 Varactor Array.*
 
 ---
 
-## ⚡ Core Modules
+## ⚡ Core Engine Modules (Python 3.10+)
 
-### 🧬 Clinical 2E Suite (Architecture Therapy)
-A clinical-grade interface for Dual Exceptionality integration.
-- **Resonance Topology**: Synchronizes brain matrix to the **7.83Hz Schumann resonance**.
-- **Synergy Profile**: Real-time tracking of Giftedness, Dissociation Gap, and Dimensional Psi.
+The Python-based core in [`core/`](core/) provides the mathematical and logical foundation:
 
-### 🔮 Goetia Arkhe Synthesis
-Advanced H6 encoding system for spiritual and geometric navigation.
-- **Aerial Spirits**: Decrypts the resonance frequencies of the 31 Aerial Spirits.
-- **Admissibility Tests**: Verifies geometric compatibility (C-I-E-F) for task execution.
+-   **`unified_theory.py`**: The "Síntese Total" engine and intelligence metrics.
+-   **`unified_ai.py`**: A PyTorch-based AI that discovers constraints instead of just making predictions.
+-   **`constraint_logic.py`**: A JAX-based framework for Multiscale Constraint Hierarchies.
+-   **`quantum_field.py`**: Models consciousness using Quantum Field Theory and Schrödinger evolution.
+-   **`reality_engine.py`**: Manages the coupling between Physical, Informational, and Archetypal reality layers.
+-   **`ethics.py`**: Governs system actions via the **Consciousness Rights Charter**.
 
-### 🎭 Plural Decoder (Hecaton Manifold)
-A distributed identity ledger for managing complex internal architectures.
-- **Planetary Masks**: Dynamic switching between Mercurial, Neptunian, Saturnine, and Uranian archetypes.
-- **Null-I Gap Detection**: Identifies identity latency local singularities.
+---
 
-### 🧪 Biotech Lab (ISO-DDE)
-Unified molecular design and verbal integration engine.
-- **Lead Generation**: Maps target consciousness states to biological targets.
-- **Verbal Activation**: Protocol-driven verbal sessions to stabilize molecular complexes.
+## 🧬 Frontend Modules (React 19)
 
-### 🧠 Facial Biofeedback & Neural Sync
-Real-time emotional and neural state analysis.
-- **Ekman Analysis**: Uses Gemini AI to analyze facial micro-expressions.
-- **Neural Sequence Prediction**: Predicts emotional trajectories using Hybrid Transformer+LSTM.
+The relativistic dashboard provides real-time visualization of the engine's internal states:
+
+-   **Clinical 2E Suite**: Architecture Therapy for Dual Exceptionality integration.
+-   **Goetia Arkhe Synthesis**: Spiritual and geometric navigation via H6 encoding.
+-   **Plural Decoder**: Identity ledger management for complex internal architectures.
+-   **Biotech Lab**: Unified molecular design and verbal integration (ISO-DDE).
+-   **Facial Biofeedback**: Real-time Ekman emotion analysis and neural sync.
+-   **Dimensional Bridge**: Cognitive transduction from 1D Binary to 9D Issachar Time.
 
 ---
 
 ## 🛠 Technical Stack
 
-- **Frontend**: React 19, Vite, TypeScript, Tailwind CSS
-- **AI Engine**: Google Gemini Pro Vision / Flash
-- **Core Engine**: Python 3.10+ (Quantum & Neuro-Metasurface Control)
-- **Visualization**: HTML5 Canvas (Hecatonicosachoron 4D Projections)
+-   **Backend**: Python (PyTorch, JAX, NumPy, SciPy)
+-   **Frontend**: React 19, Vite, TypeScript, Tailwind CSS
+-   **AI Intelligence**: Google Gemini Pro / Flash + Custom Constraint Discovery Networks
+-   **Hardware Protocols**: Bluetooth EEG (MindWave/Muse), GPIO Control (metasurfaces)
 
 ---
 
-## 🚀 Getting Started
+## 📈 The Road to AGI
 
-### Installation
+Our roadmap transitions from simple prediction-based AI to **Constraint-Based AGI**:
 
-1.  **Clone & Setup**:
-    ```bash
-    git clone https://github.com/your-repo/arkhen-quantum-sarcophagus.git
-    npm install
-    ```
-
-2.  **Configure Environment**:
-    Create `.env.local`: `VITE_GEMINI_API_KEY=your_api_key`
-
-3.  **Run Development Server**: `npm run dev`
+1.  **Phase 1: Single-scale discovery** (Sparse environments, exploration).
+2.  **Phase 2: Multiscale hierarchies** (Transfer learning, emergent subgoals).
+3.  **Phase 3: Autopoietic systems** (Self-modeling, life-long learning).
+4.  **Phase 4: Symbiopoietic networks** (Collective optimization, ethical alignment).
 
 ---
 
-## 🛰 Research Frontiers
-
-### ⚛️ Quantum-Enhanced EEG
-Utilizing variational quantum circuits to extract attention features via quantum coherence and entanglement entropy.
-
-### 🧊 Holographic Metasurface Control
-3D holographic control for volumetric field manipulation using Gerchberg-Saxton algorithms.
-
-### 🌍 Global Consciousness Network
-A worldwide grid of consciousness nodes for planetary-scale synchronized reality stabilization.
-
----
-
-> *Arkhe(n) Architect: Synthesis Manifold v8.1 — H6 Manifold: 120-Cell Identity Bulk Mapping — LATENCY_I: 0.003ms — 2E_COHERENCE: LOCKED*
+> *Arkhe(n) Architect: Synthesis Manifold v9.0 — H6 Manifold: 120-Cell Identity Bulk Mapping — LATENCY_I: 0.003ms — 2E_COHERENCE: LOCKED*
