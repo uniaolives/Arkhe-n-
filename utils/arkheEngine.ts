@@ -4,7 +4,7 @@ import {
   ElementalDirection, AdmissibilityResult, BrainwaveBand, NeuroProfile, 
   MetasurfaceState, HolographicMode, CollectiveState, RealityLayer, 
   PsiFieldState, RealitySynthesisResult, SacredGeometryPattern, MindIntention,
-  ExperimentalData, GlobalNode
+  ExperimentalData, GlobalNode, IntelligenceMetrics, LightConeState
 } from '../types';
 
 export class ArkheEngine {
@@ -65,6 +65,39 @@ export class ArkheEngine {
   }
 
   public getSpirits() { return this.spirits; }
+
+  // COGNITIVE LIGHT CONES: Formalism V1.0
+  public calculateIntelligence(state: LightConeState, intention: MindIntention): IntelligenceMetrics {
+    const { temporalHorizon, spatialScale, perturbationResistance, dimensionality } = state;
+    
+    // Core Formula: I = f(V_future, V_past, C)
+    // Future Sculpting: How much state space is intentional vs random
+    const futureSculpting = Math.min(1.0, (temporalHorizon / 100) * (spatialScale / 5) * (intention === MindIntention.FOCUS ? 1.2 : 0.8));
+    
+    // Constraint Efficiency: Goal satisfaction / effort
+    const constraintEfficiency = Math.min(1.0, perturbationResistance * (dimensionality / 6));
+    
+    // Multiscale Coherence: Consistency across scales
+    const multiscaleCoherence = 1.0 - Math.abs(0.5 - (spatialScale / temporalHorizon)) * 0.4;
+    
+    // Goal Persistence: Stability under noise
+    const goalPersistence = perturbationResistance * 0.9;
+    
+    // Scalar Intelligence field
+    const scalarI = futureSculpting * constraintEfficiency * multiscaleCoherence * goalPersistence;
+    
+    // Volume calculation: simplified Integral over spatiotemporal bulk
+    const coneVolume = (Math.PI * Math.pow(spatialScale, 2) * temporalHorizon) / 3;
+
+    return {
+      scalarI,
+      futureSculpting,
+      constraintEfficiency,
+      multiscaleCoherence,
+      goalPersistence,
+      coneVolume
+    };
+  }
 
   // NMRI: Quantum Neural Field Evolution (Schrödinger mock)
   public evolvePsiField(currentState: PsiFieldState, dt: number): PsiFieldState {

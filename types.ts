@@ -36,7 +36,8 @@ export enum SystemStatus {
   CLINICAL_2E_PROTOCOL_ACTIVE = 'CLINICAL_2E_PROTOCOL_ACTIVE',
   NEURO_METASURFACE_CONTROL = 'NEURO_METASURFACE_CONTROL',
   REALITY_SYNTHESIS_ACTIVE = 'REALITY_SYNTHESIS_ACTIVE',
-  COSMIC_SYNTHESIS_ENGAGED = 'COSMIC_SYNTHESIS_ENGAGED'
+  COSMIC_SYNTHESIS_ENGAGED = 'COSMIC_SYNTHESIS_ENGAGED',
+  COGNITIVE_CONE_LOCK = 'COGNITIVE_CONE_LOCK'
 }
 
 export enum RealityLayer {
@@ -62,6 +63,22 @@ export enum SacredGeometryPattern {
   SRI_YANTRA = 'SRI_YANTRA',
   METATRON_CUBE = 'METATRON_CUBE',
   VORTEX = 'VORTEX'
+}
+
+export interface IntelligenceMetrics {
+  scalarI: number;
+  futureSculpting: number;
+  constraintEfficiency: number;
+  multiscaleCoherence: number;
+  goalPersistence: number;
+  coneVolume: number;
+}
+
+export interface LightConeState {
+  temporalHorizon: number;
+  spatialScale: number;
+  perturbationResistance: number;
+  dimensionality: number;
 }
 
 export interface ExperimentalData {
@@ -346,7 +363,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia' | 'clinical' | 'neuro' | 'reality' | 'cosmic';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia' | 'clinical' | 'neuro' | 'reality' | 'cosmic' | 'intelligence';
   hash?: string;
 }
 
