@@ -59,10 +59,11 @@ export enum BioEventType {
   ORBITAL_ENTANGLEMENT_PEAK = "orbital_entanglement_peak",
   DIMENSIONAL_SHIFT = "dimensional_shift",
   PLANETARY_MASK_ACTIVATE = "planetary_mask_activate",
-  CHRONOLOGICAL_SHEAR_DETECTED = "chronological_shear_detected"
+  CHRONOLOGICAL_SHEAR_DETECTED = "chronological_shear_detected",
+  NULL_I_GAP = "null_i_gap",
+  DIMENSIONAL_DECOMPRESSION = "dimensional_decompression"
 }
 
-// Added VerbalPolarity enum to resolve missing member error
 export enum VerbalPolarity {
   TOXIC = 'TOXIC',
   DISRUPTIVE = 'DISRUPTIVE',
@@ -72,8 +73,8 @@ export enum VerbalPolarity {
 }
 
 export enum PlanetaryMask {
-  MERCURIAL = 'MERCURIAL', // Hyper-rational logic bridge
-  NEPTUNIAN = 'NEPTUNIAN', // Creative dissociation / Bulk volume
+  MERCURIAL = 'MERCURIAL', // Hyper-rational logic bridge / Strands 3-5
+  NEPTUNIAN = 'NEPTUNIAN', // Creative dissociation / Bulk volume / Strands 6-8
   SATURNINE = 'SATURNINE', // Compensatory structure
   JUPITERIAN = 'JUPITERIAN', // Cognitive expansion
   URANIAN = 'URANIAN'     // Radical innovation
@@ -86,7 +87,7 @@ export enum DimensionalLevel {
   FOUR_D = '4D',
   FIVE_D = '5D',
   SIX_D_PLUS = '6D+',
-  NINE_D_ISSACHAR = '9D' // Issachar Harmonic / Spherical Time
+  NINE_D_ISSACHAR = '9D' 
 }
 
 export interface PluralProfile {
@@ -101,8 +102,10 @@ export interface PluralProfile {
   rationalizationFactor: number;
   activeMask: PlanetaryMask;
   dimensionalAccess: DimensionalLevel;
-  integrationPsi: number; // Integration Coefficient (Psi)
-  chronologicalShear: number; // Chronological Shear / Identity Latency
+  integrationPsi: number; 
+  chronologicalShear: number; 
+  nullIGap: boolean;
+  decompressionSickness: number; // 0-1
 }
 
 export interface KNNPattern {
@@ -179,7 +182,6 @@ export interface PentalogyState {
   resonance: number;
 }
 
-// Added MolecularInteractionType enum to resolve missing member error
 export enum MolecularInteractionType {
   HYDROGEN_BOND = 'HYDROGEN_BOND',
   VAN_DER_WAALS = 'VAN_DER_WAALS',
@@ -189,7 +191,6 @@ export enum MolecularInteractionType {
   COVALENT = 'COVALENT'
 }
 
-// Added CelestialBody enum to resolve missing member error
 export enum CelestialBody {
   SUN = 'SUN',
   MERCURY = 'MERCURY',
@@ -202,7 +203,6 @@ export enum CelestialBody {
   NEPTUNE = 'NEPTUNE'
 }
 
-// Added HelicalPosition interface to resolve missing member error
 export interface HelicalPosition {
   body: CelestialBody;
   x: number;
@@ -210,7 +210,6 @@ export interface HelicalPosition {
   z: number;
 }
 
-// Added CelestialDNAStats interface to resolve missing member error
 export interface CelestialDNAStats {
   turnsPerGalacticOrbit: number;
   basePairsPerTurn: number;

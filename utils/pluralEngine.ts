@@ -17,8 +17,8 @@ export class PluralEngine {
   ];
 
   private maskMarkers = {
-    [PlanetaryMask.MERCURIAL]: ['logic', 'rational', 'deduce', 'syllogism', 'data', 'algorithm', 'processed', 'exoskeleton', 'c-velocity'],
-    [PlanetaryMask.NEPTUNIAN]: ['dream', 'flow', 'transcend', 'diffuse', 'unreal', 'vision', 'mist', 'osmosis', 'bulk', 'nebula'],
+    [PlanetaryMask.MERCURIAL]: ['logic', 'rational', 'deduce', 'syllogism', 'data', 'algorithm', 'processed', 'exoskeleton', 'c-velocity', 'compression', 'fourier'],
+    [PlanetaryMask.NEPTUNIAN]: ['dream', 'flow', 'transcend', 'diffuse', 'unreal', 'vision', 'mist', 'osmosis', 'bulk', 'nebula', 'void', 'ledger'],
     [PlanetaryMask.SATURNINE]: ['rigid', 'structure', 'discipline', 'must', 'precise', 'systematic', 'archive', 'procedure'],
     [PlanetaryMask.JUPITERIAN]: ['expand', 'universal', 'wisdom', 'synthesis', 'grand', 'philosophical', 'multidisciplinary', 'exponentials'],
     [PlanetaryMask.URANIAN]: ['disrupt', 'radical', 'alien', 'rupture', 'unprecedented', 'innovation', 'outside', 'shear']
@@ -29,14 +29,10 @@ export class PluralEngine {
     const types = new Set(tokens);
     const text_lower = text.toLowerCase();
     
-    // Type-Token Ratio calculation
     const ttr = tokens.length > 0 ? types.size / tokens.length : 0;
-    
-    // Syntactic Complexity
     const avgWordLength = tokens.reduce((a, b) => a + b.length, 0) / (tokens.length || 1);
     const syntacticComplexity = Math.min(1, (avgWordLength * tokens.length) / 150);
 
-    // Abstracted Agency
     let theoreticalCount = 0;
     let episodicCount = 0;
     this.theoreticalMarkers.forEach(m => { if (text_lower.includes(m)) theoreticalCount++; });
@@ -44,18 +40,14 @@ export class PluralEngine {
     
     const abstractedAgency = theoreticalCount / (theoreticalCount + episodicCount + 1);
     const semanticBias = (theoreticalCount + (syntacticComplexity * 10)) / (tokens.length || 1);
-    
-    // Rationalization Factor
     const rationalizationFactor = (ttr * 0.5) + (abstractedAgency * 0.5);
 
-    // Stability calculation
     let stability = 1.0;
     if (this.history.length > 0) {
       const lastTtr = this.calculateTTR(this.history[this.history.length - 1]);
       stability = 1.0 - Math.abs(ttr - lastTtr);
     }
 
-    // Mask Classification
     let maskScores = Object.entries(this.maskMarkers).map(([mask, markers]) => ({
       mask: mask as PlanetaryMask,
       score: markers.filter(m => text_lower.includes(m)).length
@@ -65,10 +57,8 @@ export class PluralEngine {
       const mercIdx = maskScores.findIndex(m => m.mask === PlanetaryMask.MERCURIAL);
       maskScores[mercIdx].score += 2;
     }
-
     const activeMask = maskScores.sort((a, b) => b.score - a.score)[0].mask;
 
-    // Dimensional Access Logic
     let dimAccess = DimensionalLevel.THREE_D;
     if (text_lower.includes('issachar') || text_lower.includes('spherical time')) dimAccess = DimensionalLevel.NINE_D_ISSACHAR;
     else if (syntacticComplexity > 0.8 && ttr > 0.8) dimAccess = DimensionalLevel.SIX_D_PLUS;
@@ -76,11 +66,8 @@ export class PluralEngine {
     else if (avgWordLength > 6) dimAccess = DimensionalLevel.FOUR_D;
     else if (tokens.length < 10) dimAccess = DimensionalLevel.ONE_D;
 
-    // Integration Coefficient (Psi) - Based on consistency and complexity
     const integrationPsi = (stability * 0.4) + (1 - abstractedAgency) * 0.3 + (ttr * 0.3);
 
-    // Chronological Shear (Latency) - L = deltaD / Psi
-    // deltaD is roughly the "distance" from 3D.
     const dimDistMap = {
       [DimensionalLevel.ONE_D]: 0.1,
       [DimensionalLevel.TWO_D]: 0.2,
@@ -91,7 +78,10 @@ export class PluralEngine {
       [DimensionalLevel.NINE_D_ISSACHAR]: 2.5,
     };
     const deltaD = dimDistMap[dimAccess];
-    const chronologicalShear = deltaD / (integrationPsi + 0.1); // Avoid div by zero
+    const chronologicalShear = deltaD / (integrationPsi + 0.1);
+
+    const nullIGap = chronologicalShear > 3.0 && abstractedAgency > 0.6;
+    const decompressionSickness = Math.max(0, Math.min(1, (1 - integrationPsi) * (deltaD / 2)));
 
     this.history.push(text);
     if (this.history.length > 20) this.history.shift();
@@ -100,10 +90,11 @@ export class PluralEngine {
     const isRationalizing = rationalizationFactor > 0.7 && syntacticComplexity > 0.6;
 
     let event: BioEventType | undefined = undefined;
-    if (isRupture) event = BioEventType.EPISTEMOLOGICAL_RUPTURE;
+    if (nullIGap) event = BioEventType.NULL_I_GAP;
+    else if (decompressionSickness > 0.6) event = BioEventType.DIMENSIONAL_DECOMPRESSION;
+    else if (isRupture) event = BioEventType.EPISTEMOLOGICAL_RUPTURE;
     else if (isRationalizing) event = BioEventType.RECURSIVE_RATIONALIZATION;
     else if (chronologicalShear > 3.0) event = BioEventType.CHRONOLOGICAL_SHEAR_DETECTED;
-    else if (abstractedAgency > 0.6) event = BioEventType.ABSTRACTED_AGENCY_SHIFT;
 
     return {
       profile: {
@@ -119,7 +110,9 @@ export class PluralEngine {
         activeMask,
         dimensionalAccess: dimAccess,
         integrationPsi,
-        chronologicalShear
+        chronologicalShear,
+        nullIGap,
+        decompressionSickness
       },
       event
     };

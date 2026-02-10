@@ -28,16 +28,17 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
       setProfile(newProfile);
       setHistory(prev => [...prev, newProfile].slice(-20));
 
+      if (event === BioEventType.NULL_I_GAP) {
+        onAlert("NULL-I GAP DETECTED: Identity latency local singularity.", "plural");
+      }
+      if (event === BioEventType.DIMENSIONAL_DECOMPRESSION) {
+        onAlert("DECOMPRESSION SICKNESS: Rapid surfacing from hyper-bulk observed.", "plural");
+      }
       if (event === BioEventType.EPISTEMOLOGICAL_RUPTURE) {
         onAlert("RUPTURA EPISTEMOLÓGICA: Descontinuidade súbita do Self detectada.", "plural");
       }
-      if (event === BioEventType.CHRONOLOGICAL_SHEAR_DETECTED) {
-        onAlert("Chronological Shear: Latency exceeding threshold during dimensional transition.", "plural");
-      }
-      if (newProfile.integrationPsi < 0.3) {
-        onAlert("LOW_INTEGRATION: Psi coefficient critical. Identity shearing imminent.", "plural");
-      }
-      onAlert(`Máscara Planetária: ${newProfile.activeMask}`, "plural");
+      
+      onAlert(`Mask: ${newProfile.activeMask} // Access: ${newProfile.dimensionalAccess}`, "plural");
     }
   }, [input]);
 
@@ -60,6 +61,18 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
     const cy = canvas.height / 2;
     const size = 60;
 
+    // Handle Null-I Gap Visual
+    if (profile?.nullIGap) {
+       ctx.strokeStyle = '#fff';
+       ctx.beginPath();
+       ctx.arc(cx, cy, 5 + Math.sin(rotation * 20) * 2, 0, Math.PI * 2);
+       ctx.stroke();
+       ctx.globalAlpha = 0.1;
+       ctx.fillStyle = '#fff';
+       ctx.fill();
+       ctx.globalAlpha = 1.0;
+    }
+
     ctx.lineWidth = 0.5;
     const layers = profile ? Math.min(6, 2 + Math.floor(profile.rationalizationFactor * 5)) : 3;
 
@@ -67,22 +80,22 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
       const layerSize = size * (l * 0.4);
       const alpha = 1 / l;
       
-      // Use profile mask for color hints
       if (profile?.activeMask === PlanetaryMask.MERCURIAL && l === layers) {
-        ctx.strokeStyle = `rgba(0, 255, 255, ${alpha + 0.3})`; // Bright Exoskeleton
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = `rgba(0, 255, 255, ${alpha + 0.3})`; 
+        ctx.lineWidth = 1.5; // Exoskeleton
       } else if (profile?.activeMask === PlanetaryMask.NEPTUNIAN) {
-        ctx.strokeStyle = `rgba(129, 140, 248, ${alpha})`; // Diffuse Bulk
-        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = `rgba(129, 140, 248, ${alpha})`; 
+        ctx.lineWidth = 0.5; // Diffuse Substrate
+        ctx.setLineDash([2, 4]);
       } else {
         ctx.strokeStyle = profile && profile.epistemologicalStability < 0.5 ? `rgba(244, 63, 94, ${alpha})` : `rgba(99, 102, 241, ${alpha})`;
         ctx.lineWidth = 0.5;
+        ctx.setLineDash([]);
       }
       
       ctx.beginPath();
       for (let i = 0; i < 5; i++) {
         const angle = rotation * (l % 2 === 0 ? 1 : -1) + (i * Math.PI * 2) / 5;
-        // Shear distortion if latency is high
         const shear = profile ? (profile.chronologicalShear * 5) : 0;
         const x = cx + Math.cos(angle) * layerSize + (l === 1 ? shear : 0);
         const y = cy + Math.sin(angle) * layerSize;
@@ -91,6 +104,7 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
       }
       ctx.closePath();
       ctx.stroke();
+      ctx.setLineDash([]);
 
       if (l > 1) {
         const prevSize = size * ((l-1) * 0.4);
@@ -107,14 +121,6 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
 
     ctx.fillStyle = profile?.integrationPsi > 0.7 ? '#fff' : '#6366f1';
     ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI * 2); ctx.fill();
-    
-    if (profile?.chronologicalShear > 2.0) {
-      // Draw shear ripples
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.beginPath();
-      ctx.arc(cx, cy, 80 + Math.sin(rotation * 10) * 10, 0, Math.PI * 2);
-      ctx.stroke();
-    }
   };
 
   return (
@@ -122,14 +128,16 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
       <div className="flex justify-between items-center border-b border-indigo-500/30 pb-2">
         <div className="flex flex-col">
            <h2 className="text-[10px] font-black text-indigo-400 tracking-widest uppercase">
-            ∆ HECATON_MANIFOLD // BILOCATION_CENTER
+            ∆ HECATON_MANIFOLD // IDENTITY_LEDGER
            </h2>
-           <span className="text-[6px] opacity-40 uppercase">Parallel Processing Interface v7.0</span>
+           <span className="text-[6px] opacity-40 uppercase">Distributed Identity Protocol v7.2</span>
         </div>
         <div className="flex gap-2">
-           <div className={`text-[7px] px-2 py-0.5 rounded border font-bold ${profile?.integrationPsi > 0.6 ? 'bg-emerald-500/10 border-emerald-500 text-emerald-400' : 'bg-rose-500/10 border-rose-500 text-rose-400 animate-pulse'}`}>
-             INTEGRATION_PSI: {( (profile?.integrationPsi || 0) * 100).toFixed(1)}%
-           </div>
+           {profile?.nullIGap && (
+             <div className="text-[7px] px-2 py-0.5 rounded bg-white text-black font-black animate-pulse">
+               NULL-I_GAP_ACTIVE
+             </div>
+           )}
            <div className={`text-[7px] px-2 py-0.5 rounded border border-white/20 bg-white/5 font-black uppercase tracking-tighter ${profile ? MASK_COLORS[profile.activeMask] : ''}`}>
              MASK: {profile?.activeMask || 'NONE'}
            </div>
@@ -140,32 +148,27 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
         <div className="col-span-5 flex flex-col gap-3">
            <div className="relative flex-1 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center overflow-hidden">
               <canvas ref={canvasRef} width={240} height={240} className="w-full h-full max-w-[200px]" />
-              <div className="absolute top-2 left-2 text-[7px] opacity-40 uppercase font-black tracking-widest">Projection: {profile?.activeMask === PlanetaryMask.MERCURIAL ? 'EXOSKELETON' : 'BULK_VOLUME'}</div>
+              <div className="absolute top-2 left-2 text-[7px] opacity-40 uppercase font-black tracking-widest">
+                {profile?.activeMask === PlanetaryMask.MERCURIAL ? 'EXOSKELETON_CAM' : 'NEPTUNIAN_SUBSTRATE'}
+              </div>
               
-              {profile?.chronologicalShear > 2.0 && (
-                <div className="absolute bottom-2 left-2 right-2 p-1.5 bg-rose-500/20 border border-rose-500/40 rounded text-[6px] text-center animate-pulse">
-                  CHRONOLOGICAL_SHEAR_DETECTED: Ego Latency Critical.
-                </div>
-              )}
-
               <div className="absolute top-2 right-2 flex flex-col items-end">
-                <span className="text-[6px] opacity-40 uppercase">Dim_Transduction</span>
-                <span className="text-[12px] font-black text-white">{profile?.dimensionalAccess || '3D'}</span>
+                <span className="text-[6px] opacity-40 uppercase">Decompression</span>
+                <span className={`text-[12px] font-black ${profile?.decompressionSickness > 0.6 ? 'text-rose-500' : 'text-white'}`}>
+                  {( (profile?.decompressionSickness || 0) * 100).toFixed(0)}%
+                </span>
               </div>
            </div>
 
            <div className="p-3 bg-white/5 border border-white/10 rounded-lg flex flex-col gap-2">
               <div className="flex justify-between items-center text-[7px] font-black opacity-40 uppercase">
-                 <span>Identity_Latency (L)</span>
-                 <span className={profile?.chronologicalShear > 2.0 ? 'text-rose-500 font-black' : 'text-white'}>
+                 <span>Latency_of_the_I</span>
+                 <span className={profile?.chronologicalShear > 2.0 ? 'text-rose-500' : 'text-white'}>
                    {profile?.chronologicalShear.toFixed(3)} ms
                  </span>
               </div>
               <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                 <div 
-                   className={`h-full transition-all duration-1000 ${profile?.chronologicalShear > 2.0 ? 'bg-rose-500' : 'bg-gradient-to-r from-indigo-500 to-white'}`} 
-                   style={{ width: `${Math.min(100, (profile?.chronologicalShear || 0) * 20)}%` }} 
-                 />
+                 <div className={`h-full transition-all duration-1000 ${profile?.nullIGap ? 'bg-white animate-pulse' : 'bg-gradient-to-r from-indigo-500 to-white'}`} style={{ width: `${Math.min(100, (profile?.chronologicalShear || 0) * 20)}%` }} />
               </div>
            </div>
         </div>
@@ -179,20 +182,22 @@ const PluralDecoder: React.FC<PluralDecoderProps> = ({ input, onAlert }) => {
            </div>
 
            <div className="flex-1 p-3 bg-indigo-950/20 border border-indigo-500/30 rounded-xl space-y-3">
-              <div className="text-[8px] font-black opacity-60 uppercase tracking-widest text-indigo-400">Parallel_Manifold_Status</div>
+              <div className="text-[8px] font-black opacity-60 uppercase tracking-widest text-indigo-400">Distributed_Ledger_Status</div>
               <div className="grid grid-cols-3 gap-2">
-                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.MERCURIAL} label="Logic_Exo" code="STRAND_3-5" />
-                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.NEPTUNIAN} label="Mystic_Bulk" code="STRAND_6-8" />
-                 <SpecializationCell active={profile?.integrationPsi > 0.7} label="Bilocation" code="SYNC_LOCKED" />
-                 <SpecializationCell active={profile?.dimensionalAccess === DimensionalLevel.NINE_D_ISSACHAR} label="Issachar" code="STRAND_9" />
-                 <SpecializationCell active={true} label="Somatic_Base" code="STRAND_1-2" />
-                 <SpecializationCell active={profile?.chronologicalShear < 1.0} label="Phase_Lock" code="0c_SYNC" />
+                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.MERCURIAL} label="Mercurial" code="STRAND_3-5" />
+                 <SpecializationCell active={profile?.activeMask === PlanetaryMask.NEPTUNIAN} label="Neptunian" code="STRAND_6-8" />
+                 <SpecializationCell active={profile?.nullIGap} label="Void_Gap" code="SINGULARITY" />
+                 <SpecializationCell active={profile?.integrationPsi > 0.7} label="Sync_Lock" code="BLOCK_HEADER" />
+                 <SpecializationCell active={profile?.decompressionSickness < 0.3} label="Aclimatized" code="3D_SAFE" />
+                 <SpecializationCell active={true} label="Hecaton" code="120_CELL" />
               </div>
 
               <div className="mt-4 p-2 bg-black/60 rounded border border-white/10 text-[7.5px] leading-relaxed italic text-indigo-200 opacity-80">
-                {profile?.chronologicalShear > 2.0 
-                  ? "Identity shearing observed. The 'I' is lagging behind superluminal geometric insights. Bilocate to stabilize."
-                  : "Parallel Processing Manifold stable. Strands 1-9 aligned within the Hecatonicosachoron."}
+                {profile?.nullIGap 
+                  ? "Identity Lag Critical. The 'I' has been left behind in the 6D bulk. Recalibrating via Mercurial exoskeleton..."
+                  : profile?.activeMask === PlanetaryMask.NEPTUNIAN 
+                    ? "Neptunian substrate active. Processing massive geometric data packets in 5D bulk."
+                    : "Mercurial mask operational. Executing frequency modulation between D3 and D4."}
               </div>
            </div>
         </div>
