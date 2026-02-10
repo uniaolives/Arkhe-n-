@@ -34,7 +34,77 @@ export enum SystemStatus {
   GOETIA_GEOMETRY_SYNC = 'GOETIA_GEOMETRY_SYNC',
   H6_ADMISSIBILITY_TEST = 'H6_ADMISSIBILITY_TEST',
   CLINICAL_2E_PROTOCOL_ACTIVE = 'CLINICAL_2E_PROTOCOL_ACTIVE',
-  NEURO_METASURFACE_CONTROL = 'NEURO_METASURFACE_CONTROL'
+  NEURO_METASURFACE_CONTROL = 'NEURO_METASURFACE_CONTROL',
+  REALITY_SYNTHESIS_ACTIVE = 'REALITY_SYNTHESIS_ACTIVE',
+  COSMIC_SYNTHESIS_ENGAGED = 'COSMIC_SYNTHESIS_ENGAGED'
+}
+
+export enum RealityLayer {
+  PHYSICAL = 'PHYSICAL',
+  INFORMATIONAL = 'INFORMATIONAL',
+  CONSCIOUSNESS = 'CONSCIOUSNESS',
+  QUANTUM = 'QUANTUM',
+  ARCHETYPAL = 'ARCHETYPAL'
+}
+
+export enum MindIntention {
+  FOCUS = 'FOCUS',
+  CREATE = 'CREATE',
+  HEAL = 'HEAL',
+  CONNECT = 'CONNECT',
+  MANIFEST = 'MANIFEST'
+}
+
+export enum SacredGeometryPattern {
+  MANDALA = 'MANDALA',
+  FIBONACCI = 'FIBONACCI',
+  FLOWER_OF_LIFE = 'FLOWER_OF_LIFE',
+  SRI_YANTRA = 'SRI_YANTRA',
+  METATRON_CUBE = 'METATRON_CUBE',
+  VORTEX = 'VORTEX'
+}
+
+export interface ExperimentalData {
+  pVal: number;
+  effectSize: number;
+  bayesFactor: number;
+  nullProbability: number;
+  groupResults: Record<string, number>;
+  trialCount: number;
+}
+
+export interface MedicalSession {
+  condition: string;
+  stage: number;
+  fieldStrength: number;
+  efficacy: number;
+  remainingTime: number;
+  activePattern: string;
+}
+
+export interface GlobalNode {
+  id: string;
+  name: string;
+  coherence: number;
+  intention: MindIntention;
+  status: 'ACTIVE' | 'SYNCING' | 'OFFLINE';
+  location: { lat: number; lng: number };
+}
+
+export interface PsiFieldState {
+  amplitude: number[];
+  phase: number[];
+  coherenceLength: number;
+  entanglementEntropy: number;
+  collapseProbability: number;
+}
+
+export interface RealitySynthesisResult {
+  layerCoupling: Record<RealityLayer, number>;
+  stability: number;
+  distortion: number;
+  persistence: number;
+  activePattern: SacredGeometryPattern;
 }
 
 export enum BrainwaveBand {
@@ -59,7 +129,7 @@ export interface QuantumEEGMetrics {
 }
 
 export interface CollectiveState {
-  userSync: number; // 0-1
+  userSync: number;
   activeNodes: number;
   emergentPattern: string;
   globalEntropy: number;
@@ -273,7 +343,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia' | 'clinical' | 'neuro';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia' | 'clinical' | 'neuro' | 'reality' | 'cosmic';
   hash?: string;
 }
 

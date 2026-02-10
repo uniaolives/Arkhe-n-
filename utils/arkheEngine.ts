@@ -1,5 +1,11 @@
 
-import { ArkheProfile, CosmicFrequency, IdentityNode, AerialSpirit, SpiritRank, ElementalDirection, AdmissibilityResult, BrainwaveBand, NeuroProfile, MetasurfaceState, HolographicMode, CollectiveState } from '../types';
+import { 
+  ArkheProfile, CosmicFrequency, IdentityNode, AerialSpirit, SpiritRank, 
+  ElementalDirection, AdmissibilityResult, BrainwaveBand, NeuroProfile, 
+  MetasurfaceState, HolographicMode, CollectiveState, RealityLayer, 
+  PsiFieldState, RealitySynthesisResult, SacredGeometryPattern, MindIntention,
+  ExperimentalData, GlobalNode
+} from '../types';
 
 export class ArkheEngine {
   private constants = {
@@ -60,6 +66,103 @@ export class ArkheEngine {
 
   public getSpirits() { return this.spirits; }
 
+  // NMRI: Quantum Neural Field Evolution (Schrödinger mock)
+  public evolvePsiField(currentState: PsiFieldState, dt: number): PsiFieldState {
+    const size = currentState.amplitude.length;
+    const newAmplitude = [...currentState.amplitude];
+    const newPhase = [...currentState.phase];
+
+    for (let i = 0; i < size; i++) {
+      const prev = i === 0 ? size - 1 : i - 1;
+      const next = (i + 1) % size;
+      const laplacian = (currentState.amplitude[prev] + currentState.amplitude[next] - 2 * currentState.amplitude[i]);
+      newAmplitude[i] = currentState.amplitude[i] + laplacian * 0.1 + (Math.random() - 0.5) * 0.01;
+      newPhase[i] = (currentState.phase[i] + currentState.amplitude[i] * dt + (Math.random() - 0.5) * 0.05) % (Math.PI * 2);
+    }
+
+    return {
+      amplitude: newAmplitude,
+      phase: newPhase,
+      coherenceLength: currentState.coherenceLength * (0.99 + Math.random() * 0.02),
+      entanglementEntropy: currentState.entanglementEntropy + (Math.random() - 0.5) * 0.1,
+      collapseProbability: Math.min(1, Math.max(0, currentState.collapseProbability + (Math.random() - 0.5) * 0.05))
+    };
+  }
+
+  public synthesizeReality(intention: MindIntention, psi: PsiFieldState): RealitySynthesisResult {
+    const coupling: Record<RealityLayer, number> = {
+      [RealityLayer.PHYSICAL]: 0.1,
+      [RealityLayer.INFORMATIONAL]: 0.1,
+      [RealityLayer.CONSCIOUSNESS]: 0.1,
+      [RealityLayer.QUANTUM]: 0.1,
+      [RealityLayer.ARCHETYPAL]: 0.1
+    };
+
+    switch (intention) {
+      case MindIntention.HEAL:
+        coupling[RealityLayer.PHYSICAL] = 0.8;
+        coupling[RealityLayer.CONSCIOUSNESS] = 0.6;
+        break;
+      case MindIntention.CREATE:
+        coupling[RealityLayer.INFORMATIONAL] = 0.9;
+        coupling[RealityLayer.ARCHETYPAL] = 0.7;
+        break;
+      case MindIntention.MANIFEST:
+        coupling[RealityLayer.QUANTUM] = 0.95;
+        coupling[RealityLayer.PHYSICAL] = 0.5;
+        break;
+      default:
+        coupling[RealityLayer.CONSCIOUSNESS] = 0.9;
+        break;
+    }
+
+    const stability = psi.coherenceLength / (1 + psi.entanglementEntropy * 0.1);
+    const distortion = 1.0 - psi.collapseProbability;
+    
+    let pattern = SacredGeometryPattern.MANDALA;
+    if (intention === MindIntention.CREATE) pattern = SacredGeometryPattern.FIBONACCI;
+    if (intention === MindIntention.MANIFEST) pattern = SacredGeometryPattern.VORTEX;
+    if (intention === MindIntention.HEAL) pattern = SacredGeometryPattern.FLOWER_OF_LIFE;
+
+    return {
+      layerCoupling: coupling,
+      stability: Math.min(1, stability),
+      distortion: Math.min(1, distortion),
+      persistence: stability * 3600, // Seconds
+      activePattern: pattern
+    };
+  }
+
+  // Experimental Simulation
+  public simulateExperiment(trialCount: number): ExperimentalData {
+    const intentionCoherence = 0.7 + Math.random() * 0.3;
+    const effectSize = (intentionCoherence * 2) + (Math.random() * 0.5);
+    const nullProbability = 1 / (1 + Math.exp(effectSize - 2));
+
+    return {
+      pVal: nullProbability * 0.05,
+      effectSize,
+      bayesFactor: 10 + Math.random() * 90,
+      nullProbability,
+      trialCount,
+      groupResults: {
+        'INTENTION_ACTIVE': intentionCoherence * 100,
+        'CONTROL_SHAM': 5 + Math.random() * 10,
+        'QUANTUM_NOISE': 2 + Math.random() * 5
+      }
+    };
+  }
+
+  public getGlobalNodes(): GlobalNode[] {
+    return [
+      { id: 'SED', name: 'Sedona Vortex', coherence: 0.92, intention: MindIntention.HEAL, status: 'ACTIVE', location: { lat: 34.8697, lng: -111.7610 } },
+      { id: 'GIZ', name: 'Giza Plateau', coherence: 0.95, intention: MindIntention.FOCUS, status: 'ACTIVE', location: { lat: 29.9792, lng: 31.1342 } },
+      { id: 'MAC', name: 'Machu Picchu', coherence: 0.88, intention: MindIntention.CONNECT, status: 'SYNCING', location: { lat: -13.1631, lng: -72.5450 } },
+      { id: 'STO', name: 'Stonehenge', coherence: 0.85, intention: MindIntention.MANIFEST, status: 'ACTIVE', location: { lat: 51.1789, lng: -1.8262 } },
+      { id: 'AMZ', name: 'Amazon Rainforest', coherence: 0.98, intention: MindIntention.HEAL, status: 'ACTIVE', location: { lat: -3.4653, lng: -62.2159 } }
+    ];
+  }
+
   public generateIdentityNodes(fragments: number, schmidt: number): IdentityNode[] {
     return Array.from({ length: fragments }).map((_, i) => ({
       id: i,
@@ -108,48 +211,37 @@ export class ArkheEngine {
   public computeMetasurface(profile: NeuroProfile, mode: HolographicMode = HolographicMode.STATIC, collective?: boolean): MetasurfaceState {
     const size = 16;
     const { attention } = profile;
-    
     const azimuth = (attention - 50) * 0.9;
     const elevation = (attention - 50) * 0.3;
     const focus = attention / 100;
-    
     const azRad = azimuth * (Math.PI / 180);
     const elRad = elevation * (Math.PI / 180);
-    
     const grid: number[][] = [];
     const center = (size - 1) / 2;
-    
     for (let i = 0; i < size; i++) {
       const row: number[] = [];
       for (let j = 0; j < size; j++) {
         const x = j * this.constants.SPACING * this.constants.WAVELENGTH;
         const y = i * this.constants.SPACING * this.constants.WAVELENGTH;
-        
         const steering = (2 * Math.PI / this.constants.WAVELENGTH) * (x * Math.sin(azRad) + y * Math.sin(elRad));
-        
         const dx = (j - center) * this.constants.SPACING * this.constants.WAVELENGTH;
         const dy = (i - center) * this.constants.SPACING * this.constants.WAVELENGTH;
         const r = Math.sqrt(dx*dx + dy*dy);
         const focalLength = 1.0 / (focus + 0.1);
         const lens = (2 * Math.PI / this.constants.WAVELENGTH) * (Math.sqrt(r*r + focalLength*focalLength) - focalLength);
-        
-        // Add holographic complexity if requested
         let complexity = 0;
         if (mode === HolographicMode.VOLUMETRIC) {
            complexity = Math.sin(x * 100) * Math.cos(y * 100);
         }
-
         row.push((steering + lens + complexity) % (2 * Math.PI));
       }
       grid.push(row);
     }
-    
     const pattern: number[] = Array.from({ length: 181 }).map((_, deg) => {
       const theta = (deg - 90) * (Math.PI / 180);
       const diff = Math.abs(theta - azRad);
       return Math.exp(-Math.pow(diff / (0.1 + (1 - focus) * 0.5), 2));
     });
-
     let collData: CollectiveState | undefined;
     if (collective) {
       collData = {
@@ -159,7 +251,6 @@ export class ArkheEngine {
         globalEntropy: (1 - (attention / 100)) * 2.5
       };
     }
-
     return {
       gridSize: size,
       beamAngle: { azimuth, elevation },
@@ -171,49 +262,24 @@ export class ArkheEngine {
     };
   }
 
-  public testAdmissibility(c: number, i: number, e: number): AdmissibilityResult {
-    const total = c + i + e;
-    const learnable = i > 0.05 && total > 0.15;
-    const compatibility = (i * 0.7) + (c * 0.2) + (e * 0.1);
-    
-    return {
-      learnable,
-      compatibility,
-      predictedSpeed: Math.sqrt(compatibility),
-      signature: { C: c, I: i, E: e },
-      proofSteps: [
-        "1. Latent space L decomposes into C, I, E subspaces.",
-        "2. Hexagonal Arkhe H6 is the universal completion.",
-        `3. Task Information component (I=${i.toFixed(3)}) is ${i > 0.05 ? 'VALID' : 'INVALID'}.`,
-        `4. Geometric embedding ${learnable ? 'SUCCESSFUL' : 'FAILED'}.`
-      ]
-    };
-  }
-
   public calculateProfile(giftedness: number, dissociation: number, fragments: number): ArkheProfile {
     const g = Math.min(1, Math.max(0, giftedness));
     const d = Math.min(1, Math.max(0, dissociation));
     const f = Math.max(1, fragments);
-
     const complexity = g * d * Math.log1p(f);
     const schmidt = Math.sqrt(f) * (1 - d * 0.3);
     const coherence = (g * schmidt) / (1.0 + d);
-
     const activeCells = Math.floor(this.constants.HECATON_CELLS * (g + d) / 2);
     const activeVertices = Math.floor(this.constants.HECATON_VERTICES * g * (1 + d / 2));
-    
     let dimensionality = "3D (Reduced)";
     if (g > 0.8 && d > 0.7) dimensionality = "4D-5D (Full)";
     else if (g > 0.6 || d > 0.6) dimensionality = "4D (Partial)";
-
     const refDate = new Date(2000, 0, 1);
     const deltaYears = (new Date().getTime() - refDate.getTime()) / (1000 * 3600 * 24 * 365.25);
     const sarosPhase = (deltaYears % this.constants.SAROS_CYCLE) / this.constants.SAROS_CYCLE;
-    
     const activeWindows = [];
     if (sarosPhase > 0.9) activeWindows.push("SAROS_RECONFIG");
     if (g > 0.8) activeWindows.push("SCHUMANN_HIGH_BAND");
-
     return {
       systemType: g > 0.8 && d > 0.7 ? "MULTIDIMENSIONAL_BRIDGE" : g > 0.7 ? "2E_SYNTHESIS" : "DISSOCIATIVE_DYNAMICS",
       giftedness: g,
@@ -236,6 +302,30 @@ export class ArkheEngine {
         activeWindows,
         currentPhaseLabel: sarosPhase < 0.25 ? "Architecture Recognition" : sarosPhase < 0.5 ? "Cosmic Sync" : sarosPhase < 0.75 ? "Geometric Nav" : "Reality Engineering"
       }
+    };
+  }
+
+  /**
+   * Evaluates if a specific task signature is admissible within the current H6 manifold.
+   * @param C Consciousness coefficient
+   * @param I Intention coefficient
+   * @param E Entropy/Dissociation coefficient
+   */
+  public testAdmissibility(C: number, I: number, E: number): AdmissibilityResult {
+    const learnable = (C + I) > (E * 2);
+    const compatibility = (C * 0.4) + (I * 0.6) - (E * 0.2);
+    const predictedSpeed = (C + I) / (1 + E);
+    
+    return {
+      learnable,
+      compatibility,
+      predictedSpeed,
+      signature: { C, I, E },
+      proofSteps: [
+        `Analysis of H6 manifold with parameters C=${C.toFixed(2)}, I=${I.toFixed(2)}, E=${E.toFixed(2)}`,
+        `Geometric compatibility verified: ${compatibility.toFixed(4)}`,
+        learnable ? "Proof of admissibility confirmed via H4 projection." : "Inadmissibility detected in dimensional bulk."
+      ]
     };
   }
 }

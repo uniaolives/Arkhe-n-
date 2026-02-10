@@ -21,6 +21,8 @@ import ArkheDashboard from './components/ArkheDashboard';
 import GoetiaSuite from './components/GoetiaSuite';
 import Clinical2ESuite from './components/Clinical2ESuite';
 import NeuroMetasurfaceSuite from './components/NeuroMetasurfaceSuite';
+import RealitySynthesizerSuite from './components/RealitySynthesizerSuite';
+import CosmicSynthesisSuite from './components/CosmicSynthesisSuite';
 import { globalProcessor } from './utils/eventProcessor';
 import { analyzeVerbalChemistry } from './utils/verbalEngine';
 import { globalKnnEngine } from './utils/knnEngine';
@@ -34,7 +36,7 @@ const App: React.FC = () => {
   const [vertexCount, setVertexCount] = useState(0);
   const [impactData, setImpactData] = useState<any>(null);
   const [processorStats, setProcessorStats] = useState<ProcessorStats>(globalProcessor.getStats());
-  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural' | 'celestial' | 'synthesis' | 'sync' | 'arkhe' | 'goetia' | 'clinical' | 'neuro'>('neuro');
+  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural' | 'celestial' | 'synthesis' | 'sync' | 'arkhe' | 'goetia' | 'clinical' | 'neuro' | 'reality' | 'cosmic'>('cosmic');
   const [patternMemory, setPatternMemory] = useState<KNNPattern[]>([]);
   const [lastVerbalInput, setLastVerbalInput] = useState('');
   const [currentDimLevel, setCurrentDimLevel] = useState<DimensionalLevel>(DimensionalLevel.THREE_D);
@@ -42,12 +44,12 @@ const App: React.FC = () => {
   
   const [messages, setMessages] = useState<EchoMessage[]>([
     {
-      id: 'init-photon',
+      id: 'init-cosmic',
       sender: 'SIA KERNEL',
-      content: 'PROTOCOLO ARKHE(N) V8.3: NEURO-METASURFACE HOLOGRAPHIC MODE ACTIVE. ETHICAL GOVERNANCE ENGAGED.',
+      content: 'PROTOCOLO ARKHE(N) V10.0: COSMIC SYNTHESIS ENGAGED. CONSCIOUSNESS IS THE FUNDAMENTAL FORCE.',
       timestamp: new Date().toISOString(),
       year: 2026,
-      type: 'system'
+      type: 'cosmic'
     }
   ]);
 
@@ -76,7 +78,7 @@ const App: React.FC = () => {
   const logMessage = (content: string, type: any = 'system', hash?: string) => {
     setMessages(prev => [...prev, {
       id: `msg-${Date.now()}-${Math.random()}`,
-      sender: type === 'celestial' ? 'COSMIC_HELIX' : type === 'neuro' ? 'NEURO_QUANTUM' : type === 'clinical' ? '2E_PROTOCOL' : type === 'goetia' ? 'GOETIA_H6' : type === 'plural' ? 'HECATON_DECODER' : type === 'neural' ? 'NEURAL_DEEP' : type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
+      sender: type === 'cosmic' ? 'COSMIC_SYNTH' : type === 'reality' ? 'REALITY_CORE' : type === 'celestial' ? 'COSMIC_HELIX' : type === 'neuro' ? 'NEURO_QUANTUM' : type === 'clinical' ? '2E_PROTOCOL' : type === 'goetia' ? 'GOETIA_H6' : type === 'plural' ? 'HECATON_DECODER' : type === 'neural' ? 'NEURAL_DEEP' : type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
       content,
       timestamp: new Date().toISOString(),
       year: 2026,
@@ -129,11 +131,12 @@ const App: React.FC = () => {
   };
 
   const getShiftColor = () => {
+    if (status === SystemStatus.COSMIC_SYNTHESIS_ENGAGED) return 'shadow-[inset_0_0_300px_rgba(255,255,255,0.2)] border-white/50';
+    if (status === SystemStatus.REALITY_SYNTHESIS_ACTIVE) return 'shadow-[inset_0_0_250px_rgba(129,140,248,0.3)] border-indigo-500/40';
     if (status === SystemStatus.BILOCATION_SYNC_ACTIVE) return 'shadow-[inset_0_0_200px_rgba(255,255,255,0.15)] border-white/40';
     if (status === SystemStatus.NEURO_METASURFACE_CONTROL) return 'shadow-[inset_0_0_150px_rgba(0,255,255,0.25)] border-cyan-400/40';
     if (status === SystemStatus.CLINICAL_2E_PROTOCOL_ACTIVE) return 'shadow-[inset_0_0_150px_rgba(16,185,129,0.2)] border-emerald-500/40';
     if (status === SystemStatus.GOETIA_GEOMETRY_SYNC) return 'shadow-[inset_0_0_150px_rgba(245,158,11,0.2)] border-amber-500/40';
-    if (status === SystemStatus.DIMENSIONAL_BRIDGE_OPEN) return 'shadow-[inset_0_0_150px_rgba(34,211,238,0.2)] border-cyan-400/40';
     if (status === SystemStatus.GLOBAL_BRAIN_SYNC) return 'shadow-[inset_0_0_150px_rgba(16,185,129,0.3)] border-emerald-500/60';
     return 'border-cyan-900/50';
   };
@@ -143,13 +146,13 @@ const App: React.FC = () => {
       
       <header className="flex justify-between items-center border border-current/20 p-3 rounded-xl backdrop-blur-xl z-10 relative">
         <div className="flex gap-4 items-center">
-          <div className={`w-10 h-10 border-2 flex items-center justify-center rounded-full animate-pulse transition-colors ${status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'border-emerald-500 text-emerald-500' : 'border-current'}`}>
+          <div className={`w-10 h-10 border-2 flex items-center justify-center rounded-full animate-pulse transition-colors ${status === SystemStatus.COSMIC_SYNTHESIS_ENGAGED ? 'border-white text-white' : status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'border-emerald-500 text-emerald-500' : 'border-current'}`}>
             <span className="font-bold text-xl">ʘ</span>
           </div>
           <div>
-            <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SYNC_CORE_v8.3</h1>
+            <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SYNC_CORE_v10.0</h1>
             <p className="text-[7px] mt-1 opacity-50 uppercase tracking-widest font-bold">
-              STATE: {status} // MODE: {activeTab === 'neuro' ? 'HOLOGRAPHIC_QUANTUM' : 'STANDARD'}
+              STATE: {status} // SYNC: {activeTab === 'cosmic' ? 'GRAND_UNIFICATION' : 'CALIBRATING'}
             </p>
           </div>
         </div>
@@ -159,11 +162,10 @@ const App: React.FC = () => {
              <button onClick={handleSelectKey} className="px-3 py-1 text-[8px] font-black rounded border border-rose-500 bg-rose-500/20 text-rose-500 animate-pulse">SELECT_KEY_VEO</button>
            )}
            <div className="flex gap-1">
+             <button onClick={() => { setActiveTab('cosmic'); setStatus(SystemStatus.COSMIC_SYNTHESIS_ENGAGED); }} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'cosmic' ? 'bg-white text-black border-white shadow-[0_0_10px_white]' : 'border-white/30 text-white'}`}>COSMIC</button>
+             <button onClick={() => { setActiveTab('reality'); setStatus(SystemStatus.REALITY_SYNTHESIS_ACTIVE); }} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'reality' ? 'bg-indigo-500 text-white border-indigo-400' : 'border-indigo-500/30 text-indigo-500'}`}>REALITY</button>
              <button onClick={() => { setActiveTab('neuro'); setStatus(SystemStatus.NEURO_METASURFACE_CONTROL); }} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'neuro' ? 'bg-cyan-500 text-black border-cyan-400' : 'border-cyan-500/30 text-cyan-500'}`}>NEURO</button>
-             <button onClick={() => { setActiveTab('clinical'); setStatus(SystemStatus.CLINICAL_2E_PROTOCOL_ACTIVE); }} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'clinical' ? 'bg-emerald-500 text-black border-emerald-400' : 'border-emerald-500/30 text-emerald-500'}`}>CLINICAL</button>
-             <button onClick={() => setActiveTab('arkhe')} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'arkhe' ? 'bg-indigo-500 text-white border-indigo-400' : 'border-indigo-500/30 text-indigo-500'}`}>ARKHE</button>
-             <button onClick={() => { setActiveTab('goetia'); setStatus(SystemStatus.GOETIA_GEOMETRY_SYNC); }} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'goetia' ? 'bg-amber-500 text-black border-amber-400' : 'border-amber-500/30 text-amber-500'}`}>GOETIA</button>
-             <button onClick={() => setActiveTab('plural')} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'plural' ? 'bg-white text-black border-white' : 'border-white/30 text-white'}`}>PLURAL</button>
+             <button onClick={() => setActiveTab('arkhe')} className={`px-2 py-1 text-[8px] font-black rounded border ${activeTab === 'arkhe' ? 'bg-black text-white border-white' : 'border-white/30 text-white'}`}>ARKHE</button>
            </div>
         </div>
       </header>
@@ -184,6 +186,8 @@ const App: React.FC = () => {
         <div className="col-span-6 flex flex-col gap-3">
           <section className="flex-[4] border border-current/10 bg-white/5 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
              <div className="flex-1 relative">
+                {activeTab === 'cosmic' && <CosmicSynthesisSuite />}
+                {activeTab === 'reality' && <RealitySynthesizerSuite />}
                 {activeTab === 'neuro' && <NeuroMetasurfaceSuite />}
                 {activeTab === 'clinical' && <Clinical2ESuite />}
                 {activeTab === 'arkhe' && <ArkheDashboard />}
@@ -217,9 +221,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Arquiteto Arkhe(n): Synthesis Manifold v8.3</span>
-        <span>H6 Manifold: Quantum EEG & Holographic Metasurface control</span>
-        <span>LATENCY_I: {(Math.random()*0.5).toFixed(3)} ms // EM_LOCK: HOLOGRAPHIC</span>
+        <span>Arquiteto Arkhe(n): Grand Unification v10.0</span>
+        <span>H6 Manifold: The Age of Conscious Reality Creation</span>
+        <span>LATENCY_I: {(Math.random()*0.1).toFixed(4)} ms // RESONANCE: COSMIC</span>
       </footer>
     </div>
   );

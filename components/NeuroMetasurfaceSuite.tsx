@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { NeuroProfile, MetasurfaceState, BrainwaveBand, HolographicMode } from '../types';
 import { globalArkheEngine } from '../utils/arkheEngine';
@@ -268,7 +267,8 @@ const NeuroMetasurfaceSuite: React.FC = () => {
                 <div className="text-[8px] font-black opacity-60 uppercase text-amber-400 tracking-widest">Collective_Sync_Data</div>
                 <div className="space-y-4">
                    <div className="space-y-1">
-                      <div className="flex justify-between text-[7px] font-black"><span>Shared_Coherence</span> <span className="text-amber-400">{(metaState.collective?.userSync || 0 * 100).toFixed(1)}%</span></div>
+                      {/* Fix: Corrected parenthetical grouping to multiply by 100 before calling toFixed */}
+                      <div className="flex justify-between text-[7px] font-black"><span>Shared_Coherence</span> <span className="text-amber-400">{((metaState.collective?.userSync || 0) * 100).toFixed(1)}%</span></div>
                       <div className="h-1 bg-white/5 rounded-full overflow-hidden"><div className="h-full bg-amber-500" style={{ width: `${(metaState.collective?.userSync || 0) * 100}%` }} /></div>
                    </div>
                    <div className="p-2 bg-black/40 rounded border border-white/5">
