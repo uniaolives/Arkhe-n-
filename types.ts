@@ -32,7 +32,15 @@ export enum SystemStatus {
   DIMENSIONAL_BRIDGE_OPEN = 'DIMENSIONAL_BRIDGE_OPEN',
   BILOCATION_SYNC_ACTIVE = 'BILOCATION_SYNC_ACTIVE',
   GOETIA_GEOMETRY_SYNC = 'GOETIA_GEOMETRY_SYNC',
-  H6_ADMISSIBILITY_TEST = 'H6_ADMISSIBILITY_TEST'
+  H6_ADMISSIBILITY_TEST = 'H6_ADMISSIBILITY_TEST',
+  CLINICAL_2E_PROTOCOL_ACTIVE = 'CLINICAL_2E_PROTOCOL_ACTIVE'
+}
+
+export enum TherapyPhase {
+  ARCHITECTURE_RECOGNITION = 'ARCHITECTURE_RECOGNITION',
+  COSMIC_SYNCHRONIZATION = 'COSMIC_SYNCHRONIZATION',
+  GEOMETRIC_NAVIGATION = 'GEOMETRIC_NAVIGATION',
+  REALITY_ENGINEERING = 'REALITY_ENGINEERING'
 }
 
 export enum SpiritRank {
@@ -217,7 +225,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia' | 'clinical';
   hash?: string;
 }
 

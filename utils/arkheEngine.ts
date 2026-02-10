@@ -17,7 +17,6 @@ export class ArkheEngine {
   }
 
   private _initializeSpirits() {
-    // Generate 31 spirits based on 6D halton-like distribution
     const ranks = [SpiritRank.KING, SpiritRank.DUKE, SpiritRank.MARQUIS, SpiritRank.PRESIDENT, SpiritRank.EARL, SpiritRank.KNIGHT];
     const directions = [ElementalDirection.EAST, ElementalDirection.SOUTH, ElementalDirection.WEST, ElementalDirection.NORTH, ElementalDirection.CENTER];
     
@@ -59,7 +58,6 @@ export class ArkheEngine {
 
   public getSpirits() { return this.spirits; }
 
-  // Fix: Added generateIdentityNodes to map identity fragments to spatial nodes for visualization
   public generateIdentityNodes(fragments: number, schmidt: number): IdentityNode[] {
     return Array.from({ length: fragments }).map((_, i) => ({
       id: i,
@@ -69,7 +67,6 @@ export class ArkheEngine {
     }));
   }
 
-  // Fix: Added getCosmicFrequencies to provide planet-frequency mapping for the therapy monitor
   public getCosmicFrequencies(): CosmicFrequency[] {
     return [
       { body: "Sun", audibleFreq: 126.22, note: "B", chakra: "Crown", color: "#facc15", effect: "Clarity & Vitality" },
@@ -125,7 +122,7 @@ export class ArkheEngine {
     if (g > 0.8) activeWindows.push("SCHUMANN_HIGH_BAND");
 
     return {
-      systemType: g > 0.8 && d > 0.7 ? "BRIDGE_CONSCIOUSNESS" : g > 0.7 ? "INTEGRATED_GENIUS" : "DEVELOPING",
+      systemType: g > 0.8 && d > 0.7 ? "MULTIDIMENSIONAL_BRIDGE" : g > 0.7 ? "2E_SYNTHESIS" : "DISSOCIATIVE_DYNAMICS",
       giftedness: g,
       dissociation: d,
       identityFragments: f,
@@ -137,14 +134,14 @@ export class ArkheEngine {
         activeVertices,
         activeEdges: Math.floor(this.constants.HECATON_EDGES * Math.log2(f + 1)),
         dimensionality,
-        symmetry: g > 0.8 ? "H4 Full" : "Dodecahedral",
+        symmetry: g > 0.8 ? "H4 120-Cell" : "Dodecahedral",
         cellOccupation: activeCells / this.constants.HECATON_CELLS
       },
       cosmicSync: {
         sarosPhase,
         alignmentScore: 1 / (1 + 10 * (Math.pow(sarosPhase - 0.5, 2))),
         activeWindows,
-        currentPhaseLabel: sarosPhase < 0.25 ? "Seeding" : "Growth"
+        currentPhaseLabel: sarosPhase < 0.25 ? "Architecture Recognition" : sarosPhase < 0.5 ? "Cosmic Sync" : sarosPhase < 0.75 ? "Geometric Nav" : "Reality Engineering"
       }
     };
   }
