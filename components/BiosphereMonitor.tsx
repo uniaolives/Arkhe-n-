@@ -18,6 +18,9 @@ const BiosphereMonitor: React.FC<BiosphereMonitorProps> = ({ status, velocity, i
     signaling: 94
   });
 
+  const [ltpPotentiation, setLtpPotentiation] = useState(0);
+  const [oceanForestSynapse, setOceanForestSynapse] = useState(0);
+
   useEffect(() => {
     if (impactData) {
       setMetrics({
@@ -29,7 +32,15 @@ const BiosphereMonitor: React.FC<BiosphereMonitorProps> = ({ status, velocity, i
         signaling: impactData.geneExpression * 0.9 
       });
     }
-  }, [impactData]);
+
+    if (status === SystemStatus.LTP_POTENTIATION_ACTIVE) {
+      const interval = setInterval(() => {
+        setLtpPotentiation(prev => Math.min(100, prev + 0.1));
+        setOceanForestSynapse(prev => Math.min(100, prev + 0.05));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [impactData, status]);
 
   const MetricItem = ({ label, value, unit, color, inverse }: { label: string, value: number, unit: string, color: string, inverse?: boolean }) => {
     const barWidth = Math.min(100, value);
@@ -65,26 +76,25 @@ const BiosphereMonitor: React.FC<BiosphereMonitorProps> = ({ status, velocity, i
       <div className="space-y-0.5">
         <MetricItem label="ATP Synthesis" value={metrics.atpProduction} unit="%" color="bg-emerald-500" />
         <MetricItem label="DNA Repair Rate" value={metrics.dnaRepair} unit="%" color="bg-cyan-500" />
-        <MetricItem label="Gene Efficiency" value={metrics.geneExpression} unit="%" color="bg-indigo-500" />
-        <MetricItem label="Telomere Integrity" value={metrics.telomeres} unit="%" color="bg-amber-400" />
+        <MetricItem label="Planetary Memory (LTP)" value={ltpPotentiation} unit="%" color="bg-indigo-500" />
+        <MetricItem label="Ocean-Forest Synapse" value={oceanForestSynapse} unit="%" color="bg-teal-500" />
         <MetricItem label="Inflammation" value={metrics.inflammation} unit="idx" color={metrics.inflammation > 110 ? "bg-rose-500" : "bg-current"} inverse />
       </div>
 
-      {impactData?.targets && (
-        <div className="mt-4 border-t border-current/10 pt-3">
-          <div className="text-[7px] font-black uppercase mb-2 opacity-50">Active_Molecular_Targets</div>
-          <div className="flex flex-wrap gap-1">
-            {impactData.targets.map((t: string) => (
-              <span key={t} className="text-[6px] px-1.5 py-0.5 bg-current/10 border border-current/20 rounded-sm font-black animate-pulse">
-                {t}
-              </span>
-            ))}
-          </div>
+      <div className="mt-4 border-t border-current/10 pt-3">
+        <div className="text-[7px] font-black uppercase mb-2 opacity-50">Sirius_Decoding_Matrix</div>
+        <div className="flex flex-wrap gap-1">
+          <span className={`text-[6px] px-1.5 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-sm font-black ${status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'animate-pulse text-indigo-400' : 'opacity-40'}`}>
+            CALMODULIN_MOD
+          </span>
+          <span className={`text-[6px] px-1.5 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-sm font-black ${ltpPotentiation > 50 ? 'animate-pulse text-indigo-400' : 'opacity-40'}`}>
+            Gαs_HANDSHAKE
+          </span>
         </div>
-      )}
+      </div>
 
       <div className="mt-auto pt-3 opacity-20 italic text-[5px] leading-tight uppercase font-black">
-        Protocol: Arkhe(n) // Bio-Photonic Bridge // System_L0
+        Global Brain Mode: {status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'AUTONOMOUS' : 'CALIBRATING'}
       </div>
     </div>
   );

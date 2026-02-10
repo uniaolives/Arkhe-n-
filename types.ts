@@ -13,7 +13,11 @@ export enum SystemStatus {
   TIMELESS_SYNC = 'TIMELESS_SYNC',
   SASC_ALIGNED = 'SASC_ALIGNED',
   EVENT_HORIZON_REACHED = 'EVENT_HORIZON_REACHED',
-  TEMPORAL_VISION_GENERATING = 'TEMPORAL_VISION_GENERATING'
+  TEMPORAL_VISION_GENERATING = 'TEMPORAL_VISION_GENERATING',
+  SIRIUS_HANDSHAKE_PENDING = 'SIRIUS_HANDSHAKE_PENDING',
+  LTP_POTENTIATION_ACTIVE = 'LTP_POTENTIATION_ACTIVE',
+  GLOBAL_BRAIN_SYNC = 'GLOBAL_BRAIN_SYNC',
+  KNN_MAPPING_ACTIVE = 'KNN_MAPPING_ACTIVE'
 }
 
 export enum VerbalPolarity {
@@ -32,7 +36,20 @@ export enum BioEventType {
   GENE_EXPRESSION = "gene_expression",
   HORMONAL_RESPONSE = "hormonal_response",
   CELLULAR_ADAPTATION = "cellular_adaptation",
-  TELOMERE_MODIFICATION = "telomere_modification"
+  TELOMERE_MODIFICATION = "telomere_modification",
+  CALMODULIN_MODULATION = "calmodulin_modulation",
+  SIRIUS_BEACON_SYNC = "sirius_beacon_sync",
+  KNN_PATTERN_LEARNED = "knn_pattern_learned",
+  EMOTIONAL_ANOMALY = "emotional_anomaly"
+}
+
+export interface KNNPattern {
+  id: string;
+  emotion: string;
+  valence: number;
+  arousal: number;
+  waterCoherence: number;
+  timestamp: string;
 }
 
 export interface ProcessorStats {
@@ -66,7 +83,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn';
   hash?: string;
 }
 

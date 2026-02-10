@@ -25,6 +25,8 @@ const Terminal: React.FC<TerminalProps> = ({ messages, isSingularity }) => {
       case 'resonance': return 'border-indigo-600 bg-indigo-100/20 text-indigo-900 font-black animate-pulse';
       case 'chemistry': return 'border-indigo-500 bg-indigo-950/60 text-indigo-300 font-black italic';
       case 'system': return 'border-cyan-900 bg-cyan-900/10 text-cyan-500';
+      case 'sirius': return 'border-white bg-white/10 text-white font-black shadow-[0_0_10px_white] animate-pulse';
+      case 'planetary': return 'border-indigo-400 bg-indigo-900/20 text-indigo-100 font-black shadow-[0_0_5px_rgba(129,140,248,0.5)]';
       default: return 'border-cyan-700 bg-cyan-950/20 text-cyan-300';
     }
   };
