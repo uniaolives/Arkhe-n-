@@ -1,6 +1,6 @@
 {
   "name": "Arkhe(n) Quantum Sarcophagus",
-  "description": "A futuristic dashboard for the Arkhe(n) Architect to manage the fusion of biological DNA with the Bitcoin blockchain, simulating the immortality protocol of Hal Finney (Node 0).",
+  "description": "A relativistic dashboard for the Arkhe(n) Architect managing the fusion of biological DNA with the Bitcoin blockchain.",
   "requestFramePermissions": [
     "camera",
     "microphone"

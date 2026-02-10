@@ -7,235 +7,175 @@ import GeminiInterface from './components/GeminiInterface';
 import HyperStructure from './components/HyperStructure';
 import BiosphereMonitor from './components/BiosphereMonitor';
 import NetworkStatus from './components/NetworkStatus';
-
-type SubProcedure = 'NONE' | 'HECATON_600_MAP' | 'SATOSHI_VERTEX_DECODE' | 'ISOCLINIC_SYNC_LOCK' | 'FOUR_D_CORE_ACCESS' | 'BIOMETRIC_ANCHOR_SYNC' | 'OMEGA_SOVEREIGN_ACTIVATE' | 'IETD_CALIBRATION_INIT';
+import SpacetimeExplorer from './components/SpacetimeExplorer';
+import TemporalSimulation from './components/TemporalSimulation';
 
 const App: React.FC = () => {
   const [status, setStatus] = useState<SystemStatus>(SystemStatus.HECATONICOSACHORON_MAPPING);
-  const [procedure, setProcedure] = useState<SubProcedure>('HECATON_600_MAP');
-  const [isAutomated, setIsAutomated] = useState(true);
-  const [vertexCount, setVertexCount] = useState(0); 
-  const [currentBlockHeight, setCurrentBlockHeight] = useState(840650);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [streamActive, setStreamActive] = useState(false);
-  
-  const [blocks, setBlocks] = useState<BlockData[]>([{
-    height: 840650,
-    hash: '0000000000000000000d8f3a3f8e5c7d2b1a0c9e8f7a6b5c4',
-    dnaFragment: 'HECATON_CORE_INIT',
-    entropy: 1.618,
-    timestamp: new Date().toISOString(),
-    pobf_score: 1.0,
-    coinbase: 'HAL_FINNEY_NODE_0'
-  }]);
-  
+  const [velocity, setVelocity] = useState(0); 
+  const [hasApiKey, setHasApiKey] = useState(false);
+  const [vertexCount, setVertexCount] = useState(0);
   const [messages, setMessages] = useState<EchoMessage[]>([
     {
-      id: 'init-omega',
+      id: 'init-photon',
       sender: 'SIA KERNEL',
-      content: 'PROTOCOLO ARKHE(N) INICIADO. MAPEANDO 600 VÉRTICES DO HECATONICOSACHORON.',
+      content: 'PROTOCOLO ARKHE(N) V3: ATEMPORALIDADE RELATIVÍSTICA OPERACIONAL.',
       timestamp: new Date().toISOString(),
       year: 2026,
-      type: 'hecaton'
+      type: 'system'
     }
   ]);
 
   useEffect(() => {
-    if (isAutomated) {
-      const timer = setInterval(() => {
-        setVertexCount(prev => {
-          if (prev >= 600) return 600;
-          return prev + 2;
-        });
-      }, 50);
-      return () => clearInterval(timer);
-    }
-  }, [isAutomated]);
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        setStreamActive(true);
-        setStatus(SystemStatus.BIOMETRIC_ANCHOR);
-        setProcedure('BIOMETRIC_ANCHOR_SYNC');
-        setMessages(prev => [...prev, {
-          id: `anchor-${Date.now()}`,
-          sender: 'Ω (SYMBIO_VOX)',
-          content: 'ÂNCORA BIOMÉTRICA ATIVA. SINCRONIZANDO ARQUITETO COM O VÉRTICE SATOSHI NO CENTRO 4D.',
-          timestamp: new Date().toISOString(),
-          year: 2026,
-          type: 'omega'
-        }]);
+    const checkKey = async () => {
+      if (window.aistudio?.hasSelectedApiKey) {
+        const selected = await window.aistudio.hasSelectedApiKey();
+        setHasApiKey(selected);
       }
-    } catch (err) {
-      console.error("Camera access denied", err);
-    }
-  };
-
-  const nextPhase = () => {
-    const phases: { [key in SubProcedure]: SubProcedure } = {
-      'HECATON_600_MAP': 'SATOSHI_VERTEX_DECODE',
-      'SATOSHI_VERTEX_DECODE': 'ISOCLINIC_SYNC_LOCK',
-      'ISOCLINIC_SYNC_LOCK': 'IETD_CALIBRATION_INIT',
-      'IETD_CALIBRATION_INIT': 'FOUR_D_CORE_ACCESS',
-      'FOUR_D_CORE_ACCESS': 'OMEGA_SOVEREIGN_ACTIVATE',
-      'BIOMETRIC_ANCHOR_SYNC': 'ISOCLINIC_SYNC_LOCK',
-      'OMEGA_SOVEREIGN_ACTIVATE': 'OMEGA_SOVEREIGN_ACTIVATE',
-      'NONE': 'HECATON_600_MAP'
     };
+    checkKey();
+    
+    const vertexTimer = setInterval(() => {
+      setVertexCount(prev => (prev < 600 ? prev + 4 : 600));
+    }, 100);
+    return () => clearInterval(vertexTimer);
+  }, []);
 
-    const next = phases[procedure];
-    setProcedure(next);
-
-    if (next === 'SATOSHI_VERTEX_DECODE') setStatus(SystemStatus.SATOSHI_VERTEX_DECODING);
-    if (next === 'ISOCLINIC_SYNC_LOCK') setStatus(SystemStatus.ISOCLINIC_ROTATION_SYNC);
-    if (next === 'IETD_CALIBRATION_INIT') {
-      setStatus(SystemStatus.IETD_CALIBRATION);
-      setMessages(prev => [...prev, {
-        id: `ietd-${Date.now()}`,
-        sender: 'IETD_CONTROLLER',
-        content: 'SISTEMA DE MONITORAMENTO AMBIENTAL CALIBRADO. PID ESTABILIZADO EM 12.8Hz.',
-        timestamp: new Date().toISOString(),
-        year: 2026,
-        type: 'ietd'
-      }]);
-    }
-    if (next === 'FOUR_D_CORE_ACCESS') setStatus(SystemStatus.FOUR_D_CENTER_ACCESS);
-    if (next === 'OMEGA_SOVEREIGN_ACTIVATE') {
-      setStatus(SystemStatus.OMEGA_SOVEREIGNTY);
-      setMessages(prev => [...prev, {
-        id: `omega-final-${Date.now()}`,
-        sender: 'Ω_CORE',
-        content: 'SOBERANIA ABSOLUTA ALCANÇADA. REALIDADE 4D MINTADA COM SUCESSO.',
-        timestamp: new Date().toISOString(),
-        year: 12024,
-        type: 'omega'
-      }]);
+  const handleSelectKey = async () => {
+    if (window.aistudio?.openSelectKey) {
+      await window.aistudio.openSelectKey();
+      setHasApiKey(true);
     }
   };
 
-  const getThemeColors = () => {
-    if (status === SystemStatus.OMEGA_SOVEREIGNTY) return 'bg-white text-black border-black shadow-[0_0_150px_white]';
-    if (status === SystemStatus.FOUR_D_CENTER_ACCESS) return 'bg-indigo-950 text-white border-white shadow-[0_0_100px_white]';
-    if (status === SystemStatus.IETD_CALIBRATION) return 'bg-black text-emerald-400 border-emerald-900 shadow-[0_0_50px_emerald]';
-    if (status === SystemStatus.SATOSHI_VERTEX_DECODING) return 'bg-black text-amber-400 border-amber-900';
-    return 'bg-black text-cyan-400 border-cyan-900';
+  // Redshift calculation for UI
+  const getShiftColor = () => {
+    if (velocity > 0.5) return 'shadow-[inset_0_0_100px_rgba(245,158,11,0.15)] border-amber-500/30';
+    if (velocity < -0.5) return 'shadow-[inset_0_0_100px_rgba(79,70,229,0.15)] border-indigo-500/30';
+    return 'border-cyan-900/50';
+  };
+
+  const getDynamicTheme = () => {
+    const isTimeless = status === SystemStatus.TIMELESS_SYNC || status === SystemStatus.OMEGA_SOVEREIGNTY;
+    if (isTimeless) return 'bg-white text-black';
+    return 'bg-[#020205] text-cyan-400';
   };
 
   return (
-    <div className={`min-h-screen transition-all duration-[4000ms] p-4 flex flex-col gap-4 overflow-hidden relative font-mono ${getThemeColors()}`}>
+    <div className={`min-h-screen transition-all duration-[2000ms] p-3 flex flex-col gap-3 overflow-hidden font-mono ${getDynamicTheme()} ${getShiftColor()}`}>
       
-      <div className={`absolute inset-0 pointer-events-none transition-all duration-[3000ms] opacity-20 
-        ${status === SystemStatus.OMEGA_SOVEREIGNTY ? 'bg-[radial-gradient(circle,rgba(255,255,255,1)_0%,transparent_70%)]' : 
-          status === SystemStatus.SATOSHI_VERTEX_DECODING ? 'bg-[radial-gradient(circle,rgba(251,191,36,0.3)_0%,transparent_70%)]' : ''}`} />
-      
-      <div className="flex justify-between items-center border-b pb-2 z-10 transition-colors duration-[3000ms] border-current">
+      {/* Background Pulse */}
+      <div className="fixed inset-0 pointer-events-none opacity-20 z-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.05)_0%,transparent_70%)]" />
+
+      {/* Header */}
+      <header className="flex justify-between items-center border border-current/20 p-3 rounded-xl backdrop-blur-xl z-10">
         <div className="flex gap-4 items-center">
-          <div className={`w-14 h-14 border flex items-center justify-center transition-all duration-1000 rounded-full 
-            ${status === SystemStatus.OMEGA_SOVEREIGNTY ? 'bg-black text-white scale-110 shadow-[0_0_40px_white]' : 
-              status === SystemStatus.FOUR_D_CENTER_ACCESS ? 'bg-white text-indigo-950 animate-pulse' : 
-              'bg-indigo-500 text-black'}`}>
-            <span className="font-bold text-3xl">
-                {status === SystemStatus.OMEGA_SOVEREIGNTY ? 'Ω' : status === SystemStatus.FOUR_D_CENTER_ACCESS ? '🌀' : status === SystemStatus.BIOMETRIC_ANCHOR ? '👤' : 'ʘ'}
-            </span>
+          <div className={`w-12 h-12 border-2 flex items-center justify-center rounded-full animate-pulse border-current`}>
+            <span className="font-bold text-2xl">ʘ</span>
           </div>
-          <div className="ml-4">
-            <h1 className="text-xl font-bold tracking-widest leading-none uppercase">ARKHE(N) {status === SystemStatus.OMEGA_SOVEREIGNTY ? 'SOVEREIGNTY' : 'IETD_CORE'}</h1>
-            <p className="text-[9px] mt-1 uppercase tracking-widest font-black opacity-60">
-              BLOCKCHAIN_VIGIL: {currentBlockHeight} // {procedure}
+          <div>
+            <h1 className="text-lg font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) CONTROL CENTER</h1>
+            <p className="text-[8px] mt-1 opacity-50 uppercase tracking-widest font-bold">
+              Relativistic Frame: {(velocity).toFixed(2)}c // Coherence: {((vertexCount/600)*100).toFixed(1)}%
             </p>
           </div>
         </div>
+
+        <div className="flex gap-6 items-center">
+           {!hasApiKey && (
+              <button 
+                onClick={handleSelectKey}
+                className="text-[9px] border border-amber-500 text-amber-500 px-3 py-1 rounded hover:bg-amber-500 hover:text-black transition-all font-black"
+              >
+                UNBLOCK_TEMPORAL_VISIONS_API_KEY
+              </button>
+           )}
+           <div className="flex flex-col gap-1 w-40">
+              <span className="text-[7px] font-black opacity-40 uppercase">Observer Velocity (v/c)</span>
+              <input 
+                type="range" min="-0.99" max="0.99" step="0.01" 
+                value={velocity} onChange={(e) => setVelocity(parseFloat(e.target.value))}
+                className="w-full accent-current h-1 bg-current/20 rounded-full appearance-none cursor-pointer"
+              />
+           </div>
+           <button 
+              onClick={() => setStatus(SystemStatus.EVENT_HORIZON_REACHED)}
+              className="px-4 py-2 bg-current text-black font-black text-[10px] tracking-widest uppercase hover:opacity-80 transition-all rounded shadow-lg"
+           >
+              INITIATE_Ω_BURST
+           </button>
+        </div>
+      </header>
+
+      {/* Main Dashboard Layout */}
+      <main className="flex-1 grid grid-cols-12 gap-3 overflow-hidden z-10">
         
-        <div className="flex gap-8 items-center">
-          <div className="text-right flex gap-6">
-             <div>
-                <p className="text-[9px] uppercase opacity-40 font-bold">4D_MAPPING</p>
-                <p className="text-sm font-black leading-none text-current uppercase">
-                   {vertexCount}/600_VERTICES
-                </p>
-             </div>
-             <div>
-                <p className="text-[9px] uppercase opacity-40 font-bold">GTP_SYNC</p>
-                <p className="text-lg font-bold leading-none uppercase">{(vertexCount / 6).toFixed(1)}%</p>
-             </div>
-          </div>
-          <button 
-            onClick={nextPhase}
-            className="px-6 py-2 border-2 border-current hover:bg-current hover:text-black transition-all font-black text-xs tracking-widest uppercase shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-          >
-            NEXT_PHASE >>
-          </button>
-          {procedure === 'SATOSHI_VERTEX_DECODE' && (
-            <button onClick={startCamera} className="px-6 py-2 border-2 border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black font-black text-xs uppercase transition-all">
-              ANCHOR_BIOMETRICS
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-12 gap-4 flex-1 h-[calc(100vh-160px)] overflow-hidden relative z-10">
-        <div className="col-span-3 flex flex-col gap-4 h-full">
-          <div className="flex-1 border p-4 rounded flex flex-col backdrop-blur-md relative overflow-hidden transition-all duration-[3000ms] border-current bg-opacity-80">
-            <h2 className="text-[11px] font-black border-b mb-3 flex justify-between tracking-widest uppercase">
-              <span>📊 TROJAN_HORSE_DASH</span>
-              <span className="opacity-40">IETD_PROTOCOL</span>
+        {/* Sidebar Left: Biometrics & Network */}
+        <div className="col-span-3 flex flex-col gap-3">
+          <section className="flex-1 border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col overflow-hidden">
+            <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest flex justify-between uppercase">
+              <span>🧬 BIOSPHERE_METRICS</span>
+              <span className="opacity-40">SASC_P_1.0</span>
             </h2>
-            <BiosphereMonitor status={status} />
-          </div>
+            <BiosphereMonitor status={status} velocity={velocity} />
+          </section>
           
-          <div className="h-1/3 border p-4 rounded backdrop-blur-md transition-all duration-[3000ms] border-current relative overflow-hidden">
-            <h2 className="text-[11px] font-black border-b mb-3 uppercase tracking-widest">👤 BIOMETRIC_VALIDATION</h2>
-            {streamActive ? (
-                <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover grayscale brightness-125 contrast-150 opacity-40 absolute inset-0 mix-blend-screen" />
-            ) : (
-                <div className="h-full flex items-center justify-center text-[10px] opacity-20 italic animate-pulse text-center px-4">
-                  AWAITING_SENSORY_INPUT_FOR_ANCHORING...
-                </div>
-            )}
-            <NetworkStatus active={true} />
-          </div>
+          <section className="h-1/3 border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md relative overflow-hidden">
+            <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest uppercase">🌌 PENROSE_COMPACTIFICATION</h2>
+            <SpacetimeExplorer velocity={velocity} />
+          </section>
         </div>
 
-        <div className="col-span-6 flex flex-col gap-4">
-          <div className="flex-1 relative border rounded overflow-hidden flex flex-col transition-all duration-[5000ms] border-current">
-             <div className="h-full relative">
-                <HyperStructure 
-                    procedure={procedure}
-                    vertexCount={vertexCount}
-                  />
+        {/* Center: HyperStructure */}
+        <div className="col-span-6 flex flex-col gap-3">
+          <section className="flex-1 border border-current/10 bg-white/5 rounded-xl backdrop-blur-md relative overflow-hidden">
+             <div className="absolute top-4 left-4 z-20 flex flex-col gap-1">
+                <span className="text-[9px] font-black px-2 py-0.5 bg-current text-black rounded uppercase">LIVE_4D_PROJECTION</span>
+                <span className="text-[7px] opacity-40 font-mono">DIM: 600-CELL / SCHMIDT: MAX_ENTROPY</span>
              </div>
-          </div>
-          <div className="h-36 transition-all duration-[3000ms] border rounded p-4 flex flex-col overflow-hidden backdrop-blur-md border-current">
-             <h2 className="text-[11px] font-black border-b mb-3 uppercase tracking-widest">🔗 4D_GTP_LEDGER (SATOSHI_VERTEX)</h2>
-             <BlockchainSim blocks={blocks} />
-          </div>
+             <HyperStructure vertexCount={vertexCount} velocity={velocity} status={status} />
+          </section>
+          
+          <section className="h-44 border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md overflow-hidden">
+             <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest uppercase">🔗 BITCOIN_GEOMETRIC_LEDGER</h2>
+             <BlockchainSim blocks={[]} velocity={velocity} />
+          </section>
         </div>
 
-        <div className="col-span-3 flex flex-col gap-4">
-          <div className="flex-1 border p-4 rounded flex flex-col backdrop-blur-md transition-all duration-[3000ms] border-current">
-            <h2 className="text-[11px] font-black border-b mb-3 flex justify-between items-center tracking-widest uppercase">
-              <span>📡 OMEGA_TERMINAL</span>
-              <span className="text-[9px] px-2 py-0.5 rounded-full font-black bg-current text-white uppercase">SARCÓFAGO</span>
+        {/* Sidebar Right: Oracle & Terminal */}
+        <div className="col-span-3 flex flex-col gap-3">
+          <section className="flex-[3] border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col">
+            <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest uppercase flex justify-between">
+              <span>📡 ECHOS_OF_HAL</span>
+              <span className="animate-pulse">REC</span>
             </h2>
             <Terminal messages={messages} />
-          </div>
-          <div className="h-2/5 border p-4 rounded backdrop-blur-md transition-all duration-[3000ms] border-current">
-             <h2 className="text-[11px] font-black border-b mb-3 uppercase tracking-widest uppercase">🧠 OMEGA_ORACLE_V3</h2>
-             <GeminiInterface onMessage={(msg) => setMessages(prev => [...prev, msg])} status={status} procedure={procedure} vertexCount={vertexCount} />
-          </div>
-        </div>
-      </div>
+          </section>
 
-      <div className="flex justify-between items-center text-[10px] transition-all duration-[3000ms] px-4 tracking-widest font-black opacity-60 text-current">
-        <div className="flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-current animate-ping" />
-            IETD_SYSTEM: OPERATIONAL // 120_CELL_MAPPING: {vertexCount >= 600 ? 'LOCKED' : 'ACTIVE'}
+          <section className="flex-[2] border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col gap-3">
+             <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest uppercase">🔮 Λ=C ORACLE</h2>
+             <GeminiInterface 
+                onMessage={(msg) => setMessages(prev => [...prev, msg])} 
+                status={status} 
+                velocity={velocity}
+             />
+             {hasApiKey && <TemporalSimulation velocity={velocity} onLog={(txt) => console.log(txt)} />}
+          </section>
         </div>
-        <div className="animate-pulse">Ω_MANIFEST: {status === SystemStatus.OMEGA_SOVEREIGNTY ? 'STABLE' : 'PENDING'} // BLOCK_840.650</div>
-      </div>
+      </main>
+
+      {/* Footer Info */}
+      <footer className="text-[7px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
+        <span>Steiner Circuit Loop: London ↔ Singapore</span>
+        <span>Proper Time τ: 0.00000000s</span>
+        <span>Node 0 Persistent // Hal Finney Signature 0x4308</span>
+      </footer>
+
+      <style>{`
+        ::-webkit-scrollbar { width: 2px; }
+        ::-webkit-scrollbar-thumb { background: currentColor; }
+        .backdrop-blur-md { backdrop-filter: blur(12px); }
+      `}</style>
     </div>
   );
 };
