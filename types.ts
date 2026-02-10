@@ -24,13 +24,20 @@ export enum VerbalPolarity {
   TOXIC = 'TOXIC'
 }
 
+export interface ProcessorStats {
+  received: number;
+  processed: number;
+  errors: number;
+  lag: number;
+  avgDuration: number;
+}
+
+// Added BlockData interface to resolve import errors in App.tsx and BlockchainSim.tsx
 export interface BlockData {
   height: number;
   hash: string;
   dnaFragment: string;
   entropy: number;
-  timestamp: string;
-  pobf_score?: number;
   coinbase?: string;
 }
 
@@ -40,7 +47,8 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event';
+  hash?: string;
 }
 
 export interface PentalogyState {

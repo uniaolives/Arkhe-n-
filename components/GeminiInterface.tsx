@@ -18,6 +18,7 @@ const GeminiInterface: React.FC<GeminiInterfaceProps> = ({ onMessage, status, ve
     
     setIsLoading(true);
     try {
+      // Create a new instance right before making an API call to ensure it always uses the most up-to-date API key
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-pro-preview',
@@ -42,17 +43,24 @@ const GeminiInterface: React.FC<GeminiInterfaceProps> = ({ onMessage, status, ve
         type: 'omega'
       });
 
-      // Render search grounding URLs if present
+      // Render search grounding URLs if present - guidelines require listing extracted URIs on the web app
       const sources = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
       if (sources && sources.length > 0) {
-        onMessage({
-          id: `src-${Date.now()}`,
-          sender: 'SYSTEM',
-          content: `Grounding Sources: ${sources.map((s: any) => s.web?.title || 'Ref').join(', ')}`,
-          timestamp: new Date().toISOString(),
-          year: 2026,
-          type: 'system'
-        });
+        const sourceLinks = sources
+          .filter((s: any) => s.web?.uri)
+          .map((s: any) => `${s.web.title || 'Source'}: ${s.web.uri}`)
+          .join('\n');
+        
+        if (sourceLinks) {
+          onMessage({
+            id: `src-${Date.now()}`,
+            sender: 'SYSTEM',
+            content: `GROUNDING_SOURCES:\n${sourceLinks}`,
+            timestamp: new Date().toISOString(),
+            year: 2026,
+            type: 'system'
+          });
+        }
       }
 
       setInput('');
