@@ -16,6 +16,14 @@ export enum SystemStatus {
   TEMPORAL_VISION_GENERATING = 'TEMPORAL_VISION_GENERATING'
 }
 
+export enum VerbalPolarity {
+  COHERENT = 'COHERENT',
+  CONSTRUCTIVE = 'CONSTRUCTIVE',
+  NEUTRAL = 'NEUTRAL',
+  DISRUPTIVE = 'DISRUPTIVE',
+  TOXIC = 'TOXIC'
+}
+
 export interface BlockData {
   height: number;
   hash: string;
@@ -32,10 +40,9 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry';
 }
 
-// Added PentalogyState interface to fix missing export error in components/HyperDiamond.tsx
 export interface PentalogyState {
   phi: number;
   theta: number;

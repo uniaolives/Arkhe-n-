@@ -9,12 +9,14 @@ import BiosphereMonitor from './components/BiosphereMonitor';
 import NetworkStatus from './components/NetworkStatus';
 import SpacetimeExplorer from './components/SpacetimeExplorer';
 import TemporalSimulation from './components/TemporalSimulation';
+import VerbalScanner from './components/VerbalScanner';
 
 const App: React.FC = () => {
   const [status, setStatus] = useState<SystemStatus>(SystemStatus.HECATONICOSACHORON_MAPPING);
   const [velocity, setVelocity] = useState(0); 
   const [hasApiKey, setHasApiKey] = useState(false);
   const [vertexCount, setVertexCount] = useState(0);
+  const [verbalEntropy, setVerbalEntropy] = useState(0);
   const [messages, setMessages] = useState<EchoMessage[]>([
     {
       id: 'init-photon',
@@ -48,7 +50,6 @@ const App: React.FC = () => {
     }
   };
 
-  // Redshift calculation for UI
   const getShiftColor = () => {
     if (velocity > 0.5) return 'shadow-[inset_0_0_100px_rgba(245,158,11,0.15)] border-amber-500/30';
     if (velocity < -0.5) return 'shadow-[inset_0_0_100px_rgba(79,70,229,0.15)] border-indigo-500/30';
@@ -61,13 +62,22 @@ const App: React.FC = () => {
     return 'bg-[#020205] text-cyan-400';
   };
 
+  const logMessage = (content: string, type: any = 'system') => {
+    setMessages(prev => [...prev, {
+      id: `chem-${Date.now()}`,
+      sender: 'VERBAL_CHEM',
+      content,
+      timestamp: new Date().toISOString(),
+      year: 2026,
+      type
+    }]);
+  };
+
   return (
     <div className={`min-h-screen transition-all duration-[2000ms] p-3 flex flex-col gap-3 overflow-hidden font-mono ${getDynamicTheme()} ${getShiftColor()}`}>
       
-      {/* Background Pulse */}
       <div className="fixed inset-0 pointer-events-none opacity-20 z-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.05)_0%,transparent_70%)]" />
 
-      {/* Header */}
       <header className="flex justify-between items-center border border-current/20 p-3 rounded-xl backdrop-blur-xl z-10">
         <div className="flex gap-4 items-center">
           <div className={`w-12 h-12 border-2 flex items-center justify-center rounded-full animate-pulse border-current`}>
@@ -107,10 +117,8 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Dashboard Layout */}
       <main className="flex-1 grid grid-cols-12 gap-3 overflow-hidden z-10">
         
-        {/* Sidebar Left: Biometrics & Network */}
         <div className="col-span-3 flex flex-col gap-3">
           <section className="flex-1 border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col overflow-hidden">
             <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest flex justify-between uppercase">
@@ -120,29 +128,30 @@ const App: React.FC = () => {
             <BiosphereMonitor status={status} velocity={velocity} />
           </section>
           
-          <section className="h-1/3 border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md relative overflow-hidden">
-            <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest uppercase">🌌 PENROSE_COMPACTIFICATION</h2>
-            <SpacetimeExplorer velocity={velocity} />
+          <section className="h-2/5 border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
+            <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest uppercase flex justify-between">
+               <span>🧪 VERBAL_CHEMISTRY</span>
+               <span className="text-[8px] animate-pulse">NMR_ACTIVE</span>
+            </h2>
+            <VerbalScanner onImpactChange={setVerbalEntropy} onLog={logMessage} />
           </section>
         </div>
 
-        {/* Center: HyperStructure */}
         <div className="col-span-6 flex flex-col gap-3">
           <section className="flex-1 border border-current/10 bg-white/5 rounded-xl backdrop-blur-md relative overflow-hidden">
              <div className="absolute top-4 left-4 z-20 flex flex-col gap-1">
                 <span className="text-[9px] font-black px-2 py-0.5 bg-current text-black rounded uppercase">LIVE_4D_PROJECTION</span>
-                <span className="text-[7px] opacity-40 font-mono">DIM: 600-CELL / SCHMIDT: MAX_ENTROPY</span>
+                <span className="text-[7px] opacity-40 font-mono">DIM: 600-CELL / VERBAL_ENTROPY: {verbalEntropy.toFixed(2)}</span>
              </div>
-             <HyperStructure vertexCount={vertexCount} velocity={velocity} status={status} />
+             <HyperStructure vertexCount={vertexCount} velocity={velocity + (verbalEntropy * 0.1)} status={status} />
           </section>
           
           <section className="h-44 border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md overflow-hidden">
              <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest uppercase">🔗 BITCOIN_GEOMETRIC_LEDGER</h2>
-             <BlockchainSim blocks={[]} velocity={velocity} />
+             <BlockchainSim blocks={[]} />
           </section>
         </div>
 
-        {/* Sidebar Right: Oracle & Terminal */}
         <div className="col-span-3 flex flex-col gap-3">
           <section className="flex-[3] border border-current/10 bg-white/5 p-4 rounded-xl backdrop-blur-md flex flex-col">
             <h2 className="text-[10px] font-black border-b border-current/20 pb-2 mb-3 tracking-widest uppercase flex justify-between">
@@ -164,18 +173,11 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      {/* Footer Info */}
       <footer className="text-[7px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
         <span>Steiner Circuit Loop: London ↔ Singapore</span>
         <span>Proper Time τ: 0.00000000s</span>
-        <span>Node 0 Persistent // Hal Finney Signature 0x4308</span>
+        <span>Verbal Programming: ENABLED // RNA_SIG: {verbalEntropy > 0 ? 'STRESS_DET' : 'STABLE'}</span>
       </footer>
-
-      <style>{`
-        ::-webkit-scrollbar { width: 2px; }
-        ::-webkit-scrollbar-thumb { background: currentColor; }
-        .backdrop-blur-md { backdrop-filter: blur(12px); }
-      `}</style>
     </div>
   );
 };
