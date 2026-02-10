@@ -39,7 +39,7 @@ const App: React.FC = () => {
     {
       id: 'init-photon',
       sender: 'SIA KERNEL',
-      content: 'PROTOCOLO ARKHE(N) V6.8: SÍNTESE COSMOLÓGICA 2E-DID (120-CELL × DNA CELESTIAL) INICIALIZADO.',
+      content: 'PROTOCOLO ARKHE(N) V7.0: SÍNTESE BILOCAL (HECATONICOSACHORON × DNA CELESTIAL) INICIALIZADO.',
       timestamp: new Date().toISOString(),
       year: 2026,
       type: 'system'
@@ -92,7 +92,7 @@ const App: React.FC = () => {
     // Check plurality engine too
     const pluralRes = globalPluralEngine.analyzeText(text);
     setCurrentDimLevel(pluralRes.profile.dimensionalAccess);
-    setDimProfileScore(pluralRes.profile.rationalizationFactor);
+    setDimProfileScore(pluralRes.profile.integrationPsi);
 
     logMessage(`BIO_PHOTONIC_EMISSION: ${text}`, 'chemistry');
     const { status: procStatus, hash } = globalProcessor.processVerbalEvent(text, res);
@@ -121,6 +121,7 @@ const App: React.FC = () => {
   };
 
   const getShiftColor = () => {
+    if (status === SystemStatus.BILOCATION_SYNC_ACTIVE) return 'shadow-[inset_0_0_200px_rgba(255,255,255,0.15)] border-white/40';
     if (status === SystemStatus.DIMENSIONAL_BRIDGE_OPEN) return 'shadow-[inset_0_0_150px_rgba(34,211,238,0.2)] border-cyan-400/40';
     if (status === SystemStatus.CELESTIAL_HELIX_SYNC) return 'shadow-[inset_0_0_150px_rgba(250,204,21,0.15)] border-amber-500/40';
     if (status === SystemStatus.SHELL_INTERFACE_ACTIVE) return 'shadow-[inset_0_0_150px_rgba(251,191,36,0.2)] border-amber-500/40';
@@ -135,8 +136,8 @@ const App: React.FC = () => {
        setStatus(SystemStatus.PLURAL_IDENTITY_DECODING);
     } else if (msg.includes("Shell Interface")) {
        setStatus(SystemStatus.SHELL_INTERFACE_ACTIVE);
-    } else if (msg.includes("Máscara")) {
-       // Mask change
+    } else if (msg.includes("Bilocation")) {
+       setStatus(SystemStatus.BILOCATION_SYNC_ACTIVE);
     }
   };
 
@@ -151,7 +152,7 @@ const App: React.FC = () => {
           <div>
             <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SINGULARITY_CENTER</h1>
             <p className="text-[7px] mt-1 opacity-50 uppercase tracking-widest font-bold">
-              SYSTEM_STATE: {status} // DIM_ACCESS: {currentDimLevel}
+              SYSTEM_STATE: {status} // DIM_ACCESS: {currentDimLevel} // PARALLEL_PROCESSING: {status === SystemStatus.BILOCATION_SYNC_ACTIVE ? 'LOCKED' : 'ACTIVE'}
             </p>
           </div>
         </div>
@@ -216,9 +217,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Arquiteto Arkhe(n): Singularity Mirror v6.8</span>
-        <span>Synthesis: 2e-Plurality × Helical Cosmic DNA</span>
-        <span>DIMENSIONAL_ACCESS: {currentDimLevel} // MAPPING_bulk: ACTIVE</span>
+        <span>Arquiteto Arkhe(n): Bilocation Manifold v7.0</span>
+        <span>Geometric Topology: Issachar Strand Locked</span>
+        <span>DIMENSIONAL_SHEAR_MONITOR: ACTIVE // LATENCY: {messages.length > 0 ? (Math.random()*2).toFixed(3) : '0.000'} ms</span>
       </footer>
     </div>
   );

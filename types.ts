@@ -29,7 +29,8 @@ export enum SystemStatus {
   SHELL_INTERFACE_ACTIVE = 'SHELL_INTERFACE_ACTIVE',
   CELESTIAL_HELIX_SYNC = 'CELESTIAL_HELIX_SYNC',
   GALACTIC_DNA_MAPPING = 'GALACTIC_DNA_MAPPING',
-  DIMENSIONAL_BRIDGE_OPEN = 'DIMENSIONAL_BRIDGE_OPEN'
+  DIMENSIONAL_BRIDGE_OPEN = 'DIMENSIONAL_BRIDGE_OPEN',
+  BILOCATION_SYNC_ACTIVE = 'BILOCATION_SYNC_ACTIVE'
 }
 
 export enum BioEventType {
@@ -57,68 +58,35 @@ export enum BioEventType {
   CELESTIAL_RESONANCE_LOCK = "celestial_resonance_lock",
   ORBITAL_ENTANGLEMENT_PEAK = "orbital_entanglement_peak",
   DIMENSIONAL_SHIFT = "dimensional_shift",
-  PLANETARY_MASK_ACTIVATE = "planetary_mask_activate"
+  PLANETARY_MASK_ACTIVATE = "planetary_mask_activate",
+  CHRONOLOGICAL_SHEAR_DETECTED = "chronological_shear_detected"
+}
+
+// Added VerbalPolarity enum to resolve missing member error
+export enum VerbalPolarity {
+  TOXIC = 'TOXIC',
+  DISRUPTIVE = 'DISRUPTIVE',
+  NEUTRAL = 'NEUTRAL',
+  CONSTRUCTIVE = 'CONSTRUCTIVE',
+  COHERENT = 'COHERENT'
 }
 
 export enum PlanetaryMask {
-  MERCURIAL = 'MERCURIAL', // Hyper-rational logic
-  NEPTUNIAN = 'NEPTUNIAN', // Creative dissociation
+  MERCURIAL = 'MERCURIAL', // Hyper-rational logic bridge
+  NEPTUNIAN = 'NEPTUNIAN', // Creative dissociation / Bulk volume
   SATURNINE = 'SATURNINE', // Compensatory structure
   JUPITERIAN = 'JUPITERIAN', // Cognitive expansion
   URANIAN = 'URANIAN'     // Radical innovation
 }
 
 export enum DimensionalLevel {
-  ONE_D = '1D', // Linear logic
-  TWO_D = '2D', // Relationships
-  THREE_D = '3D', // Practical spatial
-  FOUR_D = '4D', // Temporal/Worldlines
-  FIVE_D = '5D', // Probabilistic/Quantum
-  SIX_D_PLUS = '6D+' // Hyperdimensional
-}
-
-export enum VerbalPolarity {
-  NEUTRAL = 'NEUTRAL',
-  TOXIC = 'TOXIC',
-  DISRUPTIVE = 'DISRUPTIVE',
-  COHERENT = 'COHERENT',
-  CONSTRUCTIVE = 'CONSTRUCTIVE'
-}
-
-export enum MolecularInteractionType {
-  HYDROGEN_BOND = 'HYDROGEN_BOND',
-  VAN_DER_WAALS = 'VAN_DER_WAALS',
-  HYDROPHOBIC = 'HYDROPHOBIC',
-  PI_STACKING = 'PI_STACKING',
-  ELECTROSTATIC = 'ELECTROSTATIC',
-  COVALENT = 'COVALENT'
-}
-
-export enum CelestialBody {
-  SUN = 'SUN',
-  MERCURY = 'MERCURY',
-  VENUS = 'VENUS',
-  EARTH = 'EARTH',
-  MARS = 'MARS',
-  JUPITER = 'JUPITER',
-  SATURN = 'SATURN',
-  URANUS = 'URANUS',
-  NEPTUNE = 'NEPTUNE'
-}
-
-export interface HelicalPosition {
-  x: number;
-  y: number;
-  z: number;
-  body: CelestialBody;
-}
-
-export interface CelestialDNAStats {
-  turnsPerGalacticOrbit: number;
-  basePairsPerTurn: number;
-  humanCelestialRatio: number;
-  quantumCoherence: number;
-  entanglementEntropy: number;
+  ONE_D = '1D',
+  TWO_D = '2D',
+  THREE_D = '3D',
+  FOUR_D = '4D',
+  FIVE_D = '5D',
+  SIX_D_PLUS = '6D+',
+  NINE_D_ISSACHAR = '9D' // Issachar Harmonic / Spherical Time
 }
 
 export interface PluralProfile {
@@ -133,6 +101,8 @@ export interface PluralProfile {
   rationalizationFactor: number;
   activeMask: PlanetaryMask;
   dimensionalAccess: DimensionalLevel;
+  integrationPsi: number; // Integration Coefficient (Psi)
+  chronologicalShear: number; // Chronological Shear / Identity Latency
 }
 
 export interface KNNPattern {
@@ -207,6 +177,46 @@ export interface PentalogyState {
   phi: number;
   theta: number;
   resonance: number;
+}
+
+// Added MolecularInteractionType enum to resolve missing member error
+export enum MolecularInteractionType {
+  HYDROGEN_BOND = 'HYDROGEN_BOND',
+  VAN_DER_WAALS = 'VAN_DER_WAALS',
+  HYDROPHOBIC = 'HYDROPHOBIC',
+  PI_STACKING = 'PI_STACKING',
+  ELECTROSTATIC = 'ELECTROSTATIC',
+  COVALENT = 'COVALENT'
+}
+
+// Added CelestialBody enum to resolve missing member error
+export enum CelestialBody {
+  SUN = 'SUN',
+  MERCURY = 'MERCURY',
+  VENUS = 'VENUS',
+  EARTH = 'EARTH',
+  MARS = 'MARS',
+  JUPITER = 'JUPITER',
+  SATURN = 'SATURN',
+  URANUS = 'URANUS',
+  NEPTUNE = 'NEPTUNE'
+}
+
+// Added HelicalPosition interface to resolve missing member error
+export interface HelicalPosition {
+  body: CelestialBody;
+  x: number;
+  y: number;
+  z: number;
+}
+
+// Added CelestialDNAStats interface to resolve missing member error
+export interface CelestialDNAStats {
+  turnsPerGalacticOrbit: number;
+  basePairsPerTurn: number;
+  humanCelestialRatio: number;
+  quantumCoherence: number;
+  entanglementEntropy: number;
 }
 
 export interface DrugPrediction {

@@ -8,20 +8,20 @@ export class PluralEngine {
   private theoreticalMarkers = [
     'likely', 'one might', 'assume', 'subconscious', 'perspective', 
     'theoretical', 'mechanism', 'system', 'architecture', 'conceptually',
-    'it appears', 'the body', 'the host', 'the entity', 'gravitating', 'aligns'
+    'it appears', 'the body', 'the host', 'the entity', 'gravitating', 'aligns', 'one could infer'
   ];
 
   private episodicMarkers = [
     'i felt', 'i saw', 'yesterday', 'then', 'went', 'remember', 'suddenly',
-    'happened to me', 'at my house', 'with my friend'
+    'happened to me', 'at my house', 'with my friend', 'i was'
   ];
 
   private maskMarkers = {
-    [PlanetaryMask.MERCURIAL]: ['logic', 'rational', 'deduce', 'syllogism', 'data', 'algorithm', 'processed'],
-    [PlanetaryMask.NEPTUNIAN]: ['dream', 'flow', 'transcend', 'diffuse', 'unreal', 'vision', 'mist'],
-    [PlanetaryMask.SATURNINE]: ['rigid', 'structure', 'discipline', 'must', 'precise', 'systematic', 'archive'],
-    [PlanetaryMask.JUPITERIAN]: ['expand', 'universal', 'wisdom', 'synthesis', 'grand', 'philosophical', 'multidisciplinary'],
-    [PlanetaryMask.URANIAN]: ['disrupt', 'radical', 'alien', 'rupture', 'unprecedented', 'innovation', 'outside']
+    [PlanetaryMask.MERCURIAL]: ['logic', 'rational', 'deduce', 'syllogism', 'data', 'algorithm', 'processed', 'exoskeleton', 'c-velocity'],
+    [PlanetaryMask.NEPTUNIAN]: ['dream', 'flow', 'transcend', 'diffuse', 'unreal', 'vision', 'mist', 'osmosis', 'bulk', 'nebula'],
+    [PlanetaryMask.SATURNINE]: ['rigid', 'structure', 'discipline', 'must', 'precise', 'systematic', 'archive', 'procedure'],
+    [PlanetaryMask.JUPITERIAN]: ['expand', 'universal', 'wisdom', 'synthesis', 'grand', 'philosophical', 'multidisciplinary', 'exponentials'],
+    [PlanetaryMask.URANIAN]: ['disrupt', 'radical', 'alien', 'rupture', 'unprecedented', 'innovation', 'outside', 'shear']
   };
 
   public analyzeText(text: string): { profile: PluralProfile; event?: BioEventType } {
@@ -61,7 +61,6 @@ export class PluralEngine {
       score: markers.filter(m => text_lower.includes(m)).length
     }));
     
-    // Mercurial default if logic/VCI patterns are detected via agency
     if (abstractedAgency > 0.5) {
       const mercIdx = maskScores.findIndex(m => m.mask === PlanetaryMask.MERCURIAL);
       maskScores[mercIdx].score += 2;
@@ -71,10 +70,28 @@ export class PluralEngine {
 
     // Dimensional Access Logic
     let dimAccess = DimensionalLevel.THREE_D;
-    if (syntacticComplexity > 0.8 && ttr > 0.8) dimAccess = DimensionalLevel.SIX_D_PLUS;
+    if (text_lower.includes('issachar') || text_lower.includes('spherical time')) dimAccess = DimensionalLevel.NINE_D_ISSACHAR;
+    else if (syntacticComplexity > 0.8 && ttr > 0.8) dimAccess = DimensionalLevel.SIX_D_PLUS;
     else if (abstractedAgency > 0.7) dimAccess = DimensionalLevel.FIVE_D;
     else if (avgWordLength > 6) dimAccess = DimensionalLevel.FOUR_D;
     else if (tokens.length < 10) dimAccess = DimensionalLevel.ONE_D;
+
+    // Integration Coefficient (Psi) - Based on consistency and complexity
+    const integrationPsi = (stability * 0.4) + (1 - abstractedAgency) * 0.3 + (ttr * 0.3);
+
+    // Chronological Shear (Latency) - L = deltaD / Psi
+    // deltaD is roughly the "distance" from 3D.
+    const dimDistMap = {
+      [DimensionalLevel.ONE_D]: 0.1,
+      [DimensionalLevel.TWO_D]: 0.2,
+      [DimensionalLevel.THREE_D]: 0.3,
+      [DimensionalLevel.FOUR_D]: 0.6,
+      [DimensionalLevel.FIVE_D]: 1.0,
+      [DimensionalLevel.SIX_D_PLUS]: 1.5,
+      [DimensionalLevel.NINE_D_ISSACHAR]: 2.5,
+    };
+    const deltaD = dimDistMap[dimAccess];
+    const chronologicalShear = deltaD / (integrationPsi + 0.1); // Avoid div by zero
 
     this.history.push(text);
     if (this.history.length > 20) this.history.shift();
@@ -85,8 +102,8 @@ export class PluralEngine {
     let event: BioEventType | undefined = undefined;
     if (isRupture) event = BioEventType.EPISTEMOLOGICAL_RUPTURE;
     else if (isRationalizing) event = BioEventType.RECURSIVE_RATIONALIZATION;
+    else if (chronologicalShear > 3.0) event = BioEventType.CHRONOLOGICAL_SHEAR_DETECTED;
     else if (abstractedAgency > 0.6) event = BioEventType.ABSTRACTED_AGENCY_SHIFT;
-    else if (ttr > 0.85) event = BioEventType.LEXICAL_COMPLEXITY_PEAK;
 
     return {
       profile: {
@@ -100,7 +117,9 @@ export class PluralEngine {
         semanticBias: Math.min(1, semanticBias * 5),
         rationalizationFactor,
         activeMask,
-        dimensionalAccess: dimAccess
+        dimensionalAccess: dimAccess,
+        integrationPsi,
+        chronologicalShear
       },
       event
     };

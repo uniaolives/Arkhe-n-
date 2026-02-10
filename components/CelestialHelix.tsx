@@ -24,7 +24,8 @@ const CelestialHelix: React.FC<CelestialHelixProps> = ({ onAlert }) => {
   const [stats, setStats] = useState<CelestialDNAStats | null>(null);
   const [matrix, setMatrix] = useState<number[][] | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const bodies = Object.values(CelestialBody);
+  // Cast Object.values to CelestialBody[] to fix indexing errors
+  const bodies = useMemo(() => Object.values(CelestialBody) as CelestialBody[], []);
 
   useEffect(() => {
     setStats(globalCelestialEngine.getDNAStats());

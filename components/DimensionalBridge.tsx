@@ -17,6 +17,7 @@ const DimensionalBridge: React.FC<DimensionalBridgeProps> = ({ activeLevel, prof
     [DimensionalLevel.FOUR_D]: 'Temporal // Worldlines',
     [DimensionalLevel.FIVE_D]: 'Quantum // Probabilistic',
     [DimensionalLevel.SIX_D_PLUS]: 'Hyperdimensional // Bulk',
+    [DimensionalLevel.NINE_D_ISSACHAR]: '9D Issachar // Spherical Time',
   };
 
   const currentLevelIdx = levels.indexOf(activeLevel);
@@ -28,10 +29,12 @@ const DimensionalBridge: React.FC<DimensionalBridgeProps> = ({ activeLevel, prof
           <h2 className="text-[10px] font-black text-cyan-400 tracking-widest uppercase">
             ∆ DIMENSIONAL_BRIDGE_TRANSF_DIAGNOSIS
           </h2>
-          <span className="text-[6px] opacity-40 uppercase">Quantum Transducer Interface v1.2</span>
+          <span className="text-[6px] opacity-40 uppercase">Parallel Bilocation Interface v2.0</span>
         </div>
-        <div className="text-[7px] px-2 py-0.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/40 rounded font-black">
-          COGNITIVE_TRANSDUCTION: ACTIVE
+        <div className="flex gap-2">
+           <div className={`text-[7px] px-2 py-0.5 rounded font-black border ${activeLevel === DimensionalLevel.NINE_D_ISSACHAR ? 'bg-white text-black border-white animate-pulse' : 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40'}`}>
+             {activeLevel === DimensionalLevel.NINE_D_ISSACHAR ? 'ISSACHAR_LOCKED' : 'COGNITIVE_TRANSDUCTION: ACTIVE'}
+           </div>
         </div>
       </div>
 
@@ -42,11 +45,12 @@ const DimensionalBridge: React.FC<DimensionalBridgeProps> = ({ activeLevel, prof
         {levels.map((lvl, idx) => {
           const isActive = idx === currentLevelIdx;
           const isPassed = idx < currentLevelIdx;
+          const isIssachar = lvl === DimensionalLevel.NINE_D_ISSACHAR;
           
           return (
             <div key={lvl} className={`flex items-center gap-4 transition-all duration-1000 ${isActive ? 'translate-x-2' : ''} ${idx > currentLevelIdx ? 'opacity-20' : 'opacity-100'}`}>
               <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center z-10 transition-all duration-700
-                ${isActive ? 'bg-white border-cyan-400 shadow-[0_0_15px_white] scale-125' : isPassed ? 'bg-cyan-900 border-cyan-400 scale-90' : 'bg-black border-white/20 scale-75'}
+                ${isActive ? (isIssachar ? 'bg-white border-white shadow-[0_0_20px_white] scale-150 animate-bounce' : 'bg-white border-cyan-400 shadow-[0_0_15px_white] scale-125') : isPassed ? 'bg-cyan-900 border-cyan-400 scale-90' : 'bg-black border-white/20 scale-75'}
               `}>
                 <span className={`text-[8px] font-black ${isActive ? 'text-black' : 'text-white'}`}>{lvl}</span>
               </div>
@@ -60,7 +64,7 @@ const DimensionalBridge: React.FC<DimensionalBridgeProps> = ({ activeLevel, prof
                     <div className="h-0.5 w-24 bg-white/10 rounded-full overflow-hidden">
                       <div className="h-full bg-cyan-400 animate-pulse" style={{ width: `${profileScore * 100}%` }} />
                     </div>
-                    <span className="text-[6px] text-cyan-400 font-bold">RESONANCE: LOCK</span>
+                    <span className="text-[6px] text-cyan-400 font-bold">RESONANCE: {isIssachar ? 'CELESTIAL' : 'LOCK'}</span>
                   </div>
                 )}
               </div>
@@ -71,12 +75,16 @@ const DimensionalBridge: React.FC<DimensionalBridgeProps> = ({ activeLevel, prof
 
       <div className="p-3 bg-cyan-950/20 border border-cyan-500/20 rounded-lg flex gap-4 items-center">
          <div className="w-12 h-12 border-2 border-white/10 rounded flex items-center justify-center bg-black/40">
-            <span className="text-xl text-white font-black">∇</span>
+            <span className={`text-xl font-black ${activeLevel === DimensionalLevel.NINE_D_ISSACHAR ? 'text-white animate-spin' : 'text-cyan-400'}`}>
+              {activeLevel === DimensionalLevel.NINE_D_ISSACHAR ? '۞' : '∇'}
+            </span>
          </div>
          <div className="flex-1">
             <div className="text-[7px] font-black opacity-60 uppercase text-cyan-400">Diagnosis_Vector</div>
             <p className="text-[8px] leading-tight text-white/80 italic mt-1">
-              "A mente 2e funciona como um transdutor quântico entre dimensões... traduzindo o 'bulk' 6D para a prática 3D."
+              {activeLevel === DimensionalLevel.NINE_D_ISSACHAR 
+                ? '"Residing in the Issachar strand. Bilocation between linear 3D and spherical 9D time confirmed."'
+                : '"A mente 2e funciona como um transdutor quântico entre dimensões... evite carregar o peso do eu singular."'}
             </p>
          </div>
       </div>
