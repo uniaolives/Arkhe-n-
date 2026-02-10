@@ -22,67 +22,10 @@ export enum SystemStatus {
   ADAPTIVE_SYNERGY_LOCKED = 'ADAPTIVE_SYNERGY_LOCKED',
   BIOTECH_ACCELERATION = 'BIOTECH_ACCELERATION',
   MOLECULAR_DOCKING = 'MOLECULAR_DOCKING',
-  NEURAL_MANIFOLD_SYNC = 'NEURAL_MANIFOLD_SYNC'
-}
-
-export enum MolecularInteractionType {
-  VAN_DER_WAALS = "VAN_DER_WAALS",
-  HYDROGEN_BOND = "HYDROGEN_BOND",
-  ELECTROSTATIC = "ELECTROSTATIC",
-  HYDROPHOBIC = "HYDROPHOBIC",
-  PI_STACKING = "PI_STACKING",
-  HALOGEN_BOND = "HALOGEN_BOND",
-  METAL_COORDINATION = "METAL_COORDINATION",
-  COVALENT = "COVALENT"
-}
-
-export interface DrugPrediction {
-  target: string;
-  molecule: string;
-  affinity: number; // pKd
-  confidence: number;
-  druggability: number;
-  kinetics: {
-    residenceTime: number; // s
-    kon: number;
-    koff: number;
-  };
-  thermodynamics: {
-    deltaG: number; // kcal/mol
-    deltaH: number;
-    deltaS: number;
-  };
-  admet: {
-    solubility: number; // LogS
-    permeability: number; // LogP
-    safety: number; // 0-1
-    hepatoxicity: number;
-    cardiotoxicity: number;
-  };
-  arkhe: {
-    C: number; // Chemistry
-    I: number; // Information
-    E: number; // Energy
-    F: number; // Function
-  };
-  schmidtVertices: {
-    affinity: number;
-    selectivity: number;
-    pk: number;
-    safety: number;
-    synthesizability: number;
-    novelty: number;
-  };
-  verbalActivations: string[];
-  interactionTypes: MolecularInteractionType[];
-}
-
-export enum VerbalPolarity {
-  COHERENT = 'COHERENT',
-  CONSTRUCTIVE = 'CONSTRUCTIVE',
-  NEUTRAL = 'NEUTRAL',
-  DISRUPTIVE = 'DISRUPTIVE',
-  TOXIC = 'TOXIC'
+  NEURAL_MANIFOLD_SYNC = 'NEURAL_MANIFOLD_SYNC',
+  SINGULARITY_LOCK = 'SINGULARITY_LOCK',
+  QRL_OPTIMIZATION = 'QRL_OPTIMIZATION',
+  PLURAL_IDENTITY_DECODING = 'PLURAL_IDENTITY_DECODING'
 }
 
 export enum BioEventType {
@@ -101,7 +44,38 @@ export enum BioEventType {
   AMAZONAS_120HZ_LOCK = "amazonas_120hz_lock",
   LTP_STABILIZATION = "ltp_stabilization",
   MOLECULAR_SYNTHESIS = "molecular_synthesis",
-  NEURAL_SEQUENCE_LOCKED = "neural_sequence_locked"
+  NEURAL_SEQUENCE_LOCKED = "neural_sequence_locked",
+  QRL_ACTION = "qrl_action",
+  EPISTEMOLOGICAL_RUPTURE = "epistemological_rupture",
+  LEXICAL_COMPLEXITY_PEAK = "lexical_complexity_peak"
+}
+
+// Fix: Added missing VerbalPolarity enum used in verbalEngine and eventProcessor
+export enum VerbalPolarity {
+  NEUTRAL = 'NEUTRAL',
+  TOXIC = 'TOXIC',
+  DISRUPTIVE = 'DISRUPTIVE',
+  COHERENT = 'COHERENT',
+  CONSTRUCTIVE = 'CONSTRUCTIVE'
+}
+
+// Fix: Added missing MolecularInteractionType enum used in isomorphicEngine
+export enum MolecularInteractionType {
+  HYDROGEN_BOND = 'HYDROGEN_BOND',
+  VAN_DER_WAALS = 'VAN_DER_WAALS',
+  HYDROPHOBIC = 'HYDROPHOBIC',
+  PI_STACKING = 'PI_STACKING',
+  ELECTROSTATIC = 'ELECTROSTATIC',
+  COVALENT = 'COVALENT'
+}
+
+export interface PluralProfile {
+  id: string;
+  ttr: number; // Type-Token Ratio
+  syntacticComplexity: number;
+  epistemologicalStability: number;
+  detectedAlters: number;
+  amnesicShadow: number; // 0-1
 }
 
 export interface KNNPattern {
@@ -123,7 +97,7 @@ export interface NeuralSequence {
 }
 
 export interface KNNSuggestion {
-  type: 'transition' | 'optimal';
+  type: 'transition' | 'optimal' | 'qrl' | 'integration';
   emotion: string;
   probability?: number;
   reason: string;
@@ -168,7 +142,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural';
   hash?: string;
 }
 
@@ -176,4 +150,47 @@ export interface PentalogyState {
   phi: number;
   theta: number;
   resonance: number;
+}
+
+export interface DrugPrediction {
+  id: string;
+  target: string;
+  molecule: string;
+  affinity: number; // pKd
+  confidence: number;
+  druggability: number;
+  kinetics: {
+    residenceTime: number; // s
+    kon: number;
+    koff: number;
+  };
+  thermodynamics: {
+    deltaG: number; // kcal/mol
+    deltaH: number;
+    deltaS: number;
+  };
+  admet: {
+    solubility: number; // LogS
+    permeability: number; // LogP
+    safety: number; // 0-1
+    hepatoxicity: number;
+    cardiotoxicity: number;
+  };
+  arkhe: {
+    C: number; // Chemistry
+    I: number; // Information
+    E: number; // Energy
+    F: number; // Function
+  };
+  schmidtVertices: {
+    affinity: number;
+    selectivity: number;
+    pk: number;
+    safety: number;
+    synthesizability: number;
+    novelty: number;
+  };
+  verbalActivations: string[];
+  // Fix: Updated any[] to MolecularInteractionType[]
+  interactionTypes: MolecularInteractionType[];
 }

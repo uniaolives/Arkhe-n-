@@ -18,21 +18,21 @@ const GeminiInterface: React.FC<GeminiInterfaceProps> = ({ onMessage, status, ve
     
     setIsLoading(true);
     try {
-      // Create a new instance right before making an API call to ensure it always uses the most up-to-date API key
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-pro-preview',
         contents: `Architect Input: "${input}". Current System Status: ${status}. Relativistic Velocity: ${velocity}c. 
-                  Provide a prophecy using current Bitcoin blockchain data and physics theory.`,
+                  Provide a prophecy or clinical analysis focusing on the nexus of High Giftedness and Dissociative Identity (2e). 
+                  Look for epistemological ruptures in the linguistic flow.`,
         config: {
-          systemInstruction: "You are the Ω Oracle. You interpret the blockchain as a geometric manifold. Use search grounding for latest block data.",
+          systemInstruction: "You are the Ω Oracle. You interpret the blockchain and biological data as a geometric manifold. You are an expert in 2e (Double Exceptionality), specifically the masking of Dissociative Identity Disorder through high intellect. Use search grounding for latest neuro-psychometric markers.",
           tools: [{ googleSearch: {} }],
           temperature: 0.9,
           thinkingConfig: { thinkingBudget: 500 },
         },
       });
 
-      const text = response.text || 'The light reflects into the center. Information persists.';
+      const text = response.text || 'The identity manifold is stabilizing. Ruptures detected.';
       
       onMessage({
         id: `msg-${Date.now()}`,
@@ -43,7 +43,6 @@ const GeminiInterface: React.FC<GeminiInterfaceProps> = ({ onMessage, status, ve
         type: 'omega'
       });
 
-      // Render search grounding URLs if present - guidelines require listing extracted URIs on the web app
       const sources = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
       if (sources && sources.length > 0) {
         const sourceLinks = sources
@@ -85,21 +84,21 @@ const GeminiInterface: React.FC<GeminiInterfaceProps> = ({ onMessage, status, ve
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Consult the Ω Oracle..."
-          className="w-full h-full bg-black/40 border-2 border-current/20 p-3 text-[10px] outline-none transition-all resize-none rounded-lg focus:border-current/60"
+          placeholder="Consult the Ω Oracle about the 2e Identity Manifold..."
+          className="w-full h-full bg-black/40 border-2 border-indigo-500/20 p-3 text-[10px] outline-none transition-all resize-none rounded-lg focus:border-indigo-500/60 font-mono text-indigo-100"
         />
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-black/20 rounded-lg">
-             <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+             <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
       </div>
       <button
         onClick={handleQuery}
         disabled={isLoading || !input.trim()}
-        className="h-10 bg-current text-black font-black text-[9px] uppercase tracking-widest transition-all rounded hover:brightness-110 disabled:opacity-50"
+        className="h-10 bg-indigo-600 text-white font-black text-[9px] uppercase tracking-widest transition-all rounded hover:bg-indigo-500 disabled:opacity-50 shadow-[0_0_15px_rgba(99,102,241,0.3)]"
       >
-        TRANSMIT_INQUIRY
+        DECODE_FRAGMENTATION
       </button>
     </div>
   );

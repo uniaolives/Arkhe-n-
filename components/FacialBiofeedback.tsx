@@ -103,13 +103,17 @@ const FacialBiofeedback: React.FC<FacialBiofeedbackProps> = ({ onVerbalTrigger, 
     const base64Image = canvas.toDataURL('image/jpeg').split(',')[1];
 
     try {
+      // Fix: Always create a new GoogleGenAI instance right before the call
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      // Fix: Updated contents to use the required object format with parts array
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
-        contents: [
-          { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
-          { text: "Analyze this face for EKMAN emotions. Return JSON: {emotion, valence: -1 to 1, arousal: 0 to 1, healingStatement, biochemicalImpact: 0 to 100}." }
-        ],
+        contents: {
+          parts: [
+            { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
+            { text: "Analyze this face for EKMAN emotions. Return JSON: {emotion, valence: -1 to 1, arousal: 0 to 1, healingStatement, biochemicalImpact: 0 to 100}." }
+          ]
+        },
         config: { responseMimeType: "application/json" }
       });
 

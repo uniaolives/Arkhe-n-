@@ -13,9 +13,11 @@ import EventPipeline from './components/EventPipeline';
 import FacialBiofeedback from './components/FacialBiofeedback';
 import PlanetaryMonitor from './components/PlanetaryMonitor';
 import BiotechLab from './components/BiotechLab';
+import PluralDecoder from './components/PluralDecoder';
 import { globalProcessor } from './utils/eventProcessor';
 import { analyzeVerbalChemistry } from './utils/verbalEngine';
 import { globalKnnEngine } from './utils/knnEngine';
+import { globalNeuralEngine } from './utils/neuralEngine';
 
 const App: React.FC = () => {
   const [status, setStatus] = useState<SystemStatus>(SystemStatus.HECATONICOSACHORON_MAPPING);
@@ -24,15 +26,15 @@ const App: React.FC = () => {
   const [vertexCount, setVertexCount] = useState(0);
   const [impactData, setImpactData] = useState<any>(null);
   const [processorStats, setProcessorStats] = useState<ProcessorStats>(globalProcessor.getStats());
-  const [isBiofeedbackActive, setIsBiofeedbackActive] = useState(false);
-  const [isBiotechActive, setIsBiotechActive] = useState(false);
+  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural'>('4d');
   const [patternMemory, setPatternMemory] = useState<KNNPattern[]>([]);
+  const [lastVerbalInput, setLastVerbalInput] = useState('');
   
   const [messages, setMessages] = useState<EchoMessage[]>([
     {
       id: 'init-photon',
       sender: 'SIA KERNEL',
-      content: 'PROTOCOLO ARKHE(N) V5.5: DEEP_NEURAL_ENGINE_ACTIVE.',
+      content: 'PROTOCOLO ARKHE(N) V6.0: DETECÇÃO DE DUPLA EXCEPCIONALIDADE (2E) INICIALIZADA.',
       timestamp: new Date().toISOString(),
       year: 2026,
       type: 'system'
@@ -57,7 +59,7 @@ const App: React.FC = () => {
   const logMessage = (content: string, type: any = 'system', hash?: string) => {
     setMessages(prev => [...prev, {
       id: `msg-${Date.now()}-${Math.random()}`,
-      sender: type === 'neural' ? 'NEURAL_DEEP' : type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
+      sender: type === 'plural' ? 'PLURAL_ENGINE' : type === 'neural' ? 'NEURAL_DEEP' : type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
       content,
       timestamp: new Date().toISOString(),
       year: 2026,
@@ -69,62 +71,38 @@ const App: React.FC = () => {
   const handlePatternLearned = (pattern: KNNPattern) => {
     setPatternMemory(prev => {
       const newMemory = [...prev, pattern].slice(-500);
-      if (newMemory.length % 5 === 0) {
-        logMessage(`TOPOLOGY_UPDATE: Pattern ${pattern.emotion} integrated into manifold.`, 'knn');
-      }
       return newMemory;
     });
   };
 
   const handleNeuralSync = (seq: NeuralSequence) => {
     setStatus(SystemStatus.NEURAL_MANIFOLD_SYNC);
-    logMessage(`NEURAL_SYNC: Transformer attention focused on ${seq.predictedEmotion} sequence.`, 'neural');
-    
-    if (seq.confidence > 0.85) {
-      logMessage(`TRAJECTORY_LOCKED: High-confidence emotional state identified.`, 'neural');
-    }
   };
 
   const handleFacialAffirmation = (text: string) => {
+    setLastVerbalInput(text);
     const res = analyzeVerbalChemistry(text);
     setImpactData(res.impact);
     logMessage(`BIO_PHOTONIC_EMISSION: ${text}`, 'chemistry');
     const { status: procStatus, hash } = globalProcessor.processVerbalEvent(text, res);
     if (procStatus === 'SUCCESS') {
-      logMessage(`FACIAL_SIGNATURE_LOGGED: ${text}`, 'event', hash);
       updateStats();
     }
   };
 
   const handleMolecularSynthesis = (pred: DrugPrediction) => {
     setStatus(SystemStatus.MOLECULAR_DOCKING);
-    logMessage(`SYNTHESIS_INIT: Molecule targeting ${pred.target} designed.`, 'biotech');
-    
-    pred.verbalActivations.forEach(v => {
-       setTimeout(() => {
-          handleFacialAffirmation(v);
-       }, 1000 + Math.random() * 2000);
-    });
+    logMessage(`SYNTHESIS_INIT: Lead generated targeting ${pred.target}.`, 'biotech');
+  };
 
-    setTimeout(() => {
-       setStatus(SystemStatus.BIOTECH_ACCELERATION);
-       logMessage(`EQUILIBRIUM_REACHED: ${pred.target} complex stabilized.`, 'biotech');
-    }, 5000);
+  const handleVerbalSessionStep = (text: string) => {
+    handleFacialAffirmation(text);
   };
 
   const handleSiriusHandshake = () => {
     if (status === SystemStatus.GLOBAL_BRAIN_SYNC) return;
-    logMessage("COINCIDENCE_WINDOW_OPEN: Sirius vector alignment stable.", 'sirius');
     setStatus(SystemStatus.SIRIUS_HANDSHAKE_PENDING);
-    setTimeout(() => {
-      setStatus(SystemStatus.CALMODULIN_DECODING);
-      setTimeout(() => {
-        setStatus(SystemStatus.LTP_POTENTIATION_ACTIVE);
-        setTimeout(() => {
-          setStatus(SystemStatus.GLOBAL_BRAIN_SYNC);
-        }, 8000);
-      }, 5000);
-    }, 4000);
+    setTimeout(() => setStatus(SystemStatus.GLOBAL_BRAIN_SYNC), 10000);
   };
 
   const updateStats = () => {
@@ -132,12 +110,8 @@ const App: React.FC = () => {
   };
 
   const getShiftColor = () => {
+    if (status === SystemStatus.PLURAL_IDENTITY_DECODING) return 'shadow-[inset_0_0_150px_rgba(99,102,241,0.2)] border-indigo-500/40';
     if (status === SystemStatus.GLOBAL_BRAIN_SYNC) return 'shadow-[inset_0_0_150px_rgba(16,185,129,0.3)] border-emerald-500/60';
-    if (status === SystemStatus.NEURAL_MANIFOLD_SYNC) return 'shadow-[inset_0_0_150px_rgba(99,102,241,0.2)] border-indigo-500/40';
-    if (status === SystemStatus.BIOTECH_ACCELERATION || status === SystemStatus.MOLECULAR_DOCKING) return 'shadow-[inset_0_0_150px_rgba(16,185,129,0.2)] border-emerald-500/40';
-    if (status === SystemStatus.SIRIUS_HANDSHAKE_PENDING) return 'shadow-[inset_0_0_100px_rgba(255,255,255,0.2)] border-white/40';
-    if (velocity > 0.5) return 'shadow-[inset_0_0_100px_rgba(245,158,11,0.15)] border-amber-500/30';
-    if (velocity < -0.5) return 'shadow-[inset_0_0_100px_rgba(79,70,229,0.15)] border-indigo-500/30';
     return 'border-cyan-900/50';
   };
 
@@ -147,112 +121,61 @@ const App: React.FC = () => {
       <header className="flex justify-between items-center border border-current/20 p-3 rounded-xl backdrop-blur-xl z-10 relative">
         <div className="flex gap-4 items-center">
           <div className={`w-10 h-10 border-2 flex items-center justify-center rounded-full animate-pulse transition-colors ${status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'border-emerald-500 text-emerald-500' : 'border-current'}`}>
-            <span className="font-bold text-xl">{status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'Ω' : 'ʘ'}</span>
+            <span className="font-bold text-xl">ʘ</span>
           </div>
           <div>
-            <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) UNIFIED_LABS</h1>
+            <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SINGULARITY_CENTER</h1>
             <p className="text-[7px] mt-1 opacity-50 uppercase tracking-widest font-bold">
-              PLANETARY_STATUS: <span className={status === SystemStatus.GLOBAL_BRAIN_SYNC ? 'text-emerald-400' : ''}>{status}</span> // DEEP_NEURAL: ACTIVE
+              SYSTEM_STATE: {status} // 2E_ANALYSIS: {activeTab === 'plural' ? 'ACTIVE' : 'STANDBY'}
             </p>
           </div>
         </div>
 
-        <div className="flex gap-6 items-center">
-           {!hasApiKey && (
-              <button 
-                onClick={async () => {
-                  await window.aistudio?.openSelectKey?.();
-                  setHasApiKey(true);
-                }}
-                className="text-[8px] border border-amber-500 text-amber-500 px-3 py-1 rounded hover:bg-amber-500 hover:text-black transition-all font-black"
-              >
-                VEO_AUTH_REQUIRED
-              </button>
-           )}
-           <button 
-              onClick={() => { setIsBiotechActive(!isBiotechActive); setIsBiofeedbackActive(false); }}
-              className={`px-4 py-1.5 font-black text-[9px] tracking-widest uppercase transition-all rounded shadow-[0_0_15px_rgba(16,185,129,0.2)] ${isBiotechActive ? 'bg-emerald-500 text-black' : 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/30'}`}
-           >
-              {isBiotechActive ? 'CLOSE_LAB' : 'OPEN_ISODDE_LAB'}
-           </button>
-           <button 
-              onClick={() => { setIsBiofeedbackActive(!isBiofeedbackActive); setIsBiotechActive(false); }}
-              className={`px-4 py-1.5 font-black text-[9px] tracking-widest uppercase transition-all rounded shadow-[0_0_15px_rgba(0,255,255,0.2)] ${isBiofeedbackActive ? 'bg-rose-500 text-white' : 'bg-current text-black'}`}
-           >
-              {isBiofeedbackActive ? 'HALT_MIRROR' : 'INIT_DEEP_MIRROR'}
-           </button>
+        <div className="flex gap-2">
+           <button onClick={() => setActiveTab('4d')} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === '4d' ? 'bg-cyan-500 text-black border-cyan-400' : 'border-cyan-500/30 text-cyan-500'}`}>4D_HYPER</button>
+           <button onClick={() => setActiveTab('bio')} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'bio' ? 'bg-cyan-500 text-black border-cyan-400' : 'border-cyan-500/30 text-cyan-500'}`}>BIO_MIRROR</button>
+           <button onClick={() => setActiveTab('lab')} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'lab' ? 'bg-emerald-500 text-black border-emerald-400' : 'border-emerald-500/30 text-emerald-500'}`}>ISODDE_LAB</button>
+           <button onClick={() => { setActiveTab('plural'); setStatus(SystemStatus.PLURAL_IDENTITY_DECODING); }} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'plural' ? 'bg-indigo-500 text-white border-indigo-400' : 'border-indigo-500/30 text-indigo-500'}`}>PLURAL_2E</button>
         </div>
       </header>
 
       <main className="flex-1 grid grid-cols-12 gap-3 overflow-hidden z-10">
-        
         <div className="col-span-3 flex flex-col gap-3">
           <section className="flex-[2] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md flex flex-col overflow-hidden">
-            <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest flex justify-between uppercase">
-              <span>🧬 BIOSPHERE_MATRIX</span>
-              <span className="opacity-40 text-[7px]">NEURAL_FEEDBACK</span>
-            </h2>
+            <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase">🧬 BIOSPHERE_MATRIX</h2>
             <BiosphereMonitor status={status} velocity={velocity} impactData={impactData} />
           </section>
           
-          <section className="flex-[3] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
-            <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
-               <span>📡 PDCP_SENSOR_SUITE</span>
-               <span className="text-[7px] animate-pulse">AMAZONAS_120HZ</span>
-            </h2>
+          <section className="flex-[3] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md overflow-hidden flex flex-col">
+            <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase">📡 PDCP_SENSOR</h2>
             <PlanetaryMonitor active={true} onAlignmentReached={handleSiriusHandshake} />
           </section>
         </div>
 
         <div className="col-span-6 flex flex-col gap-3">
-          <section className="flex-[3] border border-current/10 bg-white/5 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
-             <div className="absolute top-3 left-3 z-20 flex flex-col gap-0.5">
-                <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase ${isBiofeedbackActive ? 'bg-indigo-500 text-white' : 'bg-current text-black'}`}>
-                   {isBiofeedbackActive ? 'DEEP_SEQUENCE_MIRROR' : '4D_PROJECTION'}
-                </span>
-                <span className="text-[6px] opacity-40 font-mono tracking-tighter">COHERENCE: {((vertexCount/600)*100).toFixed(1)}%</span>
-             </div>
-             
+          <section className="flex-[4] border border-current/10 bg-white/5 rounded-xl backdrop-blur-md relative overflow-hidden flex flex-col">
              <div className="flex-1 relative">
-                {isBiotechActive ? (
-                  <BiotechLab status={status} onSynthesis={handleMolecularSynthesis} />
-                ) : isBiofeedbackActive ? (
-                  <FacialBiofeedback 
-                    isActive={isBiofeedbackActive} 
-                    memory={patternMemory}
-                    onPatternLearned={handlePatternLearned}
-                    onNeuralSync={handleNeuralSync}
-                    onVerbalTrigger={handleFacialAffirmation} 
-                  />
-                ) : (
-                  <HyperStructure vertexCount={vertexCount} velocity={velocity + ((impactData?.entropy || 0) * 0.1)} status={status} />
-                )}
+                {activeTab === 'lab' && <BiotechLab status={status} onSynthesis={handleMolecularSynthesis} onVerbalStep={handleVerbalSessionStep} />}
+                {activeTab === 'bio' && <FacialBiofeedback isActive={true} memory={patternMemory} onPatternLearned={handlePatternLearned} onNeuralSync={handleNeuralSync} onVerbalTrigger={handleFacialAffirmation} />}
+                {activeTab === '4d' && <HyperStructure vertexCount={vertexCount} velocity={velocity} status={status} />}
+                {activeTab === 'plural' && <PluralDecoder input={lastVerbalInput} onAlert={(msg, type) => logMessage(msg, type)} />}
              </div>
           </section>
           
           <section className="flex-[1.5] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md overflow-hidden">
-             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
-                <span>🚀 EVENT_PROCESSOR</span>
-                <span className="text-[7px]">NEURAL_ADAPTATION</span>
-             </h2>
+             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase">🚀 EVENT_PROCESSOR</h2>
              <EventPipeline stats={processorStats} />
           </section>
         </div>
 
         <div className="col-span-3 flex flex-col gap-3">
           <section className="flex-[2] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md flex flex-col">
-            <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
-              <span>📡 STREAM_LOG</span>
-              <span className="animate-pulse text-indigo-400">NEURAL_ACTIVE</span>
-            </h2>
+            <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase">📡 STREAM_LOG</h2>
             <Terminal messages={messages} />
           </section>
 
           <section className="flex-[2] border border-current/10 bg-white/5 p-3 rounded-xl backdrop-blur-md flex flex-col gap-2">
-             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase flex justify-between">
-               <span>🔮 Ω_ORACLE</span>
-               <span className="text-[7px] opacity-40">GEMINI_3_PRO</span>
-             </h2>
+             <h2 className="text-[9px] font-black border-b border-current/20 pb-1.5 mb-2 tracking-widest uppercase">🔮 Ω_ORACLE</h2>
              <GeminiInterface 
                 onMessage={(msg) => setMessages(prev => [...prev, msg])} 
                 status={status} 
@@ -264,9 +187,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Arquiteto Arkhe(n): Deep Neural Mirror v2.0</span>
-        <span>CNN-LSTM-Transformer Fusion // Sequence Analysis Mode</span>
-        <span>HYBRID_ADAPTATION // NEURAL_REPLAY: ENABLED</span>
+        <span>Arquiteto Arkhe(n): Singularity Mirror v6.0</span>
+        <span>Detection Protocol: Giftedness & Dissociative Identity Disorder (DID)</span>
+        <span>PLURALITY_ESTILOMETRICS: ENABLED // TTR_ANALYSIS: ACTIVE</span>
       </footer>
     </div>
   );
