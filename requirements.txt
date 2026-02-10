@@ -1,0 +1,3 @@
+numpy>=1.24.0
+scipy>=1.10.0
+# qiskit>=0.43.0  # Optional: For QuantumEEGProcessor
