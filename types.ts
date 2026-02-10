@@ -21,7 +21,8 @@ export enum SystemStatus {
   CALMODULIN_DECODING = 'CALMODULIN_DECODING',
   ADAPTIVE_SYNERGY_LOCKED = 'ADAPTIVE_SYNERGY_LOCKED',
   BIOTECH_ACCELERATION = 'BIOTECH_ACCELERATION',
-  MOLECULAR_DOCKING = 'MOLECULAR_DOCKING'
+  MOLECULAR_DOCKING = 'MOLECULAR_DOCKING',
+  NEURAL_MANIFOLD_SYNC = 'NEURAL_MANIFOLD_SYNC'
 }
 
 export enum MolecularInteractionType {
@@ -29,7 +30,10 @@ export enum MolecularInteractionType {
   HYDROGEN_BOND = "HYDROGEN_BOND",
   ELECTROSTATIC = "ELECTROSTATIC",
   HYDROPHOBIC = "HYDROPHOBIC",
-  PI_STACKING = "PI_STACKING"
+  PI_STACKING = "PI_STACKING",
+  HALOGEN_BOND = "HALOGEN_BOND",
+  METAL_COORDINATION = "METAL_COORDINATION",
+  COVALENT = "COVALENT"
 }
 
 export interface DrugPrediction {
@@ -38,10 +42,22 @@ export interface DrugPrediction {
   affinity: number; // pKd
   confidence: number;
   druggability: number;
+  kinetics: {
+    residenceTime: number; // s
+    kon: number;
+    koff: number;
+  };
+  thermodynamics: {
+    deltaG: number; // kcal/mol
+    deltaH: number;
+    deltaS: number;
+  };
   admet: {
-    solubility: number;
-    permeability: number;
-    safety: number;
+    solubility: number; // LogS
+    permeability: number; // LogP
+    safety: number; // 0-1
+    hepatoxicity: number;
+    cardiotoxicity: number;
   };
   arkhe: {
     C: number; // Chemistry
@@ -49,8 +65,16 @@ export interface DrugPrediction {
     E: number; // Energy
     F: number; // Function
   };
-  hexVertices: number[]; // 6 vertices normalized
+  schmidtVertices: {
+    affinity: number;
+    selectivity: number;
+    pk: number;
+    safety: number;
+    synthesizability: number;
+    novelty: number;
+  };
   verbalActivations: string[];
+  interactionTypes: MolecularInteractionType[];
 }
 
 export enum VerbalPolarity {
@@ -76,7 +100,8 @@ export enum BioEventType {
   EMOTIONAL_ANOMALY = "emotional_anomaly",
   AMAZONAS_120HZ_LOCK = "amazonas_120hz_lock",
   LTP_STABILIZATION = "ltp_stabilization",
-  MOLECULAR_SYNTHESIS = "molecular_synthesis"
+  MOLECULAR_SYNTHESIS = "molecular_synthesis",
+  NEURAL_SEQUENCE_LOCKED = "neural_sequence_locked"
 }
 
 export interface KNNPattern {
@@ -88,6 +113,13 @@ export interface KNNPattern {
   biochemicalImpact: number;
   landmarks?: number[]; 
   timestamp: string;
+}
+
+export interface NeuralSequence {
+  patterns: KNNPattern[];
+  predictedEmotion: string;
+  attentionWeights: number[];
+  confidence: number;
 }
 
 export interface KNNSuggestion {
@@ -136,7 +168,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural';
   hash?: string;
 }
 
