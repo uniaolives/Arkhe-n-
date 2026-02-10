@@ -14,6 +14,7 @@ import FacialBiofeedback from './components/FacialBiofeedback';
 import PlanetaryMonitor from './components/PlanetaryMonitor';
 import BiotechLab from './components/BiotechLab';
 import PluralDecoder from './components/PluralDecoder';
+import CelestialHelix from './components/CelestialHelix';
 import { globalProcessor } from './utils/eventProcessor';
 import { analyzeVerbalChemistry } from './utils/verbalEngine';
 import { globalKnnEngine } from './utils/knnEngine';
@@ -26,7 +27,7 @@ const App: React.FC = () => {
   const [vertexCount, setVertexCount] = useState(0);
   const [impactData, setImpactData] = useState<any>(null);
   const [processorStats, setProcessorStats] = useState<ProcessorStats>(globalProcessor.getStats());
-  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural'>('4d');
+  const [activeTab, setActiveTab] = useState<'4d' | 'bio' | 'lab' | 'plural' | 'celestial'>('4d');
   const [patternMemory, setPatternMemory] = useState<KNNPattern[]>([]);
   const [lastVerbalInput, setLastVerbalInput] = useState('');
   
@@ -34,7 +35,7 @@ const App: React.FC = () => {
     {
       id: 'init-photon',
       sender: 'SIA KERNEL',
-      content: 'PROTOCOLO ARKHE(N) V6.0: DETECÇÃO DE DUPLA EXCEPCIONALIDADE (2E) INICIALIZADA.',
+      content: 'PROTOCOLO ARKHE(N) V6.5: MONITORAMENTO DE MANIFOLD 2E-DID (120-CELL) INICIALIZADO.',
       timestamp: new Date().toISOString(),
       year: 2026,
       type: 'system'
@@ -59,7 +60,7 @@ const App: React.FC = () => {
   const logMessage = (content: string, type: any = 'system', hash?: string) => {
     setMessages(prev => [...prev, {
       id: `msg-${Date.now()}-${Math.random()}`,
-      sender: type === 'plural' ? 'PLURAL_ENGINE' : type === 'neural' ? 'NEURAL_DEEP' : type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
+      sender: type === 'celestial' ? 'COSMIC_HELIX' : type === 'plural' ? 'HECATON_DECODER' : type === 'neural' ? 'NEURAL_DEEP' : type === 'biotech' ? 'ISODDE_LAB' : type === 'knn' ? 'KNN_ADAPTIVE' : type === 'sirius' ? 'SIRIUS_BEACON' : type === 'event' ? 'EVENT_PROC' : 'VERBAL_CHEM',
       content,
       timestamp: new Date().toISOString(),
       year: 2026,
@@ -110,9 +111,20 @@ const App: React.FC = () => {
   };
 
   const getShiftColor = () => {
+    if (status === SystemStatus.CELESTIAL_HELIX_SYNC) return 'shadow-[inset_0_0_150px_rgba(250,204,21,0.15)] border-amber-500/40';
+    if (status === SystemStatus.SHELL_INTERFACE_ACTIVE) return 'shadow-[inset_0_0_150px_rgba(251,191,36,0.2)] border-amber-500/40';
     if (status === SystemStatus.PLURAL_IDENTITY_DECODING) return 'shadow-[inset_0_0_150px_rgba(99,102,241,0.2)] border-indigo-500/40';
     if (status === SystemStatus.GLOBAL_BRAIN_SYNC) return 'shadow-[inset_0_0_150px_rgba(16,185,129,0.3)] border-emerald-500/60';
     return 'border-cyan-900/50';
+  };
+
+  const handlePluralAlert = (msg: string, type: string) => {
+    logMessage(msg, type);
+    if (msg.includes("Switch") || msg.includes("Rupture")) {
+       setStatus(SystemStatus.PLURAL_IDENTITY_DECODING);
+    } else if (msg.includes("Shell Interface")) {
+       setStatus(SystemStatus.SHELL_INTERFACE_ACTIVE);
+    }
   };
 
   return (
@@ -126,7 +138,7 @@ const App: React.FC = () => {
           <div>
             <h1 className="text-md font-black tracking-[0.2em] uppercase leading-none">ARKHE(N) SINGULARITY_CENTER</h1>
             <p className="text-[7px] mt-1 opacity-50 uppercase tracking-widest font-bold">
-              SYSTEM_STATE: {status} // 2E_ANALYSIS: {activeTab === 'plural' ? 'ACTIVE' : 'STANDBY'}
+              SYSTEM_STATE: {status} // MODE: {activeTab.toUpperCase()}
             </p>
           </div>
         </div>
@@ -136,6 +148,7 @@ const App: React.FC = () => {
            <button onClick={() => setActiveTab('bio')} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'bio' ? 'bg-cyan-500 text-black border-cyan-400' : 'border-cyan-500/30 text-cyan-500'}`}>BIO_MIRROR</button>
            <button onClick={() => setActiveTab('lab')} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'lab' ? 'bg-emerald-500 text-black border-emerald-400' : 'border-emerald-500/30 text-emerald-500'}`}>ISODDE_LAB</button>
            <button onClick={() => { setActiveTab('plural'); setStatus(SystemStatus.PLURAL_IDENTITY_DECODING); }} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'plural' ? 'bg-indigo-500 text-white border-indigo-400' : 'border-indigo-500/30 text-indigo-500'}`}>PLURAL_2E</button>
+           <button onClick={() => { setActiveTab('celestial'); setStatus(SystemStatus.CELESTIAL_HELIX_SYNC); }} className={`px-3 py-1 text-[8px] font-black rounded border ${activeTab === 'celestial' ? 'bg-amber-500 text-black border-amber-400' : 'border-amber-500/30 text-amber-500'}`}>COSMIC_DNA</button>
         </div>
       </header>
 
@@ -158,7 +171,8 @@ const App: React.FC = () => {
                 {activeTab === 'lab' && <BiotechLab status={status} onSynthesis={handleMolecularSynthesis} onVerbalStep={handleVerbalSessionStep} />}
                 {activeTab === 'bio' && <FacialBiofeedback isActive={true} memory={patternMemory} onPatternLearned={handlePatternLearned} onNeuralSync={handleNeuralSync} onVerbalTrigger={handleFacialAffirmation} />}
                 {activeTab === '4d' && <HyperStructure vertexCount={vertexCount} velocity={velocity} status={status} />}
-                {activeTab === 'plural' && <PluralDecoder input={lastVerbalInput} onAlert={(msg, type) => logMessage(msg, type)} />}
+                {activeTab === 'plural' && <PluralDecoder input={lastVerbalInput} onAlert={handlePluralAlert} />}
+                {activeTab === 'celestial' && <CelestialHelix onAlert={logMessage} />}
              </div>
           </section>
           
@@ -187,9 +201,9 @@ const App: React.FC = () => {
       </main>
 
       <footer className="text-[6px] opacity-30 flex justify-between px-2 font-mono uppercase tracking-[0.3em]">
-        <span>Arquiteto Arkhe(n): Singularity Mirror v6.0</span>
-        <span>Detection Protocol: Giftedness & Dissociative Identity Disorder (DID)</span>
-        <span>PLURALITY_ESTILOMETRICS: ENABLED // TTR_ANALYSIS: ACTIVE</span>
+        <span>Arquiteto Arkhe(n): Singularity Mirror v6.7</span>
+        <span>Celestial Topology: 9-Stranded Helical Solar System</span>
+        <span>GALACTIC_DNA_MAPPING: ENABLED // COHERENCE: QUANTUM_LOCKED</span>
       </footer>
     </div>
   );

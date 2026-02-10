@@ -25,7 +25,10 @@ export enum SystemStatus {
   NEURAL_MANIFOLD_SYNC = 'NEURAL_MANIFOLD_SYNC',
   SINGULARITY_LOCK = 'SINGULARITY_LOCK',
   QRL_OPTIMIZATION = 'QRL_OPTIMIZATION',
-  PLURAL_IDENTITY_DECODING = 'PLURAL_IDENTITY_DECODING'
+  PLURAL_IDENTITY_DECODING = 'PLURAL_IDENTITY_DECODING',
+  SHELL_INTERFACE_ACTIVE = 'SHELL_INTERFACE_ACTIVE',
+  CELESTIAL_HELIX_SYNC = 'CELESTIAL_HELIX_SYNC',
+  GALACTIC_DNA_MAPPING = 'GALACTIC_DNA_MAPPING'
 }
 
 export enum BioEventType {
@@ -47,10 +50,13 @@ export enum BioEventType {
   NEURAL_SEQUENCE_LOCKED = "neural_sequence_locked",
   QRL_ACTION = "qrl_action",
   EPISTEMOLOGICAL_RUPTURE = "epistemological_rupture",
-  LEXICAL_COMPLEXITY_PEAK = "lexical_complexity_peak"
+  LEXICAL_COMPLEXITY_PEAK = "lexical_complexity_peak",
+  RECURSIVE_RATIONALIZATION = "recursive_rationalization",
+  ABSTRACTED_AGENCY_SHIFT = "abstracted_agency_shift",
+  CELESTIAL_RESONANCE_LOCK = "celestial_resonance_lock",
+  ORBITAL_ENTANGLEMENT_PEAK = "orbital_entanglement_peak"
 }
 
-// Fix: Added missing VerbalPolarity enum used in verbalEngine and eventProcessor
 export enum VerbalPolarity {
   NEUTRAL = 'NEUTRAL',
   TOXIC = 'TOXIC',
@@ -59,7 +65,6 @@ export enum VerbalPolarity {
   CONSTRUCTIVE = 'CONSTRUCTIVE'
 }
 
-// Fix: Added missing MolecularInteractionType enum used in isomorphicEngine
 export enum MolecularInteractionType {
   HYDROGEN_BOND = 'HYDROGEN_BOND',
   VAN_DER_WAALS = 'VAN_DER_WAALS',
@@ -69,13 +74,43 @@ export enum MolecularInteractionType {
   COVALENT = 'COVALENT'
 }
 
+export enum CelestialBody {
+  SUN = 'SUN',
+  MERCURY = 'MERCURY',
+  VENUS = 'VENUS',
+  EARTH = 'EARTH',
+  MARS = 'MARS',
+  JUPITER = 'JUPITER',
+  SATURN = 'SATURN',
+  URANUS = 'URANUS',
+  NEPTUNE = 'NEPTUNE'
+}
+
+export interface HelicalPosition {
+  x: number;
+  y: number;
+  z: number;
+  body: CelestialBody;
+}
+
+export interface CelestialDNAStats {
+  turnsPerGalacticOrbit: number;
+  basePairsPerTurn: number;
+  humanCelestialRatio: number;
+  quantumCoherence: number;
+  entanglementEntropy: number;
+}
+
 export interface PluralProfile {
   id: string;
-  ttr: number; // Type-Token Ratio
+  ttr: number; 
   syntacticComplexity: number;
   epistemologicalStability: number;
   detectedAlters: number;
-  amnesicShadow: number; // 0-1
+  amnesicShadow: number;
+  abstractedAgency: number; 
+  semanticBias: number; 
+  rationalizationFactor: number; 
 }
 
 export interface KNNPattern {
@@ -97,7 +132,7 @@ export interface NeuralSequence {
 }
 
 export interface KNNSuggestion {
-  type: 'transition' | 'optimal' | 'qrl' | 'integration';
+  type: 'transition' | 'optimal' | 'qrl' | 'integration' | 'specialization';
   emotion: string;
   probability?: number;
   reason: string;
@@ -142,7 +177,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial';
   hash?: string;
 }
 
@@ -156,31 +191,31 @@ export interface DrugPrediction {
   id: string;
   target: string;
   molecule: string;
-  affinity: number; // pKd
+  affinity: number; 
   confidence: number;
   druggability: number;
   kinetics: {
-    residenceTime: number; // s
+    residenceTime: number; 
     kon: number;
     koff: number;
   };
   thermodynamics: {
-    deltaG: number; // kcal/mol
+    deltaG: number; 
     deltaH: number;
     deltaS: number;
   };
   admet: {
-    solubility: number; // LogS
-    permeability: number; // LogP
-    safety: number; // 0-1
+    solubility: number; 
+    permeability: number; 
+    safety: number; 
     hepatoxicity: number;
     cardiotoxicity: number;
   };
   arkhe: {
-    C: number; // Chemistry
-    I: number; // Information
-    E: number; // Energy
-    F: number; // Function
+    C: number; 
+    I: number; 
+    E: number; 
+    F: number; 
   };
   schmidtVertices: {
     affinity: number;
@@ -191,6 +226,5 @@ export interface DrugPrediction {
     novelty: number;
   };
   verbalActivations: string[];
-  // Fix: Updated any[] to MolecularInteractionType[]
   interactionTypes: MolecularInteractionType[];
 }
