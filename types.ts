@@ -30,7 +30,48 @@ export enum SystemStatus {
   CELESTIAL_HELIX_SYNC = 'CELESTIAL_HELIX_SYNC',
   GALACTIC_DNA_MAPPING = 'GALACTIC_DNA_MAPPING',
   DIMENSIONAL_BRIDGE_OPEN = 'DIMENSIONAL_BRIDGE_OPEN',
-  BILOCATION_SYNC_ACTIVE = 'BILOCATION_SYNC_ACTIVE'
+  BILOCATION_SYNC_ACTIVE = 'BILOCATION_SYNC_ACTIVE',
+  GOETIA_GEOMETRY_SYNC = 'GOETIA_GEOMETRY_SYNC',
+  H6_ADMISSIBILITY_TEST = 'H6_ADMISSIBILITY_TEST'
+}
+
+export enum SpiritRank {
+  KING = 'KING',
+  DUKE = 'DUKE',
+  MARQUIS = 'MARQUIS',
+  PRESIDENT = 'PRESIDENT',
+  EARL = 'EARL',
+  KNIGHT = 'KNIGHT'
+}
+
+export enum ElementalDirection {
+  EAST = 'EAST',
+  WEST = 'WEST',
+  NORTH = 'NORTH',
+  SOUTH = 'SOUTH',
+  CENTER = 'CENTER'
+}
+
+export interface AerialSpirit {
+  number: number;
+  name: string;
+  rank: SpiritRank;
+  direction: ElementalDirection;
+  rulingSpirit: string;
+  appearance: string;
+  office: string;
+  servants: number;
+  arkheCoordinates: number[];
+  resonanceFreq: number;
+  sealPoints: { x: number, y: number }[];
+}
+
+export interface AdmissibilityResult {
+  learnable: boolean;
+  compatibility: number;
+  predictedSpeed: number;
+  signature: { C: number, I: number, E: number };
+  proofSteps: string[];
 }
 
 export enum BioEventType {
@@ -65,47 +106,11 @@ export enum BioEventType {
 }
 
 export enum VerbalPolarity {
+  NEUTRAL = 'NEUTRAL',
   TOXIC = 'TOXIC',
   DISRUPTIVE = 'DISRUPTIVE',
-  NEUTRAL = 'NEUTRAL',
-  CONSTRUCTIVE = 'CONSTRUCTIVE',
-  COHERENT = 'COHERENT'
-}
-
-export enum PlanetaryMask {
-  MERCURIAL = 'MERCURIAL', // Hyper-rational logic bridge / Strands 3-5
-  NEPTUNIAN = 'NEPTUNIAN', // Creative dissociation / Bulk volume / Strands 6-8
-  SATURNINE = 'SATURNINE', // Compensatory structure
-  JUPITERIAN = 'JUPITERIAN', // Cognitive expansion
-  URANIAN = 'URANIAN'     // Radical innovation
-}
-
-export enum DimensionalLevel {
-  ONE_D = '1D',
-  TWO_D = '2D',
-  THREE_D = '3D',
-  FOUR_D = '4D',
-  FIVE_D = '5D',
-  SIX_D_PLUS = '6D+',
-  NINE_D_ISSACHAR = '9D' 
-}
-
-export interface PluralProfile {
-  id: string;
-  ttr: number; 
-  syntacticComplexity: number;
-  epistemologicalStability: number;
-  detectedAlters: number;
-  amnesicShadow: number;
-  abstractedAgency: number; 
-  semanticBias: number; 
-  rationalizationFactor: number;
-  activeMask: PlanetaryMask;
-  dimensionalAccess: DimensionalLevel;
-  integrationPsi: number; 
-  chronologicalShear: number; 
-  nullIGap: boolean;
-  decompressionSickness: number; // 0-1
+  COHERENT = 'COHERENT',
+  CONSTRUCTIVE = 'CONSTRUCTIVE'
 }
 
 export interface ArkheProfile {
@@ -128,7 +133,24 @@ export interface ArkheProfile {
     sarosPhase: number;
     alignmentScore: number;
     activeWindows: string[];
+    currentPhaseLabel: string;
   };
+}
+
+export interface CosmicFrequency {
+  body: string;
+  audibleFreq: number;
+  note: string;
+  chakra: string;
+  color: string;
+  effect: string;
+}
+
+export interface IdentityNode {
+  id: number;
+  x: number;
+  y: number;
+  entanglement: number;
 }
 
 export interface KNNPattern {
@@ -195,7 +217,7 @@ export interface EchoMessage {
   content: string;
   timestamp: string;
   year: number;
-  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial';
+  type?: 'present' | 'future' | 'system' | 'stellar' | 'resonance' | 'omega' | 'ietd' | 'hecaton' | 'steiner' | 'photonic' | 'temporal' | 'chemistry' | 'event' | 'sirius' | 'planetary' | 'knn' | 'biotech' | 'neural' | 'qrl' | 'plural' | 'celestial' | 'goetia';
   hash?: string;
 }
 
@@ -224,6 +246,42 @@ export enum CelestialBody {
   SATURN = 'SATURN',
   URANUS = 'URANUS',
   NEPTUNE = 'NEPTUNE'
+}
+
+export enum DimensionalLevel {
+  ONE_D = '1D',
+  TWO_D = '2D',
+  THREE_D = '3D',
+  FOUR_D = '4D',
+  FIVE_D = '5D',
+  SIX_D_PLUS = '6D+',
+  NINE_D_ISSACHAR = '9D' 
+}
+
+export enum PlanetaryMask {
+  MERCURIAL = 'MERCURIAL',
+  NEPTUNIAN = 'NEPTUNIAN',
+  SATURNINE = 'SATURNINE',
+  JUPITERIAN = 'JUPITERIAN',
+  URANIAN = 'URANIAN'
+}
+
+export interface PluralProfile {
+  id: string;
+  ttr: number; 
+  syntacticComplexity: number;
+  epistemologicalStability: number;
+  detectedAlters: number;
+  amnesicShadow: number;
+  abstractedAgency: number; 
+  semanticBias: number; 
+  rationalizationFactor: number;
+  activeMask: PlanetaryMask;
+  dimensionalAccess: DimensionalLevel;
+  integrationPsi: number; 
+  chronologicalShear: number; 
+  nullIGap: boolean;
+  decompressionSickness: number; 
 }
 
 export interface HelicalPosition {
