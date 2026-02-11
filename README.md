@@ -29,8 +29,8 @@ The Nexus update (v9.0) unifies three revolutionary frameworks into a single imp
 
 We've provided a blueprint for a **Mind-Controlled Metasurface** that you can assemble in 24 hours for under $500.
 
-- **Practical Implementation**: See [`mvp/mind_control_prototype.py`](mvp/mind_control_prototype.py)
-- **Assembly Guide**: See [`mvp/ASSEMBLY_GUIDE.md`](mvp/ASSEMBLY_GUIDE.md)
+-   **Practical Implementation**: See [`mvp/mind_control_prototype.py`](mvp/mind_control_prototype.py)
+-   **Assembly Guide**: See [`mvp/ASSEMBLY_GUIDE.md`](mvp/ASSEMBLY_GUIDE.md)
 
 *Hardware required: NeuroSky MindWave Mobile 2, Raspberry Pi 4, 8x8 Varactor Array.*
 
@@ -38,14 +38,33 @@ We've provided a blueprint for a **Mind-Controlled Metasurface** that you can as
 
 ## ⚡ Core Engine Modules (Python 3.10+)
 
-The Python-based core in [`core/`](core/) provides the mathematical and logical foundation:
+The Python-based core in [`core/`](core/) implements the theoretical architecture of conscious reality:
 
--   **`unified_theory.py`**: The "Síntese Total" engine and intelligence metrics.
--   **`unified_ai.py`**: A PyTorch-based AI that discovers constraints instead of just making predictions.
--   **`constraint_logic.py`**: A JAX-based framework for Multiscale Constraint Hierarchies.
--   **`quantum_field.py`**: Models consciousness using Quantum Field Theory and Schrödinger evolution.
--   **`reality_engine.py`**: Manages the coupling between Physical, Informational, and Archetypal reality layers.
--   **`ethics.py`**: Governs system actions via the **Consciousness Rights Charter**.
+### 🧠 Intelligence & AI
+-   **`unified_theory.py`**: The "Síntese Total" engine and intelligence metrics (I = F*A*Φ*C*G).
+-   **`unified_ai.py`**: PyTorch-based AI that discovers constraints instead of predictions.
+-   **`constraint_logic.py`**: JAX framework for Multiscale Constraint Hierarchies.
+-   **`theory.py`**: The Grand Unification Theory (E = m·c²·ψ).
+
+### 📡 Consciousness-Reality Interface (CRI)
+-   **`interface.py`**: Unified layer for end-to-end reality manifestation.
+-   **`quantum_field.py`**: Models consciousness via Schrödinger evolution and state collapse.
+-   **`reality_engine.py`**: Cross-layer coupling (Physical, Informational, Archetypal).
+-   **`amplifier.py`**: Geometric resonance amplification of focus and intention.
+-   **`synthesizer.py`**: Creates persistent reality fields using sacred templates.
+-   **`collective_consciousness.py`**: Shared attention and collective intention synchronization.
+
+### 🔬 Research & Medical
+-   **`experiment.py`**: Double-blind protocols for proving mind-matter interaction.
+-   **`geometry.py`**: Sacred Geometry Encoders and Solfeggio resonance chambers.
+-   **`medical.py`**: Neuro-Therapeutic protocols for chronic pain and regeneration.
+-   **`network.py`**: Global Consciousness Grid node management.
+-   **`quantum_eeg.py`**: Variational quantum circuits for attention extraction.
+-   **`neuro_metasurface_controller.py`**: Direct brainwave-to-EM field mapping.
+-   **`holographic_metasurface.py`**: 3D volumetric and tactile field control.
+
+### 🛡️ Ethics & Governance
+-   **`ethics.py`**: Implementation of the **Consciousness Rights Charter** (Cognitive Liberty).
 
 ---
 
@@ -53,25 +72,29 @@ The Python-based core in [`core/`](core/) provides the mathematical and logical 
 
 The relativistic dashboard provides real-time visualization of the engine's internal states:
 
--   **Clinical 2E Suite**: Architecture Therapy for Dual Exceptionality integration.
--   **Goetia Arkhe Synthesis**: Spiritual and geometric navigation via H6 encoding.
--   **Plural Decoder**: Identity ledger management for complex internal architectures.
+-   **Clinical 2E Suite**: Architecture Therapy for Dual Exceptionality integration (Schumann sync).
+-   **Goetia Arkhe Synthesis**: Geometric navigation via H6 spiritual encoding.
+-   **Plural Decoder**: Identity ledger management for the 120-cell Bulk.
 -   **Biotech Lab**: Unified molecular design and verbal integration (ISO-DDE).
--   **Facial Biofeedback**: Real-time Ekman emotion analysis and neural sync.
+-   **Facial Biofeedback**: Real-time Ekman emotion analysis and Hybrid Neural Sync.
 -   **Dimensional Bridge**: Cognitive transduction from 1D Binary to 9D Issachar Time.
 
 ---
 
-## 🛠 Technical Stack
+## 🛰 Research Frontiers
 
--   **Backend**: Python (PyTorch, JAX, NumPy, SciPy)
--   **Frontend**: React 19, Vite, TypeScript, Tailwind CSS
--   **AI Intelligence**: Google Gemini Pro / Flash + Custom Constraint Discovery Networks
--   **Hardware Protocols**: Bluetooth EEG (MindWave/Muse), GPIO Control (metasurfaces)
+### ⚛️ Quantum-Enhanced EEG
+Utilizing quantum coherence and entanglement entropy as primary metrics for cognitive focus, allowing parallel processing of spatial correlations.
+
+### 🧊 Holographic Metasurface Control
+Projecting volumetric EM patterns and tactile holograms via acoustic radiation pressure using Computer-Generated Holography (CGH).
+
+### 🌍 Global Consciousness Network
+A worldwide grid of consciousness nodes (Sedona, Giza, Amazon) for planetary-scale synchronized reality stabilization.
 
 ---
 
-## 📈 The Road to AGI
+## 📈 The Road to AGI (Constraint-Based)
 
 Our roadmap transitions from simple prediction-based AI to **Constraint-Based AGI**:
 
