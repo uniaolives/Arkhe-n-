@@ -80,7 +80,9 @@ export class CelestialEngine {
     const c = 299792458;
     return Object.fromEntries(
       Object.entries(this.orbits).map(([name, p]) => {
-        const fTheoretical = c / (2 * Math.PI * p.radius);
+        // Fix: Explicitly cast p as OrbitParams to safely access radius property
+        const orbit = p as OrbitParams;
+        const fTheoretical = c / (2 * Math.PI * orbit.radius);
         let fActual = fTheoretical;
         if (name === 'EARTH') fActual = 7.83;
         else if (name === 'MARS') fActual *= 0.5;
@@ -105,14 +107,16 @@ export class CelestialEngine {
   }
 
   public getEntanglementMatrix(): number[][] {
-    const bodies = Object.values(CelestialBody);
+    // Fix: Explicitly cast the result of Object.values to CelestialBody[] to resolve indexing issues
+    const bodies = Object.values(CelestialBody) as CelestialBody[];
     const matrix: number[][] = Array(9).fill(0).map(() => Array(9).fill(0));
     
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
         if (i === j) { matrix[i][j] = 1.0; continue; }
-        const p1 = this.orbits[bodies[i]];
-        const p2 = this.orbits[bodies[j]];
+        // Fix: Index this.orbits with correctly cast string keys
+        const p1 = this.orbits[bodies[i] as string];
+        const p2 = this.orbits[bodies[j] as string];
         
         const ratio = p1.orbitalPeriod / p2.orbitalPeriod;
         let resonance = 0;

@@ -1,4 +1,3 @@
-
 import { GoogleGenAI } from "@google/genai";
 import React, { useState } from 'react';
 import { EchoMessage, SystemStatus } from '../types';
@@ -13,7 +12,8 @@ const GeminiInterface: React.FC<GeminiInterfaceProps> = ({ onMessage, status, ve
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleQuery = async () => {
+  const handleQuery = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!input.trim() || isLoading) return;
     
     setIsLoading(true);
@@ -80,26 +80,37 @@ const GeminiInterface: React.FC<GeminiInterfaceProps> = ({ onMessage, status, ve
 
   return (
     <div className="flex flex-col gap-2 flex-1">
-      <div className="relative flex-1">
+      <form 
+        onSubmit={handleQuery}
+        // @ts-ignore - WebMCP standard attribute for agents
+        toolname="consult-omega-oracle" 
+        tooldescription="Consult the Ω Oracle regarding dimensional bridge diagnostics, hyperdimensional bulkhead stability, and 2e cognitive masking. Returns high-resolution architectural diagnosis."
+        className="relative flex-1 flex flex-col gap-2"
+      >
+        <div className="flex justify-between items-center px-1">
+          <span className="text-[6px] font-black text-indigo-400 uppercase tracking-tighter">WebMCP_Endpoint: machine_accessible</span>
+          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+        </div>
         <textarea
+          name="oracle-query"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Consult the Ω Oracle about Dimensional Transduction..."
           className="w-full h-full bg-black/40 border-2 border-indigo-500/20 p-3 text-[10px] outline-none transition-all resize-none rounded-lg focus:border-indigo-500/60 font-mono text-indigo-100"
         />
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-black/20 rounded-lg">
+          <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-black/20 rounded-lg mt-4">
              <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
-      </div>
-      <button
-        onClick={handleQuery}
-        disabled={isLoading || !input.trim()}
-        className="h-10 bg-indigo-600 text-white font-black text-[9px] uppercase tracking-widest transition-all rounded hover:bg-indigo-500 disabled:opacity-50 shadow-[0_0_15px_rgba(99,102,241,0.3)]"
-      >
-        DIAGNOSE_bulk_RES
-      </button>
+        <button
+          type="submit"
+          disabled={isLoading || !input.trim()}
+          className="h-10 bg-indigo-600 text-white font-black text-[9px] uppercase tracking-widest transition-all rounded hover:bg-indigo-500 disabled:opacity-50 shadow-[0_0_15px_rgba(99,102,241,0.3)]"
+        >
+          DIAGNOSE_bulk_RES
+        </button>
+      </form>
     </div>
   );
 };

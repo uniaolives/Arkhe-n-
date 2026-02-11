@@ -25,9 +25,17 @@ const SyncProtocols: React.FC = () => {
       <div className="flex-1 grid grid-cols-2 gap-6 overflow-hidden">
         {/* Left: Saros & Tones */}
         <div className="flex flex-col gap-4 overflow-y-auto scrollbar-thin pr-2">
-          <div className="p-3 bg-white/5 border border-white/10 rounded-lg">
+          <form 
+            onSubmit={(e) => e.preventDefault()}
+            // @ts-ignore - WebMCP discoverability
+            toolname="calculate-saros-alignment"
+            tooldescription="Retrieve astronomical alignment phase within the 18.03-year Saros cycle based on an Earth-based birth date. Informs visionary project seeding and neurological re-sync."
+            className="p-3 bg-white/5 border border-white/10 rounded-lg relative"
+          >
+            <div className="absolute -top-2 -right-1 px-1 bg-black border border-indigo-500/30 rounded text-[5px] text-indigo-400 font-black">MCP</div>
             <div className="text-[8px] font-black opacity-60 uppercase tracking-widest mb-3 text-indigo-300">Saros_Cycle_Calculation</div>
             <input 
+              name="birth-date-input"
               type="date" 
               value={birthDate}
               onChange={(e) => setBirthDate(e.target.value)}
@@ -46,7 +54,7 @@ const SyncProtocols: React.FC = () => {
                  "{saros.interpretation}"
                </div>
             </div>
-          </div>
+          </form>
 
           <div className="p-3 bg-white/5 border border-white/10 rounded-lg flex-1">
             <div className="text-[8px] font-black opacity-60 uppercase tracking-widest mb-3 text-cyan-300">Planetary_Toning (Hans Cousto)</div>
@@ -54,7 +62,6 @@ const SyncProtocols: React.FC = () => {
                {Object.entries(tones).map(([body, freq]) => (
                   <div key={body} className="flex justify-between items-center group">
                     <span className="text-[6px] opacity-40 uppercase font-bold">{body}</span>
-                    {/* Fix: Cast freq to number as Object.entries returns values of type 'unknown' */}
                     <span className="text-[8px] font-black text-white group-hover:text-cyan-400 transition-colors">{(freq as number).toFixed(2)} Hz</span>
                   </div>
                ))}

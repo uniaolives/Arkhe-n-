@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { DrugPrediction, SystemStatus } from '../types';
 import { globalIsoEngine } from '../utils/isomorphicEngine';
@@ -16,8 +15,9 @@ const BiotechLab: React.FC<BiotechLabProps> = ({ onSynthesis, onVerbalStep, stat
   const [sessionStep, setSessionStep] = useState<number>(-1); // -1: none, 0-2: steps
   const [sessionCoherence, setSessionCoherence] = useState(0.5);
 
-  const handleDesign = async () => {
-    if (!mentalState.trim()) return;
+  const handleDesign = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!mentalState.trim() || isDesigning) return;
     setIsDesigning(true);
     setSessionStep(-1);
     
@@ -74,22 +74,30 @@ const BiotechLab: React.FC<BiotechLabProps> = ({ onSynthesis, onVerbalStep, stat
         {/* Left: Design or Session Info */}
         <div className="col-span-4 flex flex-col gap-4 overflow-y-auto pr-2 scrollbar-thin">
           {sessionStep === -1 ? (
-             <div className="p-4 bg-emerald-950/10 rounded-lg border border-emerald-500/20 shadow-inner">
+             <form 
+               onSubmit={handleDesign}
+               // @ts-ignore - WebMCP tool metadata
+               toolname="design-isomorphic-molecule"
+               tooldescription="Initiate simulated lead generation for a pharmaceutical molecule complex based on a targeted consciousness state (e.g. 'mystical focus', 'neural repair')."
+               className="p-4 bg-emerald-950/10 rounded-lg border border-emerald-500/20 shadow-inner relative"
+             >
+               <div className="absolute -top-2 -right-2 px-1.5 py-0.5 bg-black border border-emerald-500/30 rounded text-[5px] text-emerald-400 font-black">MCP_TOOL</div>
                <label className="text-[8px] opacity-60 uppercase mb-2 block font-black tracking-widest text-emerald-400">Target_Consciousness_State</label>
                <textarea 
+                 name="mental-state-target"
                  value={mentalState}
                  onChange={(e) => setMentalState(e.target.value)}
                  placeholder="e.g. mystical focus, creative flow, neural repair..."
                  className="w-full bg-black/60 border border-emerald-500/20 p-3 text-[10px] outline-none focus:border-emerald-500/60 rounded h-20 resize-none transition-all placeholder:opacity-30"
                />
                <button 
-                 onClick={handleDesign}
+                 type="submit"
                  disabled={isDesigning || !mentalState.trim()}
                  className="mt-4 w-full bg-emerald-500 text-black font-black text-[10px] py-2.5 rounded hover:bg-emerald-400 transition-all disabled:opacity-30 shadow-[0_0_20px_rgba(16,185,129,0.2)]"
                >
                  {isDesigning ? 'COMPUTING_ENERGIES...' : 'INITIALIZE_LEAD_GEN'}
                </button>
-             </div>
+             </form>
           ) : sessionStep < (prediction?.verbalActivations.length || 0) ? (
              <div className="p-4 bg-amber-950/20 rounded-lg border border-amber-500/30 flex flex-col gap-4">
                 <div className="text-[8px] font-black uppercase text-amber-400 tracking-widest">Verbal_Administration_Session</div>
@@ -113,7 +121,7 @@ const BiotechLab: React.FC<BiotechLabProps> = ({ onSynthesis, onVerbalStep, stat
                 </button>
              </div>
           ) : (
-             <div className="p-4 bg-emerald-950/20 rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-2 text-center">
+             <div className="p-4 bg-emerald-950/20 rounded-lg border border-emerald-500/20 flex flex-col items-center justify-center gap-2 text-center">
                 <div className="w-10 h-10 border-2 border-emerald-500 rounded-full flex items-center justify-center text-emerald-400 animate-bounce">✓</div>
                 <div className="text-[10px] font-black uppercase text-emerald-400">ADMINISTRATION_COMPLETE</div>
                 <p className="text-[8px] opacity-60">Molecular complex stabilized within the bio-photonic field.</p>

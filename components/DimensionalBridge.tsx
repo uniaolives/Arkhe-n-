@@ -8,7 +8,7 @@ interface DimensionalBridgeProps {
 }
 
 const DimensionalBridge: React.FC<DimensionalBridgeProps> = ({ activeLevel, profileScore }) => {
-  const levels = Object.values(DimensionalLevel);
+  const levels = Object.values(DimensionalLevel) as DimensionalLevel[];
 
   const levelLabels: Record<DimensionalLevel, string> = {
     [DimensionalLevel.ONE_D]: 'Linear Logic // Binary',
@@ -58,7 +58,8 @@ const DimensionalBridge: React.FC<DimensionalBridgeProps> = ({ activeLevel, prof
                 
                 <div className="flex flex-col">
                   <span className={`text-[9px] font-black uppercase tracking-widest ${isActive ? 'text-white' : 'text-cyan-800'}`}>
-                    {levelLabels[lvl]}
+                    {/* Fix: Added explicit casting to DimensionalLevel to resolve unknown index error */}
+                    {levelLabels[lvl as DimensionalLevel]}
                   </span>
                   {isActive && (
                     <div className="flex items-center gap-2 mt-1">

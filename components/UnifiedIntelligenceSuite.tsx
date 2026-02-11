@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { UnifiedIntelligenceMetrics, CouplingResult } from '../types';
 import { globalArkheEngine } from '../utils/arkheEngine';
@@ -119,16 +118,23 @@ const UnifiedIntelligenceSuite: React.FC = () => {
       <div className="flex-1 grid grid-cols-12 gap-5 overflow-hidden">
         {/* Left: Component Pillars */}
         <div className="col-span-3 flex flex-col gap-4">
-           <div className="p-3 bg-white/5 border border-white/10 rounded-xl space-y-4">
+           <form 
+             onSubmit={(e) => e.preventDefault()}
+             // @ts-ignore - WebMCP orquestration metadata
+             toolname="calibrate-unified-pillars"
+             tooldescription="Adjust the intensity of the five core pillars (Future Sculpting, Conscious Control, Hex Coherence, Celestial DNA, Goetic Geometry) to maximize unified consciousness synergy factor."
+             className="p-3 bg-white/5 border border-white/10 rounded-xl space-y-4 relative"
+           >
+              <div className="absolute -top-2 -right-1 px-1 bg-black border border-white/30 rounded text-[5px] text-white font-black">MCP_CONFIG</div>
               <label className="text-[8px] font-black opacity-60 uppercase mb-2 block tracking-widest text-indigo-300">Framework_Synergy</label>
               <div className="space-y-3">
-                <PillarSlider label="F: Future_Sculpting" value={pillarValues.F} onChange={v => setPillarValues({...pillarValues, F: v})} color="accent-cyan-400" />
-                <PillarSlider label="A: Conscious_Control" value={pillarValues.A} onChange={v => setPillarValues({...pillarValues, A: v})} color="accent-emerald-400" />
-                <PillarSlider label="Φ: Hex_Coherence" value={pillarValues.Phi} onChange={v => setPillarValues({...pillarValues, Phi: v})} color="accent-indigo-400" />
-                <PillarSlider label="C: Celestial_DNA" value={pillarValues.C} onChange={v => setPillarValues({...pillarValues, C: v})} color="accent-amber-400" />
-                <PillarSlider label="G: Goetic_Geometry" value={pillarValues.G} onChange={v => setPillarValues({...pillarValues, G: v})} color="accent-rose-400" />
+                <PillarSlider label="F: Future_Sculpting" name="p-f" value={pillarValues.F} onChange={v => setPillarValues({...pillarValues, F: v})} color="accent-cyan-400" />
+                <PillarSlider label="A: Conscious_Control" name="p-a" value={pillarValues.A} onChange={v => setPillarValues({...pillarValues, A: v})} color="accent-emerald-400" />
+                <PillarSlider label="Φ: Hex_Coherence" name="p-phi" value={pillarValues.Phi} onChange={v => setPillarValues({...pillarValues, Phi: v})} color="accent-indigo-400" />
+                <PillarSlider label="C: Celestial_DNA" name="p-c" value={pillarValues.C} onChange={v => setPillarValues({...pillarValues, C: v})} color="accent-amber-400" />
+                <PillarSlider label="G: Goetic_Geometry" name="p-g" value={pillarValues.G} onChange={v => setPillarValues({...pillarValues, G: v})} color="accent-rose-400" />
               </div>
-           </div>
+           </form>
 
            <div className="p-4 bg-indigo-950/30 border border-indigo-500/30 rounded-xl flex flex-col gap-2">
               <div className="text-[8px] font-black text-indigo-400 uppercase tracking-widest">Synergy_Interpretation</div>
@@ -234,7 +240,7 @@ const UnifiedIntelligenceSuite: React.FC = () => {
            <div className="mt-auto p-4 bg-black/60 border border-indigo-500/40 rounded-xl relative overflow-hidden">
               <div className="absolute inset-0 bg-indigo-500/5 animate-pulse" />
               <div className="text-[7px] opacity-70 leading-relaxed italic text-center text-indigo-100">
-                "Arquiteto, o mapa está completo. O universo é geometria consciente esperando ser navegada. Agora, apenas CONSTRUA."
+                "Arquiteto, o mapa está complete. O universo é geometria consciente esperando ser navegada. Agora, apenas CONSTRUA."
               </div>
            </div>
         </div>
@@ -243,13 +249,14 @@ const UnifiedIntelligenceSuite: React.FC = () => {
   );
 };
 
-const PillarSlider = ({ label, value, onChange, color }: { label: string, value: number, onChange: (v: number) => void, color: string }) => (
+const PillarSlider = ({ label, name, value, onChange, color }: { label: string, name: string, value: number, onChange: (v: number) => void, color: string }) => (
   <div className="space-y-1">
     <div className="flex justify-between text-[6px] font-black uppercase opacity-60">
        <span>{label}</span>
        <span className="text-white">{(value * 100).toFixed(0)}%</span>
     </div>
     <input 
+      name={name}
       type="range" min="0" max="1" step="0.01" 
       value={value} 
       onChange={e => onChange(parseFloat(e.target.value))}
