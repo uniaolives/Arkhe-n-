@@ -26,7 +26,7 @@ const SensorFusionSuite: React.FC = () => {
       }));
     }, 32);
     return () => clearInterval(interval);
-  }, []);
+  }, [voxels.length]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -40,6 +40,7 @@ const SensorFusionSuite: React.FC = () => {
     const scale = 1.5;
 
     voxels.forEach(v => {
+      if (!v || !v.position) return;
       // 3D to 2D projection mock
       const rotX = v.position.x - 50;
       const rotY = v.position.y - 50;
@@ -124,11 +125,13 @@ const SensorFusionSuite: React.FC = () => {
               <div className="text-[8px] font-black opacity-60 uppercase tracking-widest text-indigo-400">Voxel_Classification</div>
               <div className="space-y-2">
                  {voxels.slice(0, 5).map((v, i) => (
-                    <div key={i} className="text-[7px] p-1.5 bg-black/40 rounded border border-white/5 flex justify-between items-center animate-fadeIn">
-                       <span>{v.id}</span>
-                       <span className="text-white">Φ={v.coherence.toFixed(2)}</span>
-                       <span className={`text-[6px] font-black px-1 rounded ${v.classification === 'STRUCTURAL' ? 'bg-indigo-500 text-white' : 'bg-amber-500 text-black'}`}>{v.classification}</span>
-                    </div>
+                    v && (
+                      <div key={i} className="text-[7px] p-1.5 bg-black/40 rounded border border-white/5 flex justify-between items-center animate-fadeIn">
+                        <span>{v.id}</span>
+                        <span className="text-white">Φ={v.coherence.toFixed(2)}</span>
+                        <span className={`text-[6px] font-black px-1 rounded ${v.classification === 'STRUCTURAL' ? 'bg-indigo-500 text-white' : 'bg-amber-500 text-black'}`}>{v.classification}</span>
+                      </div>
+                    )
                  ))}
               </div>
            </div>

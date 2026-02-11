@@ -80,13 +80,15 @@ const QuantumEntanglementSuite: React.FC = () => {
     const animate = () => {
       requestAnimationFrame(animate);
       Object.values(nodeMeshes.current).forEach((m: THREE.Mesh) => { 
-        m.rotation.y += 0.006; 
-        m.rotation.x += 0.002; 
-        const pulse = 1 + Math.sin(Date.now() * 0.002) * 0.05;
-        m.scale.set(pulse, pulse, pulse);
+        if (m) {
+          m.rotation.y += 0.006; 
+          m.rotation.x += 0.002; 
+          const pulse = 1 + Math.sin(Date.now() * 0.002) * 0.05;
+          m.scale.set(pulse, pulse, pulse);
+        }
       });
       controls.update();
-      composer.render();
+      if (composerRef.current) composerRef.current.render();
     };
     animate();
 
@@ -95,7 +97,7 @@ const QuantumEntanglementSuite: React.FC = () => {
       camera.aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
-      composer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+      if (composerRef.current) composerRef.current.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
     };
     window.addEventListener('resize', handleResize);
 
@@ -110,11 +112,13 @@ const QuantumEntanglementSuite: React.FC = () => {
     const currentIds = new Set(pairs.map(p => p.id));
     Object.keys(linkMeshes.current).forEach(id => { 
       if (!currentIds.has(id)) { 
-        scene.remove(linkMeshes.current[id]); 
+        const mesh = linkMeshes.current[id];
+        if (mesh) scene.remove(mesh); 
         delete linkMeshes.current[id]; 
       } 
     });
     pairs.forEach(pair => {
+      if (!pair) return;
       if (!linkMeshes.current[pair.id]) {
         const posA = nodeMeshes.current[pair.nodeA]?.position;
         const posB = nodeMeshes.current[pair.nodeB]?.position;
@@ -131,7 +135,10 @@ const QuantumEntanglementSuite: React.FC = () => {
           linkMeshes.current[pair.id] = line;
         }
       } else {
-        linkMeshes.current[pair.id].material.opacity = 0.2 + pair.fidelity * 0.8;
+        const mesh = linkMeshes.current[pair.id];
+        if (mesh && mesh.material) {
+           (mesh.material as THREE.LineBasicMaterial).opacity = 0.2 + pair.fidelity * 0.8;
+        }
       }
     });
   }, [pairs]);
@@ -165,8 +172,9 @@ const QuantumEntanglementSuite: React.FC = () => {
     const spike = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 2, 80, 8), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 }));
     sceneRef.current.add(spike);
     const animateSpike = () => {
-       spike.material.opacity -= 0.02;
-       if(spike.material.opacity > 0) requestAnimationFrame(animateSpike);
+       if (!spike.material) return;
+       (spike.material as THREE.MeshBasicMaterial).opacity -= 0.02;
+       if((spike.material as THREE.MeshBasicMaterial).opacity > 0) requestAnimationFrame(animateSpike);
        else sceneRef.current.remove(spike);
     };
     animateSpike();
